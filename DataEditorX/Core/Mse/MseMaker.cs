@@ -27,44 +27,44 @@ namespace DataEditorX.Core.Mse
     {
         #region 常量
         public const string TAG_CARD = "card";
-        public const string TAG_CARDTYPE = "card type";
+        public const string TAG_CARDTYPE = "card_type";
         public const string TAG_NAME = "name";
         public const string TAG_ATTRIBUTE = "attribute";
         public const string TAG_LEVEL = "level";
         public const string TAG_IMAGE = "image";
         /// <summary>种族</summary>
-        public const string TAG_TYPE1 = "type 1";
+        public const string TAG_TYPE1 = "type_1";
         /// <summary>效果1</summary>
-        public const string TAG_TYPE2 = "type 2";
+        public const string TAG_TYPE2 = "type_2";
         /// <summary>效果2/summary>
-        public const string TAG_TYPE3 = "type 3";
+        public const string TAG_TYPE3 = "type_3";
         /// <summary>效果3</summary>
-        public const string TAG_TYPE4 = "type 4";
-        public const string TAG_TYPE5 = "type 5";
-        public const string TAG_TEXT = "rule text";
+        public const string TAG_TYPE4 = "type_4";
+        public const string TAG_TYPE5 = "type_5";
+        public const string TAG_TEXT = "rule_text";
         public const string TAG_ATK = "attack";
         public const string TAG_DEF = "defense";
         public const string TAG_NUMBER = "number";
         public const string TAG_RARITY = "rarity";
         public const string TAG_PENDULUM = "pendulum";
-        public const string TAG_PSCALE1 = "pendulum scale 1";
-        public const string TAG_PSCALE2 = "pendulum scale 2";
-        public const string TAG_PEND_TEXT = "pendulum text";
+        public const string TAG_PSCALE1 = "red_scale";
+        public const string TAG_PSCALE2 = "blue_scale";
+        public const string TAG_PEND_TEXT = "pendulum_text";
         public const string TAG_CODE = "gamecode";
         public const string UNKNOWN_ATKDEF = "?";
         public const int UNKNOWN_ATKDEF_VALUE = -2;
         public const string TAG_REP_TEXT = "%text%";
         public const string TAG_REP_PTEXT = "%ptext%";
 
-        public const string TAG_Link_Marker_Up = "Link Marker Up";
-        public const string TAG_Link_Marker_UL = "Link Marker UL";
-        public const string TAG_Link_Marker_UR = "Link Marker UR";
-        public const string TAG_Link_Marker_Down = "Link Marker Down";
-        public const string TAG_Link_Marker_DL = "Link Marker DL";
-        public const string TAG_Link_Marker_DR = "Link Marker DR";
-        public const string TAG_Link_Marker_Left = "Link Marker Left";
-        public const string TAG_Link_Marker_Right = "Link Marker Right";
-        public const string TAG_Link_Number = "link number";
+        public const string TAG_Link_Marker_Up = "linku";
+        public const string TAG_Link_Marker_UL = "linkul";
+        public const string TAG_Link_Marker_UR = "linkur";
+        public const string TAG_Link_Marker_Down = "linkd";
+        public const string TAG_Link_Marker_DL = "linkdl";
+        public const string TAG_Link_Marker_DR = "linkdr";
+        public const string TAG_Link_Marker_Left = "linkl";
+        public const string TAG_Link_Marker_Right = "linkr";
+        public const string TAG_Link_Number = TAG_DEF;
         #endregion
 
         #region 成员，初始化
@@ -97,7 +97,7 @@ namespace DataEditorX.Core.Mse
         //合并
         public string GetLine(string key, string word)
         {
-            return "	" + key + ": " + word;
+            return "	" + key + ": \"" + word + "\"";
         }
         //特殊字
         public string ReItalic(string str)
@@ -209,7 +209,7 @@ namespace DataEditorX.Core.Mse
                     return png;
                 }
             }
-            return "";
+            return "nil";
         }
         //获取属性
         public static string GetAttribute(int attr)
@@ -262,10 +262,10 @@ namespace DataEditorX.Core.Mse
         public string ReText(string text)
         {
             StringBuilder sb = new StringBuilder(text);
-            sb.Replace("\r\n", "\n");
+            sb.Replace("\r\n", "\\n");
             sb.Replace("\r", "");
-            sb.Replace("\n\n", "\n");
-            sb.Replace("\n", "\n\t\t");
+            sb.Replace("\n\n", "\\n");
+            sb.Replace("\"", "\\\"");
             return sb.ToString().Trim('\n');
         }
         //获取星星
@@ -388,10 +388,10 @@ namespace DataEditorX.Core.Mse
                 foreach (Card c in cards)
                 {
                     string jpg = GetCardImagePath(pic, c);
-                    if (!string.IsNullOrEmpty(jpg))
+                    if (!string.IsNullOrEmpty(jpg) && jpg != "nil")
                     {
                         list.Add(c, jpg);
-                        jpg = Path.GetFileName(jpg);
+                        jpg = "local_image_file(\"" + Path.GetFileName(jpg) + "\")";
                     }
                     CardPack cardpack=DataBase.FindPack(cardpack_db, c.id);
                     if (c.IsType(CardType.TYPE_SPELL) || c.IsType(CardType.TYPE_TRAP))
@@ -449,7 +449,7 @@ namespace DataEditorX.Core.Mse
             {
                 sb.AppendLine(this.GetLine(TAG_LEVEL, GetStar(c.level)));
             }
-            sb.AppendLine(this.GetLine(TAG_IMAGE, img));
+            sb.AppendLine("	" + TAG_IMAGE + ": " + img);
             sb.AppendLine(this.GetLine(TAG_TYPE1, this.CN2TW(race)));
             sb.AppendLine(this.GetLine(TAG_TYPE2, this.CN2TW(types[1])));
             sb.AppendLine(this.GetLine(TAG_TYPE3, this.CN2TW(types[2])));
@@ -463,67 +463,73 @@ namespace DataEditorX.Core.Mse
                     sb.AppendLine(this.GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
+            string text = c.desc;
+            string[] texts = Regex.Split(text, "\r?\n--+\r?\n");
+            List<string> ctexts = new List<string>();
+            if (texts.Length > 0)
+                for (int k = 0; k < texts.Length; ++k)
+                    if (texts[k].IndexOf(']') > 0)
+                        ctexts.Add(texts[k].Substring(texts[k].IndexOf(']') + 3));
+                    else ctexts.Add(texts[k]);
+            string mtext;
+            string ptext = "";
+            if (ctexts.Count > 2 || ctexts.Count > 1 && c.IsType(CardType.TYPE_PENDULUM)) { mtext = ctexts[1]; ptext = ctexts[0]; } else mtext = ctexts[0];
+            if (ptext == "-n/a-") ptext = "";
             if (c.IsType(CardType.TYPE_LINK))
             {
                 if (CardLink.IsLink(c.def, CardLink.DownLeft))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_DL, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_DL, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Down))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Down, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Down, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.DownRight))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_DR, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_DR, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.UpLeft))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_UL, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_UL, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Up))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Up, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Up, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.UpRight))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_UR, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_UR, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Left))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Left, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Left, "on"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Right))
                 {
-                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Right, "yes"));
+                    sb.AppendLine(this.GetLine(TAG_Link_Marker_Right, "on"));
                 }
-                sb.AppendLine(this.GetLine(TAG_Link_Number, "" + this.getLinkNumber(c.def)));
-                sb.AppendLine("	" + TAG_TEXT + ":");
-                sb.AppendLine("		" + this.ReText(this.ReItalic(c.desc)));
+                sb.AppendLine(this.GetLine(TAG_DEF, "" + this.getLinkNumber(c.def)));
+                sb.AppendLine(this.GetLine(TAG_TEXT, this.ReText(this.ReItalic(mtext))));
             }
             else
             {
                 if (c.IsType(CardType.TYPE_PENDULUM))//P怪兽
                 {
-                    string text = GetDesc(c.desc, this.cfg.regx_monster);
                     if (string.IsNullOrEmpty(text))
                     {
                         text = c.desc;
                     }
 
-                    sb.AppendLine("	" + TAG_TEXT + ":");
-                    //sb.AppendLine(cfg.regx_monster + ":" + cfg.regx_pendulum);
-                    sb.AppendLine("		" + this.ReText(this.ReItalic(text)));
-                    sb.AppendLine(this.GetLine(TAG_PENDULUM, "medium"));
+                    sb.AppendLine(this.GetLine(TAG_TEXT, this.ReText(this.ReItalic(mtext))));
+                    sb.AppendLine(this.GetLine(TAG_PENDULUM, "pendulum"));
                     sb.AppendLine(this.GetLine(TAG_PSCALE1, ((c.level >> 0x18) & 0xff).ToString()));
                     sb.AppendLine(this.GetLine(TAG_PSCALE2, ((c.level >> 0x10) & 0xff).ToString()));
-                    sb.AppendLine("	" + TAG_PEND_TEXT + ":");
-                    sb.AppendLine("		" + this.ReText(this.ReItalic(GetDesc(c.desc, this.cfg.regx_pendulum))));
+                    sb.AppendLine(this.GetLine(TAG_PEND_TEXT, this.ReText(this.ReItalic(ptext))));
                 }
                 else//一般怪兽
                 {
-                    sb.AppendLine("	" + TAG_TEXT + ":");
-                    sb.AppendLine("		" + this.ReText(this.ReItalic(c.desc)));
+                    sb.AppendLine(this.GetLine(TAG_TEXT, this.ReText(this.ReItalic(mtext))));
                 }
                 sb.AppendLine(this.GetLine(TAG_DEF, (c.def < 0) ? UNKNOWN_ATKDEF : c.def.ToString()));
             }
@@ -541,7 +547,7 @@ namespace DataEditorX.Core.Mse
             sb.AppendLine(this.GetLine(TAG_NAME, this.ReItalic(c.name)));
             sb.AppendLine(this.GetLine(TAG_ATTRIBUTE, isSpell ? "spell" : "trap"));
             sb.AppendLine(this.GetLine(TAG_LEVEL, this.GetSpellTrapSymbol(c, isSpell)));
-            sb.AppendLine(this.GetLine(TAG_IMAGE, img));
+            sb.AppendLine("	" + TAG_IMAGE + ": " + img);
             if (cardpack != null)
             {
                 sb.AppendLine(this.GetLine(TAG_NUMBER, cardpack.pack_id));
@@ -550,8 +556,8 @@ namespace DataEditorX.Core.Mse
                     sb.AppendLine(this.GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
-            sb.AppendLine("	" + TAG_TEXT + ":");
-            sb.AppendLine("		" + this.ReText(this.ReItalic(c.desc)));
+            string[] texts = Regex.Split(c.desc, "\r?\n--+\r?\n");
+            sb.AppendLine(this.GetLine(TAG_TEXT, this.ReText(this.ReItalic(texts[0]))));
             sb.AppendLine(this.GetLine(TAG_CODE, c.IdString));
             return sb.ToString();
         }
@@ -1052,11 +1058,17 @@ namespace DataEditorX.Core.Mse
                     text = desc;
                 }
 
-                List<string> val = new List<string>
-                {
-                    text,
-                    ptext
-                };
+                List<string> val = new List<string>();
+                string[] texts = Regex.Split(text, "\r?\n--+\r?\n");
+                if (texts.Length > 0)
+                    for (int k = 0; k < texts.Length; ++k)
+                        if (texts[k].IndexOf(']') > 0)
+                            val.Add(texts[k].Substring(texts[k].IndexOf(']')+3));
+                        else val.Add(texts[k]);
+                else {
+                    val.Add(text);
+                    val.Add(ptext);
+                }
                 return val;
             }
         }
