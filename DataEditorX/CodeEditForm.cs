@@ -354,7 +354,11 @@ namespace DataEditorX
             {
                 using (SaveFileDialog sfdlg = new SaveFileDialog())
                 {
-                    sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                    try
+                    {
+                        sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                    }
+                    catch { }
                     if (sfdlg.ShowDialog() == DialogResult.OK)
                     {
                         this.nowFile = sfdlg.FileName;
@@ -446,7 +450,11 @@ namespace DataEditorX
         {
             using (OpenFileDialog sfdlg = new OpenFileDialog())
             {
-                sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                try
+                {
+                    sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                }
+                catch { }
                 if (sfdlg.ShowDialog() == DialogResult.OK)
                 {
                     this.nowFile = sfdlg.FileName;

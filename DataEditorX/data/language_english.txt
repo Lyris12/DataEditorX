@@ -169,3 +169,4 @@ MainForm.mainMenu.menuitem_closeall	Close All
 0x4b	Failed to export MSE-set to images fail.
 0x4c	No syntax error found.
 0x4d	It is not recommended to open lots of file at a time. Continue?
+0x4e	Download completed; the application will be restarted.

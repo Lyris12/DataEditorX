@@ -1,4 +1,4 @@
-﻿[DataEditorX]3.0.0.4[DataEditorX]
+﻿[DataEditorX]3.0.0.5[DataEditorX]
 [URL]https://cdn01.moecube.com/DataEditorX/releases/DataEditorX-3.0.0.4.zip[URL]
 
 ★运行环境(Environment)

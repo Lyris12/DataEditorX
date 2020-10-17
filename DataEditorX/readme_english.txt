@@ -1,65 +1,56 @@
 ﻿
 ★Environment
-This program based on .Net2.0/winXP(need .Net2.0)/win7(with.Net2.0)/win8(need.Net3.5 include 2.0)
+This program is based on .Net Framework 4.6
 
 ★File association
-.lua Notepad++/Sublime text/DataEditorX
-.cdb DataEditorX
-
-Click file with right mouse button, Open with, Browse Files, Choose confirm(Yes）
+DataEditorX can open files with specified extension:
+.lua (Notepad++/Sublime text/DataEditorX)
+.cdb (DataEditorX)
 
 ★Feedback
-If you has problems, please report on https://github.com/purerosefallen/DataEditorX/issues
-Title：DataEditorX X.X.X.X
-Text：
-The error message text: If there is a error message box, please press Ctrl+C, then paste in someplace.
-please give a detailed description of: card message; antivirus; programe location;the operation that time.
+Please report on https://github.com/purerosefallen/DataEditorX/issues with a format like below, if you have any problem in use.
 
-★Setting
+Version:
+DataEditorX X.X.X.X
+Error message:
+The error message text
+(If there is a error message box, You can press Ctrl+C to copy the message to clipboard)
+Detail:
+Card message; antivirus; program location; your operation at that time.
+
+★Settings
 DataEditorX.exe.config ★Language，★Image，★CodeEditor
 data/language_xxx.txt Interface and prompt message 
 data/cardinfo_xxx.txt types/series
-
 
 ★Language setting
 DataEditorX.exe.config
 <add key="language" value="chinese" />Simplified Chinese 
 chinese => english
-If you want to add a language，you need two file，xxx is a type of language:
+If you want to add a language，you will need two file(xxx is a type of language):
 data/language_xxx.txt
 data/cardinfo_xxx.txt
 
-
-★Image setting
-you need it when you want to add or pendulum.
+★Image settings
 	image_quilty	        1-100
 	image			Width/height of image and thumbnail,total four numerical value; 
 	image_other		pendulum of other cards
 	image_xyz		pendulum of Xyz monsters
 	image_pendulum	        Pendulum
 
-
-
-
-★CodeEditor Setting   
-       IME			Input Method Editors
+★CodeEditor Settings
+    IME			Editors Input Method
     wordwrap	 
     tabisspace	tab→space
 	fontname     
 	fontsize	 
 
-
-
 ★DataEditor：
 If you need to input Attack "?", you can use anyone of ？/?/-2 instead. 
 The folder of pics, script and cdb should be in a same folder consistent.
 
-
-
 ★Read cardlist from ydk and folder pics
 Support：png,jpg pics with card number/card number with 0
-
-
 
 ★Output data
 Example：mydiy.cdb
@@ -67,9 +58,7 @@ New card：deck/mydiy.ydk
 Instruction：mydiy.txt
 script
 pics
-↑ all of them in mydiy.zip，you can use it in expansions of ygopro with sound effect or release it.
-
-
+↑ all of them are in mydiy.zip，you can use it in expansions of ygopro with sound effect or release it.
 
 ★Database comparison
 
@@ -80,7 +69,6 @@ Return in parameter type, C++ implement code
 ★Copy a card：
 Copy and Replace: If there's a card with same name, replace it.
 Copy without Replace: If there's a card with same name, ignore it.
-
 
 ★Card search
 1.Now it can not support search by Pendulum Scale 
@@ -103,8 +91,6 @@ Copy without Replace: If there's a card with same name, ignore it.
 --Card number over 10000000,less than 20000000
   card with same name: 10000000  card number: 10000000
 
-
-
 ★CodeEditor：
 Input keyword in the under text box，press Enter
 Ctrl+F			Look up
@@ -114,18 +100,14 @@ Ctrl+K			List of function
 Ctrl+T			List of constant 
 Ctrl+The mouse wheel 	Zoom in/out
 
-
 ★Magic Set Editor 2
 Download/update："Magic Set Editor 2/download.bat"
 Or
 https://github.com/247321453/MagicSetEditor2
 
-
-
 ★MSE pics
 Support：png,jpg pics with card number/card number with 0
 Tick “Set MSE'Image ”，Import pics will go into pics folder under MSE
-
 
 ★MSE flie making setting
 mse_xxx.txt modify\r\n can be newlines，\t will replace for tab

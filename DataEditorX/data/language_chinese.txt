@@ -173,3 +173,4 @@ MainForm.mainMenu.menuitem_closeall	关闭所有
 0x4b	从MSE存档导出图片失败。
 0x4c	测试完成，没有发现语法错误。
 0x4d	一次性打开大量文件将导致卡顿，是否继续？
+0x4e	下载完成，即将重新启动程序以完成更新。
