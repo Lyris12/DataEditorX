@@ -38,12 +38,6 @@ namespace DataEditorX
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeEditForm));
             this.mainMenu = new System.Windows.Forms.MenuStrip();
-            this.menuitem_file = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuitem_open = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuitem_save = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuitem_saveas = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuitem_quit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_setting = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_showmap = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_showinput = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,7 +63,6 @@ namespace DataEditorX
             // mainMenu
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuitem_file,
             this.menuitem_setting,
             this.menuitem_help,
             this.menuitem_tools});
@@ -78,53 +71,6 @@ namespace DataEditorX
             this.mainMenu.Size = new System.Drawing.Size(705, 24);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "mainMenu";
-            // 
-            // menuitem_file
-            // 
-            this.menuitem_file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuitem_open,
-            this.menuitem_save,
-            this.menuitem_saveas,
-            this.toolStripSeparator1,
-            this.menuitem_quit});
-            this.menuitem_file.Name = "menuitem_file";
-            this.menuitem_file.Size = new System.Drawing.Size(51, 20);
-            this.menuitem_file.Text = "File(&F)";
-            // 
-            // menuitem_open
-            // 
-            this.menuitem_open.Name = "menuitem_open";
-            this.menuitem_open.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuitem_open.Size = new System.Drawing.Size(180, 22);
-            this.menuitem_open.Text = "Open";
-            this.menuitem_open.Click += new System.EventHandler(this.Menuitem_openClick);
-            // 
-            // menuitem_save
-            // 
-            this.menuitem_save.Name = "menuitem_save";
-            this.menuitem_save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuitem_save.Size = new System.Drawing.Size(180, 22);
-            this.menuitem_save.Text = "Save";
-            this.menuitem_save.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
-            // 
-            // menuitem_saveas
-            // 
-            this.menuitem_saveas.Name = "menuitem_saveas";
-            this.menuitem_saveas.Size = new System.Drawing.Size(180, 22);
-            this.menuitem_saveas.Text = "Save As";
-            this.menuitem_saveas.Click += new System.EventHandler(this.SaveAsToolStripMenuItemClick);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
-            // menuitem_quit
-            // 
-            this.menuitem_quit.Name = "menuitem_quit";
-            this.menuitem_quit.Size = new System.Drawing.Size(180, 22);
-            this.menuitem_quit.Text = "Quit";
-            this.menuitem_quit.Click += new System.EventHandler(this.QuitToolStripMenuItemClick);
             // 
             // menuitem_setting
             // 
@@ -195,7 +141,7 @@ namespace DataEditorX
             // menuitem_about
             // 
             this.menuitem_about.Name = "menuitem_about";
-            this.menuitem_about.Size = new System.Drawing.Size(180, 22);
+            this.menuitem_about.Size = new System.Drawing.Size(107, 22);
             this.menuitem_about.Text = "About";
             this.menuitem_about.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
             // 
@@ -213,7 +159,7 @@ namespace DataEditorX
             // 
             this.menuitem_testlua.Name = "menuitem_testlua";
             this.menuitem_testlua.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuitem_testlua.Size = new System.Drawing.Size(180, 22);
+            this.menuitem_testlua.Size = new System.Drawing.Size(165, 22);
             this.menuitem_testlua.Text = "Syntax Check";
             this.menuitem_testlua.Click += new System.EventHandler(this.menuitem_testlua_Click);
             // 
@@ -221,7 +167,7 @@ namespace DataEditorX
             // 
             this.menuitem_effectcreator.Name = "menuitem_effectcreator";
             this.menuitem_effectcreator.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.menuitem_effectcreator.Size = new System.Drawing.Size(180, 22);
+            this.menuitem_effectcreator.Size = new System.Drawing.Size(165, 22);
             this.menuitem_effectcreator.Text = "Effect Creator";
             this.menuitem_effectcreator.Visible = false;
             this.menuitem_effectcreator.Click += new System.EventHandler(this.effectCreatorToolStripMenuItem_Click);
@@ -229,7 +175,7 @@ namespace DataEditorX
             // menuitem_fixCardCode
             // 
             this.menuitem_fixCardCode.Name = "menuitem_fixCardCode";
-            this.menuitem_fixCardCode.Size = new System.Drawing.Size(180, 22);
+            this.menuitem_fixCardCode.Size = new System.Drawing.Size(165, 22);
             this.menuitem_fixCardCode.Text = "Fix card code";
             this.menuitem_fixCardCode.Click += new System.EventHandler(this.menuitem_fixCardCode_Click);
             // 
@@ -349,7 +295,6 @@ namespace DataEditorX
 		private System.Windows.Forms.ToolStripMenuItem menuitem_setcard;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_replace;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_find;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_showinput;
 		private System.Windows.Forms.TextBox tb_input;
 		private FastColoredTextBoxNS.DocumentMap documentMap1;
@@ -358,11 +303,6 @@ namespace DataEditorX
 		private System.Windows.Forms.ToolStripMenuItem menuitem_about;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_help;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_setting;
-		private System.Windows.Forms.ToolStripMenuItem menuitem_quit;
-		private System.Windows.Forms.ToolStripMenuItem menuitem_saveas;
-		private System.Windows.Forms.ToolStripMenuItem menuitem_save;
-		private System.Windows.Forms.ToolStripMenuItem menuitem_open;
-		private System.Windows.Forms.ToolStripMenuItem menuitem_file;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ToolTip toolTip1;

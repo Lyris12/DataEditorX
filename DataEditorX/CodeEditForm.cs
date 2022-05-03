@@ -180,9 +180,9 @@ namespace DataEditorX
         {
             return this.Open(file);
         }
-        public bool Save()
+        public bool Save(bool shift)
         {
-            return this.savefile(string.IsNullOrEmpty(this.nowFile));
+            return this.savefile(shift);
         }
         public bool Open(string file)
         {
@@ -375,20 +375,6 @@ namespace DataEditorX
             File.WriteAllText(this.nowFile, alltext, new UTF8Encoding(false));
             return true;
         }
-
-        public bool SaveAs()
-        {
-            return this.savefile(true);
-        }
-
-        void SaveToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            this.Save();
-        }
-        void SaveAsToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            this.SaveAs();
-        }
         #endregion
 
         #region 菜单
@@ -483,7 +469,7 @@ namespace DataEditorX
                 {
                     if (MyMsg.Question(LMSG.IfSaveScript))
                     {
-                        this.Save();
+                        this.Save(false);
                     }
                 }
             }
@@ -491,7 +477,7 @@ namespace DataEditorX
             {
                 if (MyMsg.Question(LMSG.IfSaveScript))
                 {
-                    this.Save();
+                    this.Save(true);
                 }
             }
         }

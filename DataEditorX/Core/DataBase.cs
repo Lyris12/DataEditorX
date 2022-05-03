@@ -41,6 +41,7 @@ namespace DataEditorX.Core
             st.Append("setcode integer,type integer,atk integer,def integer,");
             st.Append("level integer,race integer,attribute integer,category integer) ");
             _defaultTableSQL = st.ToString();
+            st.Remove(0, st.Length);
             StringBuilder ost = new StringBuilder();
             ost.Append(@"CREATE TABLE texts(id integer primary key,name text,desc text");
             for (int i = 1; i <= 16; i++)
@@ -50,19 +51,15 @@ namespace DataEditorX.Core
                 ost.Append(" text");
             }
             ost.Append(");");
-            ost.Append(@"CREATE TABLE banlists (id integer not null unique primary key, name text not null);");
-            ost.Append(@"CREATE TABLE banlists (id integer not null default 1,flag integer not null default 0,");
-            ost.Append("banlistid integer not null default 0,flagtype integer not null default 0,");
-            ost.Append("limits integer not null default 0,mode integer not null default 0,");
-            ost.Append("location integer not null default 0);");
-            ost.Append(@"CREATE TABLE datas(");
-            ost.Append("id integer primary key default (0) not null,ot integer default (0) not null,alias integer default (0) not null,");
-            ost.Append("setcode integer default (0) not null,type integer default (0) not null,atk integer default (0) not null,def integer default (0) not null,");
-            ost.Append("level integer default (0) not null,race integer default (0) not null,attribute integer default (0) not null,category integer default (0) not null,");
-            ost.Append("genre integer default (0) not null, script blob default (null),");
-            ost.Append("support integer default (0) not null,");
-            ost.Append("ocgdate integer default (253402207200) not null,");
-            ost.Append("tcgdate integer default (253402207200) not null) ");
+            ost.Append(@"CREATE TABLE banlists (id integer unique primary key, name text);");
+            ost.Append(@"CREATE TABLE bandatas (id integer default 1,flag integer default 0,
+            banlistid integer default 0,flagtype integer default 0,limits integer default 0,
+            mode integer default 0,location integer default 0);");
+            ost.Append(@"CREATE TABLE datas(id integer primary key default 0,ot integer default 0,
+            alias integer default 0,setcode integer default 0,type integer default 0,atk integer default 0,
+            def integer default 0,level integer default 0,race integer default 0,attribute integer default 0,
+            category integer default 0,genre integer default 0, script blob,support integer default 0,
+            ocgdate integer default 253402207200,tcgdate integer default 253402207200);");
             _defaultOTableSQL = ost.ToString();
             ost.Remove(0, ost.Length);
         }
@@ -83,7 +80,7 @@ namespace DataEditorX.Core
             try
             {
                 SQLiteConnection.CreateFile(Db);
-                if (Db.EndsWith(".db")) Command(Db, _defaultOTableSQL);
+                if (Db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || Db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) Command(Db, _defaultOTableSQL);
                 else Command(Db, _defaultTableSQL);
             }
             catch
@@ -96,7 +93,7 @@ namespace DataEditorX.Core
         {
             try
             {
-                if (db.EndsWith(".db")) Command(db, _defaultOTableSQL);
+                if (db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) Command(db, _defaultOTableSQL);
                 else Command(db, _defaultTableSQL);
             }
             catch
@@ -169,12 +166,16 @@ namespace DataEditorX.Core
                 c.race = reader.GetInt64(reader.GetOrdinal("race"));
                 c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
                 c.category = reader.GetInt64(reader.GetOrdinal("genre"));
-                c.omega = new long[5] { 1, reader.GetInt64(reader.GetOrdinal("category")), reader.GetInt64(reader.GetOrdinal("support")),
-                reader.GetInt64(reader.GetOrdinal("ocgdate")), reader.GetInt64(reader.GetOrdinal("tcgdate")) };
+                c.omega = new long[5];
+                c.omega[0] = 1L;
+                c.omega[1] = reader.GetInt64(reader.GetOrdinal("category"));
+                c.omega[2] = reader.GetInt64(reader.GetOrdinal("support"));
+                c.omega[3] = reader.GetInt64(reader.GetOrdinal("ocgdate"));
+                c.omega[4] = reader.GetInt64(reader.GetOrdinal("tcgdate"));
                 c.name = reader.GetString(reader.GetOrdinal("name"));
                 c.desc = reader.GetString(reader.GetOrdinal("desc"));
             }
-            catch
+            catch(Exception e)
             {
                 c.id = reader.GetInt64(reader.GetOrdinal("id"));
                 c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
@@ -187,7 +188,7 @@ namespace DataEditorX.Core
                 c.race = reader.GetInt64(reader.GetOrdinal("race"));
                 c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
                 c.category = reader.GetInt64(reader.GetOrdinal("category"));
-                c.omega = new long[5] { 0, 0, 0, 253402207200, 253402207200 };
+                c.omega = new long[5] { 0L, 0L, 0L, 253402207200L, 253402207200L };
                 c.name = reader.GetString(reader.GetOrdinal("name"));
                 c.desc = reader.GetString(reader.GetOrdinal("desc"));
             }
@@ -319,7 +320,7 @@ namespace DataEditorX.Core
                         {
                             foreach (Card c in cards)
                             {
-                                cmd.CommandText = DB.EndsWith(".db") ? OmegaGetInsertSQL(c, ignore) : GetInsertSQL(c, ignore);
+                                cmd.CommandText = (DB.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || DB.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) ? OmegaGetInsertSQL(c, ignore) : GetInsertSQL(c, ignore);
                                 result += cmd.ExecuteNonQuery();
                             }
                         }
@@ -661,8 +662,8 @@ namespace DataEditorX.Core
                 st.Append("0x" + c.category.ToString("x"));
                 if (c.omega[0] > 0)
                 {
-                    st.Append(","); st.Append("0x" + c.omega[2].ToString("x"));
-                    st.Append(",null,"); st.Append(c.omega[3].ToString());
+                    st.Append(",null,"); st.Append("0x" + c.omega[2].ToString("x"));
+                    st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
                 }
                 else st.Append(",0x0,null,253402207200,253402207200");
@@ -677,8 +678,8 @@ namespace DataEditorX.Core
                 st.Append(c.category.ToString());
                 if (c.omega[0] > 0)
                 {
-                    st.Append(","); st.Append(c.omega[2].ToString());
-                    st.Append(",null,"); st.Append(c.omega[3].ToString());
+                    st.Append(",null,"); st.Append(c.omega[2].ToString());
+                    st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
                 }
                 else st.Append(",0,null,253402207200,253402207200");

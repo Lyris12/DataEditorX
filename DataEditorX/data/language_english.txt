@@ -120,7 +120,7 @@ MainForm.mainMenu.menuitem_copyall	Copy All Search
 MainForm.mainMenu.menuitem_pastecards	Paste Cards
 MainForm.mainMenu.menuitem_comp1Set Compare Database 1
 MainForm.mainMenu.menuitem_comp2Set Compare Database 2
-MainForm.mainMenu.menuitem_history	DataBase Histroy
+MainForm.mainMenu.menuitem_history	DataBase History
 MainForm.mainMenu.menuitem_shistory	Script History
 MainForm.mainMenu.menuitem_quit	Quit
 MainForm.mainMenu.menuitem_windows	Windows(&W)

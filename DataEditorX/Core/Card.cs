@@ -35,7 +35,7 @@ namespace DataEditorX.Core
             this.race = 0;
             this.attribute = 0;
             this.category = 0;
-            this.omega = new long[5]{ 0, 0, 0, 253402207200, 253402207200 };
+            this.omega = new long[5]{ 0L, 0L, 0L, 253402207200L, 253402207200L };
             this.desc = "";
             this.str = new string[STR_MAX];
             for (int i = 0; i < STR_MAX; i++)

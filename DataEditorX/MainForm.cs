@@ -446,8 +446,19 @@ namespace DataEditorX
         {
             if (this.dockPanel.ActiveContent is IEditForm cf)
             {
-                if (cf.Save())//是否保存成功
+                if (cf.Save(false))//是否保存成功
                 {
+                    MyMsg.Show(LMSG.SaveFileOK);
+                }
+            }
+        }
+        void Menuitem_saveAsClick(object sender, EventArgs e)
+        {
+            if (this.dockPanel.ActiveContent is IEditForm cf)
+            {
+                if (cf.Save(true))//是否保存成功
+                {
+                    this.history.AddHistory(cf.GetOpenFile());
                     MyMsg.Show(LMSG.SaveFileOK);
                 }
             }

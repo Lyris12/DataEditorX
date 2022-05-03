@@ -11,7 +11,7 @@
         //是否能打开某个文件
         bool CanOpen(string file);
         //保存
-        bool Save();
+        bool Save(bool shift = false);
         //设置为活动窗口
         void SetActived();
     }

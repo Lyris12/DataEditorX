@@ -150,8 +150,35 @@ namespace DataEditorX
         {
             return this.Open(file);
         }
-        public bool Save()
+        public bool Save(bool shift)
         {
+            if (shift)
+                using (SaveFileDialog dlg = new SaveFileDialog())
+                {
+                    dlg.Title = LanguageHelper.GetMsg(LMSG.NewFile);
+                    try
+                    {
+                        dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+                    }
+                    catch { }
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        string file = dlg.FileName;
+                        if (DataBase.Create(file))
+                        {
+                            Card[] cl = this.GetCardList(false);
+                            this.SetCDB(file);
+                            this.SaveCards(cl);
+                        }
+                        else
+                        {
+                            File.Delete(file);
+                            File.Delete(file + "-journal");
+                            return false;
+                        }
+                    }
+                    else return false;
+                }
             return true;
         }
         #endregion
@@ -634,7 +661,7 @@ namespace DataEditorX
             }
             this.SetCheck(this.pl_category, c.category);
             //Omega-exclusive
-            if (this.GetOpenFile().EndsWith(".db"))
+            if (this.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || this.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase))
             {
                 this.SetCheck(this.pl_flags, (long)c.omega[1]);
                 this.tb_support.Text = c.omega[2].ToString("x");
@@ -694,7 +721,7 @@ namespace DataEditorX
             c.category = this.GetCheck(this.pl_category);
 
             c.omega = new long[5];
-            if (this.GetOpenFile().EndsWith(".db")) {
+            if (this.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || this.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) {
                 c.omega[0] = 1L;
                 c.omega[1] = this.GetCheck(this.pl_flags);
                 c.SetSupport(this.tb_support.Text);
