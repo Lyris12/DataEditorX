@@ -56,7 +56,7 @@ namespace DataEditorX
             DataEditForm form2 = new DataEditForm();
             LanguageHelper.SetFormLabel(form2);
             langhelper.GetFormLabel(form2);
-            CodeEditForm_Avalon form3 = new CodeEditForm_Avalon();
+            CodeEditForm form3 = new CodeEditForm();
             LanguageHelper.SetFormLabel(form3);
             langhelper.GetFormLabel(form3);
             // LANG.GetFormLabel(this);

@@ -56,6 +56,7 @@ namespace DataEditorX
             this.menuitem_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_testlua = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_effectcreator = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuitem_fixCardCode = new System.Windows.Forms.ToolStripMenuItem();
             this.tb_input = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -94,7 +95,7 @@ namespace DataEditorX
             // 
             this.menuitem_open.Name = "menuitem_open";
             this.menuitem_open.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.menuitem_open.Size = new System.Drawing.Size(145, 22);
+            this.menuitem_open.Size = new System.Drawing.Size(180, 22);
             this.menuitem_open.Text = "Open";
             this.menuitem_open.Click += new System.EventHandler(this.Menuitem_openClick);
             // 
@@ -102,26 +103,26 @@ namespace DataEditorX
             // 
             this.menuitem_save.Name = "menuitem_save";
             this.menuitem_save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.menuitem_save.Size = new System.Drawing.Size(145, 22);
+            this.menuitem_save.Size = new System.Drawing.Size(180, 22);
             this.menuitem_save.Text = "Save";
             this.menuitem_save.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
             // 
             // menuitem_saveas
             // 
             this.menuitem_saveas.Name = "menuitem_saveas";
-            this.menuitem_saveas.Size = new System.Drawing.Size(145, 22);
+            this.menuitem_saveas.Size = new System.Drawing.Size(180, 22);
             this.menuitem_saveas.Text = "Save As";
             this.menuitem_saveas.Click += new System.EventHandler(this.SaveAsToolStripMenuItemClick);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(142, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // menuitem_quit
             // 
             this.menuitem_quit.Name = "menuitem_quit";
-            this.menuitem_quit.Size = new System.Drawing.Size(145, 22);
+            this.menuitem_quit.Size = new System.Drawing.Size(180, 22);
             this.menuitem_quit.Text = "Quit";
             this.menuitem_quit.Click += new System.EventHandler(this.QuitToolStripMenuItemClick);
             // 
@@ -194,7 +195,7 @@ namespace DataEditorX
             // menuitem_about
             // 
             this.menuitem_about.Name = "menuitem_about";
-            this.menuitem_about.Size = new System.Drawing.Size(107, 22);
+            this.menuitem_about.Size = new System.Drawing.Size(180, 22);
             this.menuitem_about.Text = "About";
             this.menuitem_about.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
             // 
@@ -202,7 +203,8 @@ namespace DataEditorX
             // 
             this.menuitem_tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuitem_testlua,
-            this.menuitem_effectcreator});
+            this.menuitem_effectcreator,
+            this.menuitem_fixCardCode});
             this.menuitem_tools.Name = "menuitem_tools";
             this.menuitem_tools.Size = new System.Drawing.Size(60, 20);
             this.menuitem_tools.Text = "Tools(&T)";
@@ -211,7 +213,7 @@ namespace DataEditorX
             // 
             this.menuitem_testlua.Name = "menuitem_testlua";
             this.menuitem_testlua.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuitem_testlua.Size = new System.Drawing.Size(164, 22);
+            this.menuitem_testlua.Size = new System.Drawing.Size(180, 22);
             this.menuitem_testlua.Text = "Syntax Check";
             this.menuitem_testlua.Click += new System.EventHandler(this.menuitem_testlua_Click);
             // 
@@ -219,10 +221,17 @@ namespace DataEditorX
             // 
             this.menuitem_effectcreator.Name = "menuitem_effectcreator";
             this.menuitem_effectcreator.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.menuitem_effectcreator.Size = new System.Drawing.Size(164, 22);
+            this.menuitem_effectcreator.Size = new System.Drawing.Size(180, 22);
             this.menuitem_effectcreator.Text = "Effect Creator";
             this.menuitem_effectcreator.Visible = false;
             this.menuitem_effectcreator.Click += new System.EventHandler(this.effectCreatorToolStripMenuItem_Click);
+            // 
+            // menuitem_fixCardCode
+            // 
+            this.menuitem_fixCardCode.Name = "menuitem_fixCardCode";
+            this.menuitem_fixCardCode.Size = new System.Drawing.Size(180, 22);
+            this.menuitem_fixCardCode.Text = "Fix card code";
+            this.menuitem_fixCardCode.Click += new System.EventHandler(this.menuitem_fixCardCode_Click);
             // 
             // tb_input
             // 
@@ -318,7 +327,7 @@ namespace DataEditorX
             this.Controls.Add(this.tb_input);
             this.Controls.Add(this.documentMap1);
             this.Controls.Add(this.mainMenu);
-            this.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.MainMenuStrip = this.mainMenu;
             this.Name = "CodeEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -360,6 +369,7 @@ namespace DataEditorX
         private System.Windows.Forms.ToolStripMenuItem menuitem_tools;
         private System.Windows.Forms.ToolStripMenuItem menuitem_testlua;
         private System.Windows.Forms.ToolStripMenuItem menuitem_effectcreator;
+        private System.Windows.Forms.ToolStripMenuItem menuitem_fixCardCode;
         private System.Windows.Forms.ToolStripMenuItem menuitem_tooltipFont;
     }
 }

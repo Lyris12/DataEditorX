@@ -218,8 +218,6 @@ namespace DataEditorX
             }
 
             this.mainMenu.Visible = false;
-            this.menuitem_file.Visible = false;
-            this.menuitem_file.Enabled = false;
             //this.SuspendLayout();
             this.ResumeLayout(true);
             foreach (Control c in this.Controls)
@@ -323,6 +321,7 @@ namespace DataEditorX
                 this.InitCheckPanel(this.pl_cardtype, datacfg.dicCardTypes);
                 this.InitCheckPanel(this.pl_markers, datacfg.dicLinkMarkers);
                 this.InitCheckPanel(this.pl_category, datacfg.dicCardcategorys);
+                this.InitCheckPanel(this.pl_flags, datacfg.dicCardflags);
                 this.InitComboBox(this.cb_setname1, setcodes, setnames);
                 this.InitComboBox(this.cb_setname2, setcodes, setnames);
                 this.InitComboBox(this.cb_setname3, setcodes, setnames);
@@ -634,6 +633,21 @@ namespace DataEditorX
                 this.SetCheck(this.pl_markers, 0);
             }
             this.SetCheck(this.pl_category, c.category);
+            //Omega-exclusive
+            if (this.GetOpenFile().EndsWith(".db"))
+            {
+                this.SetCheck(this.pl_flags, (long)c.omega[1]);
+                this.tb_support.Text = c.omega[2].ToString("x");
+                this.tb_odate.Text = c.GetDate();
+                this.tb_tdate.Text = c.GetDate(1);
+            }
+            else
+            {
+                this.SetCheck(this.pl_flags, 0);
+                this.tb_support.Text = "0";
+                this.tb_odate.Text = "9999-12-30 22:00:00";
+                this.tb_tdate.Text = "9999-12-30 22:00:00";
+            }
             //Pendulum
             this.tb_pleft.Text = ((c.level >> 24) & 0xff).ToString();
             this.tb_pright.Text = ((c.level >> 16) & 0xff).ToString();
@@ -678,6 +692,15 @@ namespace DataEditorX
 
             c.type = this.GetCheck(this.pl_cardtype);
             c.category = this.GetCheck(this.pl_category);
+
+            c.omega = new long[5];
+            if (this.GetOpenFile().EndsWith(".db")) {
+                c.omega[0] = 1L;
+                c.omega[1] = this.GetCheck(this.pl_flags);
+                c.SetSupport(this.tb_support.Text);
+                c.SetDate(this.tb_odate.Text);
+                c.SetDate(this.tb_tdate.Text, 1);
+            } else for (byte i = 0; i < 5; i++) c.omega[i] = i < 3 ? 0L : 253402207200L;
 
             int.TryParse(this.tb_pleft.Text, out int temp);
             c.level += (temp << 24);

@@ -32,7 +32,7 @@ namespace DataEditorX.Core
         }
         public static bool IsDataBase(string file)
         {
-            if (file != null && file.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase))
+            if (file != null && (file.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".db", StringComparison.OrdinalIgnoreCase)))
             {
                 return true;
             }

@@ -38,6 +38,7 @@ namespace DataEditorX.Config
                 this.dicCardTypes = new Dictionary<long, string>();
                 this.dicLinkMarkers = new Dictionary<long, string>();
                 this.dicCardcategorys = new Dictionary<long, string>();
+                this.dicCardflags = new Dictionary<long, string>();
                 this.dicCardAttributes = new Dictionary<long, string>();
                 this.dicCardRaces = new Dictionary<long, string>();
                 this.dicCardLevels = new Dictionary<long, string>();
@@ -50,6 +51,7 @@ namespace DataEditorX.Config
             this.dicCardTypes = DataManager.Read(text, DEXConfig.TAG_TYPE);
             this.dicLinkMarkers = DataManager.Read(text, DEXConfig.TAG_MARKER);
             this.dicCardcategorys = DataManager.Read(text, DEXConfig.TAG_CATEGORY);
+            this.dicCardflags = DataManager.Read(text, DEXConfig.TAG_FLAGS);
             this.dicCardAttributes = DataManager.Read(text, DEXConfig.TAG_ATTRIBUTE);
             this.dicCardRaces = DataManager.Read(text, DEXConfig.TAG_RACE);
             this.dicCardLevels = DataManager.Read(text, DEXConfig.TAG_LEVEL);
@@ -87,5 +89,9 @@ namespace DataEditorX.Config
         /// 效果类型
         /// </summary>
         public Dictionary<long, string> dicCardcategorys = null;
+        /// <summary>
+        /// Omega-exclusive
+        /// </summary>
+        public Dictionary<long, string> dicCardflags = null;
     }
 }

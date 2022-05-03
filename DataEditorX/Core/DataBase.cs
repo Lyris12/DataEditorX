@@ -21,6 +21,7 @@ namespace DataEditorX.Core
         #region 默认
         static readonly string _defaultSQL;
         static readonly string _defaultTableSQL;
+        static readonly string _defaultOTableSQL;
 
         static DataBase()
         {
@@ -40,7 +41,30 @@ namespace DataEditorX.Core
             st.Append("setcode integer,type integer,atk integer,def integer,");
             st.Append("level integer,race integer,attribute integer,category integer) ");
             _defaultTableSQL = st.ToString();
-            st.Remove(0, st.Length);
+            StringBuilder ost = new StringBuilder();
+            ost.Append(@"CREATE TABLE texts(id integer primary key,name text,desc text");
+            for (int i = 1; i <= 16; i++)
+            {
+                ost.Append(",str");
+                ost.Append(i.ToString());
+                ost.Append(" text");
+            }
+            ost.Append(");");
+            ost.Append(@"CREATE TABLE banlists (id integer not null unique primary key, name text not null);");
+            ost.Append(@"CREATE TABLE banlists (id integer not null default 1,flag integer not null default 0,");
+            ost.Append("banlistid integer not null default 0,flagtype integer not null default 0,");
+            ost.Append("limits integer not null default 0,mode integer not null default 0,");
+            ost.Append("location integer not null default 0);");
+            ost.Append(@"CREATE TABLE datas(");
+            ost.Append("id integer primary key default (0) not null,ot integer default (0) not null,alias integer default (0) not null,");
+            ost.Append("setcode integer default (0) not null,type integer default (0) not null,atk integer default (0) not null,def integer default (0) not null,");
+            ost.Append("level integer default (0) not null,race integer default (0) not null,attribute integer default (0) not null,category integer default (0) not null,");
+            ost.Append("genre integer default (0) not null, script blob default (null),");
+            ost.Append("support integer default (0) not null,");
+            ost.Append("ocgdate integer default (253402207200) not null,");
+            ost.Append("tcgdate integer default (253402207200) not null) ");
+            _defaultOTableSQL = ost.ToString();
+            ost.Remove(0, ost.Length);
         }
         #endregion
 
@@ -59,7 +83,8 @@ namespace DataEditorX.Core
             try
             {
                 SQLiteConnection.CreateFile(Db);
-                Command(Db, _defaultTableSQL);
+                if (Db.EndsWith(".db")) Command(Db, _defaultOTableSQL);
+                else Command(Db, _defaultTableSQL);
             }
             catch
             {
@@ -71,7 +96,8 @@ namespace DataEditorX.Core
         {
             try
             {
-                Command(db, _defaultTableSQL);
+                if (db.EndsWith(".db")) Command(db, _defaultOTableSQL);
+                else Command(db, _defaultTableSQL);
             }
             catch
             {
@@ -129,23 +155,42 @@ namespace DataEditorX.Core
         #region 根据SQL读取
         static Card ReadCard(SQLiteDataReader reader, bool reNewLine)
         {
-            Card c = new Card(0)
+            Card c = new Card(0);
+            try
             {
-                id = reader.GetInt64(reader.GetOrdinal("id")),
-                ot = reader.GetInt32(reader.GetOrdinal("ot")),
-                alias = reader.GetInt64(reader.GetOrdinal("alias")),
-                setcode = reader.GetInt64(reader.GetOrdinal("setcode")),
-                type = reader.GetInt64(reader.GetOrdinal("type")),
-                atk = reader.GetInt32(reader.GetOrdinal("atk")),
-                def = reader.GetInt32(reader.GetOrdinal("def")),
-                level = reader.GetInt64(reader.GetOrdinal("level")),
-                race = reader.GetInt64(reader.GetOrdinal("race")),
-                attribute = reader.GetInt32(reader.GetOrdinal("attribute")),
-                category = reader.GetInt64(reader.GetOrdinal("category")),
-                name = reader.GetString(reader.GetOrdinal("name")),
-
-                desc = reader.GetString(reader.GetOrdinal("desc"))
-            };
+                c.id = reader.GetInt64(reader.GetOrdinal("id"));
+                c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
+                c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
+                c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
+                c.type = reader.GetInt64(reader.GetOrdinal("type"));
+                c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
+                c.def = reader.GetInt32(reader.GetOrdinal("def"));
+                c.level = reader.GetInt64(reader.GetOrdinal("level"));
+                c.race = reader.GetInt64(reader.GetOrdinal("race"));
+                c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
+                c.category = reader.GetInt64(reader.GetOrdinal("genre"));
+                c.omega = new long[5] { 1, reader.GetInt64(reader.GetOrdinal("category")), reader.GetInt64(reader.GetOrdinal("support")),
+                reader.GetInt64(reader.GetOrdinal("ocgdate")), reader.GetInt64(reader.GetOrdinal("tcgdate")) };
+                c.name = reader.GetString(reader.GetOrdinal("name"));
+                c.desc = reader.GetString(reader.GetOrdinal("desc"));
+            }
+            catch
+            {
+                c.id = reader.GetInt64(reader.GetOrdinal("id"));
+                c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
+                c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
+                c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
+                c.type = reader.GetInt64(reader.GetOrdinal("type"));
+                c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
+                c.def = reader.GetInt32(reader.GetOrdinal("def"));
+                c.level = reader.GetInt64(reader.GetOrdinal("level"));
+                c.race = reader.GetInt64(reader.GetOrdinal("race"));
+                c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
+                c.category = reader.GetInt64(reader.GetOrdinal("category"));
+                c.omega = new long[5] { 0, 0, 0, 253402207200, 253402207200 };
+                c.name = reader.GetString(reader.GetOrdinal("name"));
+                c.desc = reader.GetString(reader.GetOrdinal("desc"));
+            }
             if (reNewLine)
             {
                 c.desc = Retext(c.desc);
@@ -274,7 +319,7 @@ namespace DataEditorX.Core
                         {
                             foreach (Card c in cards)
                             {
-                                cmd.CommandText = GetInsertSQL(c, ignore);
+                                cmd.CommandText = DB.EndsWith(".db") ? OmegaGetInsertSQL(c, ignore) : GetInsertSQL(c, ignore);
                                 result += cmd.ExecuteNonQuery();
                             }
                         }
@@ -343,6 +388,124 @@ namespace DataEditorX.Core
             {
                 return ((int)l).ToString();
             }
+        }
+        public static string OmegaGetSelectSQL(Card c)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id ");
+            if (c == null)
+            {
+                return sb.ToString();
+            }
+
+            if (!string.IsNullOrEmpty(c.name))
+            {
+                if (c.name.IndexOf("%%") >= 0)
+                {
+                    c.name = c.name.Replace("%%", "%");
+                }
+                else
+                {
+                    c.name = "%" + c.name.Replace("%", "/%").Replace("_", "/_") + "%";
+                }
+
+                sb.Append(" and texts.name like '" + c.name.Replace("'", "''") + "' ");
+            }
+            if (!string.IsNullOrEmpty(c.desc))
+            {
+                sb.Append(" and texts.desc like '%" + c.desc.Replace("'", "''") + "%' ");
+            }
+
+            if (c.ot > 0)
+            {
+                sb.Append(" and datas.ot = " + c.ot.ToString());
+            }
+
+            if (c.attribute > 0)
+            {
+                sb.Append(" and datas.attribute = " + c.attribute.ToString());
+            }
+
+            if ((c.level & 0xff) > 0)
+            {
+                sb.Append(" and (datas.level & 255) = " + toInt(c.level & 0xff));
+            }
+
+            if ((c.level & 0xff000000) > 0)
+            {
+                sb.Append(" and (datas.level & 4278190080) = " + toInt(c.level & 0xff000000));
+            }
+
+            if ((c.level & 0xff0000) > 0)
+            {
+                sb.Append(" and (datas.level & 16711680) = " + toInt(c.level & 0xff0000));
+            }
+
+            if (c.race > 0)
+            {
+                sb.Append(" and datas.race = " + toInt(c.race));
+            }
+
+            if (c.type > 0)
+            {
+                sb.Append(" and datas.type & " + toInt(c.type) + " = " + toInt(c.type));
+            }
+
+            if (c.category > 0)
+                sb.Append(" and datas.genre & " + toInt(c.category) + " = " + toInt(c.category));
+
+            if (c.omega != null && c.omega[0] > 0)
+            {
+                if (c.omega[1] > 0)
+                    sb.Append(" and datas.category & " + toInt((long)c.omega[1]) + " = " + toInt((long)c.omega[1]));
+                if (c.omega[2] > 0)
+                    sb.Append(" and datas.support & " + toInt((long)c.omega[2]) + " = " + toInt((long)c.omega[2]));
+                if (c.omega[3] > 0 && c.omega[3] < 253402207200)
+                    sb.Append(" and datas.tcgdate = " + toInt(DateTime.Parse(c.GetDate(1)).Ticks / 10000000));
+                if (c.omega[4] > 0 && c.omega[4] < 253402207200)
+                    sb.Append(" and datas.ocgdate = " + toInt(DateTime.Parse(c.GetDate()).Ticks / 10000000));
+            }
+
+            if (c.atk == -1)
+            {
+                sb.Append(" and datas.type & 1 = 1 and datas.atk = 0");
+            }
+            else if (c.atk < 0 || c.atk > 0)
+            {
+                sb.Append(" and datas.atk = " + c.atk.ToString());
+            }
+
+            if (c.IsType(Info.CardType.TYPE_LINK))
+            {
+                sb.Append(" and datas.def &" + c.def.ToString() + "=" + c.def.ToString());
+            }
+            else
+            {
+                if (c.def == -1)
+                {
+                    sb.Append(" and datas.type & 1 = 1 and datas.def = 0");
+                }
+                else if (c.def < 0 || c.def > 0)
+                {
+                    sb.Append(" and datas.def = " + c.def.ToString());
+                }
+            }
+
+            if (c.id > 0 && c.alias > 0)
+            {
+                sb.Append(" and datas.id BETWEEN " + c.alias.ToString() + " and " + c.id.ToString());
+            }
+            else if (c.id > 0)
+            {
+                sb.Append(" and ( datas.id=" + c.id.ToString() + " or datas.alias=" + c.id.ToString() + ") ");
+            }
+            else if (c.alias > 0)
+            {
+                sb.Append(" and datas.alias= " + c.alias.ToString());
+            }
+
+            return sb.ToString();
+
         }
         public static string GetSelectSQL(Card c)
         {
@@ -461,6 +624,92 @@ namespace DataEditorX.Core
         /// <param name="c">卡片数据</param>
         /// <param name="ignore"></param>
         /// <returns>SQL语句</returns>
+        public static string OmegaGetInsertSQL(Card c, bool ignore, bool hex = false)
+        {
+            StringBuilder st = new StringBuilder();
+            if (ignore)
+            {
+                st.Append("INSERT or ignore into datas values(");
+            }
+            else
+            {
+                st.Append("INSERT or replace into datas values(");
+            }
+
+            st.Append(c.id.ToString()); st.Append(",");
+            st.Append(c.ot.ToString()); st.Append(",");
+            st.Append(c.alias.ToString()); st.Append(",");
+            if (hex)
+            {
+                st.Append("0x" + c.setcode.ToString("x")); st.Append(",");
+                st.Append("0x" + c.type.ToString("x")); st.Append(",");
+            }
+            else
+            {
+                st.Append(c.setcode.ToString()); st.Append(",");
+                st.Append(c.type.ToString()); st.Append(",");
+            }
+            st.Append(c.atk.ToString()); ; st.Append(",");
+            st.Append(c.def.ToString()); st.Append(",");
+            if (hex)
+            {
+                st.Append("0x" + c.level.ToString("x")); st.Append(",");
+                st.Append("0x" + c.race.ToString("x")); st.Append(",");
+                st.Append("0x" + c.attribute.ToString("x")); st.Append(",");
+                if (c.omega[0] > 0) st.Append("0x" + c.omega[1].ToString("x")); else st.Append("0x0");
+                st.Append(",");
+                st.Append("0x" + c.category.ToString("x"));
+                if (c.omega[0] > 0)
+                {
+                    st.Append(","); st.Append("0x" + c.omega[2].ToString("x"));
+                    st.Append(",null,"); st.Append(c.omega[3].ToString());
+                    st.Append(","); st.Append(c.omega[4].ToString());
+                }
+                else st.Append(",0x0,null,253402207200,253402207200");
+            }
+            else
+            {
+                st.Append(c.level.ToString()); st.Append(",");
+                st.Append(c.race.ToString()); st.Append(",");
+                st.Append(c.attribute.ToString()); st.Append(",");
+                if (c.omega[0] > 0) st.Append(c.omega[1].ToString()); else st.Append("0");
+                st.Append(",");
+                st.Append(c.category.ToString());
+                if (c.omega[0] > 0)
+                {
+                    st.Append(","); st.Append(c.omega[2].ToString());
+                    st.Append(",null,"); st.Append(c.omega[3].ToString());
+                    st.Append(","); st.Append(c.omega[4].ToString());
+                }
+                else st.Append(",0,null,253402207200,253402207200");
+            }
+            st.Append(")");
+            if (ignore)
+            {
+                st.Append(";\nINSERT or ignore into texts values(");
+            }
+            else
+            {
+                st.Append(";\nINSERT or replace into texts values(");
+            }
+
+            st.Append(c.id.ToString()); st.Append(",'");
+            st.Append(c.name.Replace("'", "''")); st.Append("','");
+            st.Append(c.desc.Replace("'", "''"));
+            for (int i = 0; i < 0x10; i++)
+            {
+                st.Append("','"); st.Append(c.Str[i].Replace("'", "''"));
+            }
+            st.Append("');");
+            string sql = st.ToString();
+            return sql;
+        }
+        /// <summary>
+        /// 转换为插入语句
+        /// </summary>
+        /// <param name="c">卡片数据</param>
+        /// <param name="ignore"></param>
+        /// <returns>SQL语句</returns>
         public static string GetInsertSQL(Card c, bool ignore, bool hex = false)
         {
             StringBuilder st = new StringBuilder();
@@ -493,15 +742,16 @@ namespace DataEditorX.Core
                 st.Append("0x" + c.level.ToString("x")); st.Append(",");
                 st.Append("0x" + c.race.ToString("x")); st.Append(",");
                 st.Append("0x" + c.attribute.ToString("x")); st.Append(",");
-                st.Append("0x" + c.category.ToString("x")); st.Append(")");
+                st.Append("0x" + c.category.ToString("x"));
             }
             else
             {
                 st.Append(c.level.ToString()); st.Append(",");
                 st.Append(c.race.ToString()); st.Append(",");
                 st.Append(c.attribute.ToString()); st.Append(",");
-                st.Append(c.category.ToString()); st.Append(")");
+                st.Append(c.category.ToString());
             }
+            st.Append(")");
             if (ignore)
             {
                 st.Append(";\nINSERT or ignore into texts values(");
@@ -525,6 +775,50 @@ namespace DataEditorX.Core
         #endregion
 
         #region 更新
+        /// <summary>
+        /// 转换为更新语句
+        /// </summary>
+        /// <param name="c">卡片数据</param>
+        /// <returns>SQL语句</returns>
+        public static string OmegaGetUpdateSQL(Card c)
+        {
+            StringBuilder st = new StringBuilder();
+            st.Append("update datas set ot="); st.Append(c.ot.ToString());
+            st.Append(",alias="); st.Append(c.alias.ToString());
+            st.Append(",setcode="); st.Append(c.setcode.ToString());
+            st.Append(",type="); st.Append(c.type.ToString());
+            st.Append(",atk="); st.Append(c.atk.ToString());
+            st.Append(",def="); st.Append(c.def.ToString());
+            st.Append(",level="); st.Append(c.level.ToString());
+            st.Append(",race="); st.Append(c.race.ToString());
+            st.Append(",attribute="); st.Append(c.attribute.ToString());
+            st.Append(",category=");
+            if (c.omega[0] > 0)
+            {
+                st.Append(c.omega[1].ToString());
+                st.Append(",support="); st.Append(c.omega[2].ToString());
+                st.Append(",ocgdate="); st.Append(((DateTime.Parse(c.GetDate()).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
+                st.Append(",tcgdate="); st.Append(((DateTime.Parse(c.GetDate(1)).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
+                st.Append(",genre=");
+            }
+            st.Append(c.category.ToString());
+            st.Append(" where id="); st.Append(c.id.ToString());
+            st.Append("; update texts set name='"); st.Append(c.name.Replace("'", "''"));
+            st.Append("',desc='"); st.Append(c.desc.Replace("'", "''")); st.Append("', ");
+            for (int i = 0; i < 0x10; i++)
+            {
+                st.Append("str"); st.Append((i + 1).ToString()); st.Append("='");
+                st.Append(c.Str[i].Replace("'", "''"));
+                if (i < 15)
+                {
+                    st.Append("',");
+                }
+            }
+            st.Append("' where id="); st.Append(c.id.ToString());
+            st.Append(";");
+            string sql = st.ToString();
+            return sql;
+        }
         /// <summary>
         /// 转换为更新语句
         /// </summary>

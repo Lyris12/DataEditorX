@@ -2,7 +2,7 @@
 Manage card database(.cdb file) for [ygopro](https://github.com/Fluorohydride/ygopro).
 
 ## Download
-Grab the lastest build from Appveyor in the latest commit of https://github.com/purerosefallen/DataEditorX/commits/master.
+https://github.com/Lyris12/DataEditorX/raw/master/win32/win32.zip
 
 > **FAQ**   
 Q: I can't run the program.   

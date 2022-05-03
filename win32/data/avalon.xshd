@@ -1,0 +1,227 @@
+﻿<?xml version="1.0"?>
+<SyntaxDefinition name="ygopro" extensions=".slua;.lua" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <!-- The named colors 'Comment' and 'String' are used in SharpDevelop to detect if a line is inside a multiline string/comment -->
+  <Color name="Comment" foreground="#ff999999" exampleText="-- comment" />
+  <Color name="String" foreground="#fff99157" />
+  <Color name="Punctuation" />
+  <Color name="Functions" foreground="#ff59c817" />
+  <Color name="WrongFunctions" fontWeight="bold" foreground="Red" />
+  <Color name="MethodCall" foreground="#ffffcc66" fontWeight="bold"/>
+  <Color name="NumberLiteral" foreground="#ffc2dfff"/>
+  <Color name="NilKeyword" fontWeight="bold"/>
+  <Color name="Keywords" fontWeight="bold" foreground="#ff6699cc" />
+  <Color name="GotoKeywords" foreground="#ffcc99cc" />
+  <Color name="Visibility" fontWeight="bold" foreground="#fff99157"/>
+  <Color name="TrueFalse" fontWeight="bold" foreground="#ff66cccc" />
+  <Color name="Constants" foreground="#ff00aeae" />
+
+  <RuleSet name="CommentMarkerSet">
+    <Keywords fontWeight="bold" foreground="#fff2777a">
+      <Word>TODO</Word>
+      <Word>FIXME</Word>
+    </Keywords>
+    <Keywords fontWeight="bold" foreground="#fff2777a">
+      <Word>HACK</Word>
+      <Word>UNDONE</Word>
+    </Keywords>
+  </RuleSet>
+  <RuleSet name="RightFunctions">
+  </RuleSet>
+
+  <!-- This is the main ruleset. -->
+  <RuleSet>
+
+    <Span color="Comment">
+      <Begin color="XmlDoc/DocComment">---</Begin>
+      <RuleSet>
+        <Import ruleSet="XmlDoc/DocCommentSet"/>
+        <Import ruleSet="CommentMarkerSet"/>
+      </RuleSet>
+    </Span>
+
+
+    <Span color="Comment" ruleSet="CommentMarkerSet" multiline="true">
+      <Begin>--\[[=]*\[</Begin>
+      <End>\][=]*]</End>
+    </Span>
+
+
+    <Span color="Comment" ruleSet="CommentMarkerSet">
+      <Begin>--</Begin>
+    </Span>
+
+    <Span color="String">
+      <Begin>"</Begin>
+      <End>"</End>
+      <RuleSet>
+        <!-- span for escape sequences -->
+        <Span begin="\\" end="."/>
+      </RuleSet>
+    </Span>
+
+    <Span color="String">
+      <Begin>'</Begin>
+      <End>'</End>
+      <RuleSet>
+        <!-- span for escape sequences -->
+        <Span begin="\\" end="."/>
+      </RuleSet>
+    </Span>
+
+    <Span color="String" multiline="true">
+      <Begin color="String">\[[=]*\[</Begin>
+      <End>\][=]*]</End>
+    </Span>
+
+    <Keywords color="TrueFalse">
+      <Word>true</Word>
+      <Word>false</Word>
+    </Keywords>
+
+    <Keywords color="Keywords">
+      <Word>and</Word>
+      <Word>break</Word>
+      <Word>do</Word>
+      <Word>else</Word>
+      <Word>elseif</Word>
+      <Word>end</Word>
+      <Word>false</Word>
+      <Word>for</Word>
+      <Word>function</Word>
+      <Word>if</Word>
+      <Word>in</Word>
+      <Word>local</Word>
+      <!--<Word>nil</Word>-->
+      <Word>not</Word>
+      <Word>or</Word>
+      <Word>repeat</Word>
+      <Word>return</Word>
+      <Word>then</Word>
+      <Word>true</Word>
+      <Word>until</Word>
+      <Word>while</Word>
+      <Word>using</Word>
+      <Word>continue</Word>
+    </Keywords>
+
+    <Keywords color="GotoKeywords">
+      <Word>break</Word>
+      <Word>return</Word>
+    </Keywords>
+
+    <Keywords color="Visibility">
+      <Word>local</Word>
+    </Keywords>
+
+    <Keywords color="NilKeyword">
+      <Word>nil</Word>
+    </Keywords>
+    <Rule color="Constants">
+      \b(MIN_ID|MAX_ID|MAX_COUNTER|LOCATION_DECK|LOCATION_HAND|LOCATION_MZONE|LOCATION_SZONE|LOCATION_GRAVE|LOCATION_REMOVED|LOCATION_EXTRA|LOCATION_OVERLAY|LOCATION_ONFIELD|LOCATION_DECKBOT|LOCATION_DECKSHF|SEQ_DECKTOP|SEQ_DECKBOTTOM|SEQ_DECKSHUFFLE|LOCATION_FZONE|LOCATION_PZONE|POS_FACEUP_ATTACK|POS_FACEDOWN_ATTACK|POS_FACEUP_DEFENSE|POS_FACEDOWN_DEFENSE|POS_FACEUP|POS_FACEDOWN|POS_ATTACK|POS_DEFENSE|NO_FLIP_EFFECT|TYPE_MONSTER|TYPE_SPELL|TYPE_TRAP|TYPE_NORMAL|TYPE_EFFECT|TYPE_FUSION|TYPE_RITUAL|TYPE_TRAPMONSTER|TYPE_SPIRIT|TYPE_UNION|TYPE_DUAL|TYPE_TUNER|TYPE_SYNCHRO|TYPE_TOKEN|TYPE_QUICKPLAY|TYPE_CONTINUOUS|TYPE_EQUIP|TYPE_FIELD|TYPE_COUNTER|TYPE_FLIP|TYPE_TOON|TYPE_XYZ|TYPE_PENDULUM|TYPE_SPSUMMON|TYPE_LINK|TYPES_TOKEN_MONSTER|TYPES_NORMAL_TRAP_MONSTER|TYPES_EFFECT_TRAP_MONSTER|ATTRIBUTE_ALL|ATTRIBUTE_EARTH|ATTRIBUTE_WATER|ATTRIBUTE_FIRE|ATTRIBUTE_WIND|ATTRIBUTE_LIGHT|ATTRIBUTE_DARK|ATTRIBUTE_DIVINE|RACE_ALL|RACE_WARRIOR|RACE_SPELLCASTER|RACE_FAIRY|RACE_FIEND|RACE_ZOMBIE|RACE_MACHINE|RACE_AQUA|RACE_PYRO|RACE_ROCK|RACE_WINDBEAST|RACE_PLANT|RACE_INSECT|RACE_THUNDER|RACE_DRAGON|RACE_BEAST|RACE_BEASTWARRIOR|RACE_DINOSAUR|RACE_FISH|RACE_SEASERPENT|RACE_REPTILE|RACE_PSYCHO|RACE_DIVINE|RACE_CREATORGOD|RACE_WYRM|RACE_CYBERSE|REASON_DESTROY|REASON_RELEASE|REASON_TEMPORARY|REASON_MATERIAL|REASON_SUMMON|REASON_BATTLE|REASON_EFFECT|REASON_COST|REASON_ADJUST|REASON_LOST_TARGET|REASON_RULE|REASON_SPSUMMON|REASON_DISSUMMON|REASON_FLIP|REASON_DISCARD|REASON_RDAMAGE|REASON_RRECOVER|REASON_RETURN|REASON_FUSION|REASON_SYNCHRO|REASON_RITUAL|REASON_XYZ|REASON_REPLACE|REASON_DRAW|REASON_REDIRECT|REASON_REVEAL|REASON_LINK|REASON_LOST_OVERLAY|LOCATION_REASON_TOFIELD|LOCATION_REASON_CONTROL|SUMMON_TYPE_NORMAL|SUMMON_TYPE_ADVANCE|SUMMON_TYPE_DUAL|SUMMON_TYPE_FLIP|SUMMON_TYPE_SPECIAL|SUMMON_TYPE_FUSION|SUMMON_TYPE_RITUAL|SUMMON_TYPE_SYNCHRO|SUMMON_TYPE_XYZ|SUMMON_TYPE_PENDULUM|SUMMON_TYPE_LINK|SUMMON_VALUE_SELF|SUMMON_VALUE_BLACK_GARDEN|SUMMON_VALUE_SYNCHRO_MATERIAL|SUMMON_VALUE_DARK_SANCTUARY|SUMMON_VALUE_MONSTER_REBORN|SUMMON_VALUE_LV|SUMMON_VALUE_GLADIATOR|SUMMON_VALUE_EVOLTILE|STATUS_DISABLED|STATUS_TO_ENABLE|STATUS_TO_DISABLE|STATUS_PROC_COMPLETE|STATUS_SET_TURN|STATUS_NO_LEVEL|STATUS_BATTLE_RESULT|STATUS_SPSUMMON_STEP|STATUS_FORM_CHANGED|STATUS_SUMMONING|STATUS_EFFECT_ENABLED|STATUS_SUMMON_TURN|STATUS_DESTROY_CONFIRMED|STATUS_LEAVE_CONFIRMED|STATUS_BATTLE_DESTROYED|STATUS_COPYING_EFFECT|STATUS_CHAINING|STATUS_SUMMON_DISABLED|STATUS_ACTIVATE_DISABLED|STATUS_EFFECT_REPLACED|STATUS_FUTURE_FUSION|STATUS_ATTACK_CANCELED|STATUS_INITIALIZING|STATUS_TO_HAND_WITHOUT_CONFIRM|STATUS_JUST_POS|STATUS_CONTINUOUS_POS|STATUS_FORBIDDEN|STATUS_ACT_FROM_HAND|STATUS_OPPO_BATTLE|STATUS_FLIP_SUMMON_TURN|STATUS_SPSUMMON_TURN|ASSUME_CODE|ASSUME_TYPE|ASSUME_LEVEL|ASSUME_RANK|ASSUME_ATTRIBUTE|ASSUME_RACE|ASSUME_ATTACK|ASSUME_DEFENSE|LINK_MARKER_BOTTOM_LEFT|LINK_MARKER_BOTTOM|LINK_MARKER_BOTTOM_RIGHT|LINK_MARKER_LEFT|LINK_MARKER_RIGHT|LINK_MARKER_TOP_LEFT|LINK_MARKER_TOP|LINK_MARKER_TOP_RIGHT|COUNTER_WITHOUT_PERMIT|COUNTER_NEED_ENABLE|PHASE_DRAW|PHASE_STANDBY|PHASE_MAIN1|PHASE_BATTLE_START|PHASE_BATTLE_STEP|PHASE_DAMAGE|PHASE_DAMAGE_CAL|PHASE_BATTLE|PHASE_MAIN2|PHASE_END|PLAYER_NONE|PLAYER_ALL|CHAININFO_CHAIN_COUNT|CHAININFO_TRIGGERING_EFFECT|CHAININFO_TRIGGERING_PLAYER|CHAININFO_TRIGGERING_CONTROLER|CHAININFO_TRIGGERING_LOCATION|CHAININFO_TRIGGERING_SEQUENCE|CHAININFO_TARGET_CARDS|CHAININFO_TARGET_PLAYER|CHAININFO_TARGET_PARAM|CHAININFO_DISABLE_REASON|CHAININFO_DISABLE_PLAYER|CHAININFO_CHAIN_ID|CHAININFO_TYPE|CHAININFO_EXTTYPE|CHAININFO_TRIGGERING_POSITION|CHAININFO_TRIGGERING_CODE|CHAININFO_TRIGGERING_CODE2|CHAININFO_TRIGGERING_LEVEL|CHAININFO_TRIGGERING_RANK|CHAININFO_TRIGGERING_ATTRIBUTE|CHAININFO_TRIGGERING_RACE|CHAININFO_TRIGGERING_ATTACK|CHAININFO_TRIGGERING_DEFENSE|RESET_SELF_TURN|RESET_OPPO_TURN|RESET_PHASE|RESET_CHAIN|RESET_EVENT|RESET_CARD|RESET_CODE|RESET_COPY|RESET_DISABLE|RESET_TURN_SET|RESET_TOGRAVE|RESET_REMOVE|RESET_TEMP_REMOVE|RESET_TOHAND|RESET_TODECK|RESET_LEAVE|RESET_TOFIELD|RESET_CONTROL|RESET_OVERLAY|RESET_MSCHANGE|RESETS_STANDARD|RESETS_REDIRECT|RESETS_WITHOUT_TEMP_REMOVE|EFFECT_TYPE_SINGLE|EFFECT_TYPE_FIELD|EFFECT_TYPE_EQUIP|EFFECT_TYPE_ACTIONS|EFFECT_TYPE_ACTIVATE|EFFECT_TYPE_FLIP|EFFECT_TYPE_IGNITION|EFFECT_TYPE_TRIGGER_O|EFFECT_TYPE_QUICK_O|EFFECT_TYPE_TRIGGER_F|EFFECT_TYPE_QUICK_F|EFFECT_TYPE_CONTINUOUS|EFFECT_TYPE_XMATERIAL|EFFECT_TYPE_GRANT|EFFECT_TYPE_TARGET|EFFECT_FLAG_INITIAL|EFFECT_FLAG_FUNC_VALUE|EFFECT_FLAG_COUNT_LIMIT|EFFECT_FLAG_FIELD_ONLY|EFFECT_FLAG_CARD_TARGET|EFFECT_FLAG_IGNORE_RANGE|EFFECT_FLAG_ABSOLUTE_TARGET|EFFECT_FLAG_IGNORE_IMMUNE|EFFECT_FLAG_SET_AVAILABLE|EFFECT_FLAG_CANNOT_NEGATE|EFFECT_FLAG_CANNOT_DISABLE|EFFECT_FLAG_PLAYER_TARGET|EFFECT_FLAG_BOTH_SIDE|EFFECT_FLAG_COPY_INHERIT|EFFECT_FLAG_DAMAGE_STEP|EFFECT_FLAG_DAMAGE_CAL|EFFECT_FLAG_DELAY|EFFECT_FLAG_SINGLE_RANGE|EFFECT_FLAG_UNCOPYABLE|EFFECT_FLAG_OATH|EFFECT_FLAG_SPSUM_PARAM|EFFECT_FLAG_REPEAT|EFFECT_FLAG_NO_TURN_RESET|EFFECT_FLAG_EVENT_PLAYER|EFFECT_FLAG_OWNER_RELATE|EFFECT_FLAG_CANNOT_INACTIVATE|EFFECT_FLAG_CLIENT_HINT|EFFECT_FLAG_CONTINUOUS_TARGET|EFFECT_FLAG_LIMIT_ZONE|EFFECT_FLAG_COF|EFFECT_FLAG_CVAL_CHECK|EFFECT_FLAG_IMMEDIATELY_APPLY|EFFECT_FLAG2_MILLENNIUM_RESTRICT|EFFECT_FLAG2_COF|EFFECT_FLAG2_WICKED|EFFECT_FLAG2_OPTION|EFFECT_IMMUNE_EFFECT|EFFECT_DISABLE|EFFECT_CANNOT_DISABLE|EFFECT_SET_CONTROL|EFFECT_CANNOT_CHANGE_CONTROL|EFFECT_CANNOT_ACTIVATE|EFFECT_CANNOT_TRIGGER|EFFECT_DISABLE_EFFECT|EFFECT_DISABLE_CHAIN|EFFECT_DISABLE_TRAPMONSTER|EFFECT_CANNOT_INACTIVATE|EFFECT_CANNOT_DISEFFECT|EFFECT_CANNOT_CHANGE_POSITION|EFFECT_TRAP_ACT_IN_HAND|EFFECT_TRAP_ACT_IN_SET_TURN|EFFECT_REMAIN_FIELD|EFFECT_MONSTER_SSET|EFFECT_CANNOT_SUMMON|EFFECT_CANNOT_FLIP_SUMMON|EFFECT_CANNOT_SPECIAL_SUMMON|EFFECT_CANNOT_MSET|EFFECT_CANNOT_SSET|EFFECT_CANNOT_DRAW|EFFECT_CANNOT_DISABLE_SUMMON|EFFECT_CANNOT_DISABLE_SPSUMMON|EFFECT_SET_SUMMON_COUNT_LIMIT|EFFECT_EXTRA_SUMMON_COUNT|EFFECT_SPSUMMON_CONDITION|EFFECT_REVIVE_LIMIT|EFFECT_SUMMON_PROC|EFFECT_LIMIT_SUMMON_PROC|EFFECT_SPSUMMON_PROC|EFFECT_EXTRA_SET_COUNT|EFFECT_SET_PROC|EFFECT_LIMIT_SET_PROC|EFFECT_DIVINE_LIGHT|EFFECT_CANNOT_DISABLE_FLIP_SUMMON|EFFECT_INDESTRUCTABLE|EFFECT_INDESTRUCTABLE_EFFECT|EFFECT_INDESTRUCTABLE_BATTLE|EFFECT_UNRELEASABLE_SUM|EFFECT_UNRELEASABLE_NONSUM|EFFECT_DESTROY_SUBSTITUTE|EFFECT_CANNOT_RELEASE|EFFECT_INDESTRUCTABLE_COUNT|EFFECT_UNRELEASABLE_EFFECT|EFFECT_DESTROY_REPLACE|EFFECT_RELEASE_REPLACE|EFFECT_SEND_REPLACE|EFFECT_CANNOT_DISCARD_HAND|EFFECT_CANNOT_DISCARD_DECK|EFFECT_CANNOT_USE_AS_COST|EFFECT_CANNOT_PLACE_COUNTER|EFFECT_CANNOT_TO_GRAVE_AS_COST|EFFECT_LEAVE_FIELD_REDIRECT|EFFECT_TO_HAND_REDIRECT|EFFECT_TO_DECK_REDIRECT|EFFECT_TO_GRAVE_REDIRECT|EFFECT_REMOVE_REDIRECT|EFFECT_CANNOT_TO_HAND|EFFECT_CANNOT_TO_DECK|EFFECT_CANNOT_REMOVE|EFFECT_CANNOT_TO_GRAVE|EFFECT_CANNOT_TURN_SET|EFFECT_CANNOT_BE_BATTLE_TARGET|EFFECT_CANNOT_BE_EFFECT_TARGET|EFFECT_IGNORE_BATTLE_TARGET|EFFECT_CANNOT_DIRECT_ATTACK|EFFECT_DIRECT_ATTACK|EFFECT_DUAL_STATUS|EFFECT_EQUIP_LIMIT|EFFECT_DUAL_SUMMONABLE|EFFECT_UNION_LIMIT|EFFECT_REVERSE_DAMAGE|EFFECT_REVERSE_RECOVER|EFFECT_CHANGE_DAMAGE|EFFECT_REFLECT_DAMAGE|EFFECT_CANNOT_ATTACK|EFFECT_CANNOT_ATTACK_ANNOUNCE|EFFECT_CANNOT_CHANGE_POS_E|EFFECT_ACTIVATE_COST|EFFECT_SUMMON_COST|EFFECT_SPSUMMON_COST|EFFECT_FLIPSUMMON_COST|EFFECT_MSET_COST|EFFECT_SSET_COST|EFFECT_ATTACK_COST|EFFECT_UPDATE_ATTACK|EFFECT_SET_ATTACK|EFFECT_SET_ATTACK_FINAL|EFFECT_SET_BASE_ATTACK|EFFECT_UPDATE_DEFENSE|EFFECT_SET_DEFENSE|EFFECT_SET_DEFENSE_FINAL|EFFECT_SET_BASE_DEFENSE|EFFECT_REVERSE_UPDATE|EFFECT_SWAP_AD|EFFECT_SWAP_BASE_AD|EFFECT_SET_BASE_ATTACK_FINAL|EFFECT_SET_BASE_DEFENSE_FINAL|EFFECT_ADD_CODE|EFFECT_CHANGE_CODE|EFFECT_ADD_TYPE|EFFECT_REMOVE_TYPE|EFFECT_CHANGE_TYPE|EFFECT_ADD_RACE|EFFECT_REMOVE_RACE|EFFECT_CHANGE_RACE|EFFECT_ADD_ATTRIBUTE|EFFECT_REMOVE_ATTRIBUTE|EFFECT_CHANGE_ATTRIBUTE|EFFECT_UPDATE_LEVEL|EFFECT_CHANGE_LEVEL|EFFECT_UPDATE_RANK|EFFECT_CHANGE_RANK|EFFECT_UPDATE_LSCALE|EFFECT_CHANGE_LSCALE|EFFECT_UPDATE_RSCALE|EFFECT_CHANGE_RSCALE|EFFECT_SET_POSITION|EFFECT_SELF_DESTROY|EFFECT_SELF_TOGRAVE|EFFECT_DOUBLE_TRIBUTE|EFFECT_DECREASE_TRIBUTE|EFFECT_DECREASE_TRIBUTE_SET|EFFECT_EXTRA_RELEASE|EFFECT_TRIBUTE_LIMIT|EFFECT_EXTRA_RELEASE_SUM|EFFECT_TRIPLE_TRIBUTE|EFFECT_ADD_EXTRA_TRIBUTE|EFFECT_EXTRA_RELEASE_NONSUM|EFFECT_PUBLIC|EFFECT_COUNTER_PERMIT|EFFECT_COUNTER_LIMIT|EFFECT_RCOUNTER_REPLACE|EFFECT_LPCOST_CHANGE|EFFECT_LPCOST_REPLACE|EFFECT_SKIP_DP|EFFECT_SKIP_SP|EFFECT_SKIP_M1|EFFECT_SKIP_BP|EFFECT_SKIP_M2|EFFECT_CANNOT_BP|EFFECT_CANNOT_M2|EFFECT_CANNOT_EP|EFFECT_SKIP_TURN|EFFECT_DEFENSE_ATTACK|EFFECT_MUST_ATTACK|EFFECT_FIRST_ATTACK|EFFECT_ATTACK_ALL|EFFECT_EXTRA_ATTACK|EFFECT_MUST_BE_ATTACKED|EFFECT_ONLY_BE_ATTACKED|EFFECT_ATTACK_DISABLED|EFFECT_NO_BATTLE_DAMAGE|EFFECT_AVOID_BATTLE_DAMAGE|EFFECT_REFLECT_BATTLE_DAMAGE|EFFECT_PIERCE|EFFECT_BATTLE_DESTROY_REDIRECT|EFFECT_BATTLE_DAMAGE_TO_EFFECT|EFFECT_BOTH_BATTLE_DAMAGE|EFFECT_ALSO_BATTLE_DAMAGE|EFFECT_CHANGE_BATTLE_DAMAGE|EFFECT_TOSS_COIN_REPLACE|EFFECT_TOSS_DICE_REPLACE|EFFECT_FUSION_MATERIAL|EFFECT_CHAIN_MATERIAL|EFFECT_SYNCHRO_MATERIAL|EFFECT_XYZ_MATERIAL|EFFECT_FUSION_SUBSTITUTE|EFFECT_CANNOT_BE_FUSION_MATERIAL|EFFECT_CANNOT_BE_SYNCHRO_MATERIAL|EFFECT_SYNCHRO_MATERIAL_CUSTOM|EFFECT_CANNOT_BE_XYZ_MATERIAL|EFFECT_CANNOT_BE_LINK_MATERIAL|EFFECT_SYNCHRO_LEVEL|EFFECT_RITUAL_LEVEL|EFFECT_XYZ_LEVEL|EFFECT_EXTRA_RITUAL_MATERIAL|EFFECT_NONTUNER|EFFECT_OVERLAY_REMOVE_REPLACE|EFFECT_SCRAP_CHIMERA|EFFECT_TUNE_MAGICIAN_X|EFFECT_TUNE_MAGICIAN_F|EFFECT_PRE_MONSTER|EFFECT_MATERIAL_CHECK|EFFECT_DISABLE_FIELD|EFFECT_USE_EXTRA_MZONE|EFFECT_USE_EXTRA_SZONE|EFFECT_MAX_MZONE|EFFECT_MAX_SZONE|EFFECT_MUST_USE_MZONE|EFFECT_HAND_LIMIT|EFFECT_DRAW_COUNT|EFFECT_SPIRIT_DONOT_RETURN|EFFECT_SPIRIT_MAYNOT_RETURN|EFFECT_CHANGE_ENVIRONMENT|EFFECT_NECRO_VALLEY|EFFECT_FORBIDDEN|EFFECT_NECRO_VALLEY_IM|EFFECT_REVERSE_DECK|EFFECT_REMOVE_BRAINWASHING|EFFECT_BP_TWICE|EFFECT_UNIQUE_CHECK|EFFECT_MATCH_KILL|EFFECT_SYNCHRO_CHECK|EFFECT_QP_ACT_IN_NTPHAND|EFFECT_MUST_BE_SMATERIAL|EFFECT_TO_GRAVE_REDIRECT_CB|EFFECT_CHANGE_INVOLVING_BATTLE_DAMAGE|EFFECT_CHANGE_RANK_FINAL|EFFECT_MUST_BE_FMATERIAL|EFFECT_MUST_BE_XMATERIAL|EFFECT_MUST_BE_LMATERIAL|EFFECT_SPSUMMON_PROC_G|EFFECT_SPSUMMON_COUNT_LIMIT|EFFECT_LEFT_SPSUMMON_COUNT|EFFECT_CANNOT_SELECT_BATTLE_TARGET|EFFECT_CANNOT_SELECT_EFFECT_TARGET|EFFECT_ADD_SETCODE|EFFECT_NO_EFFECT_DAMAGE|EFFECT_UNSUMMONABLE_CARD|EFFECT_DISABLE_CHAIN_FIELD|EFFECT_DISCARD_COST_CHANGE|EFFECT_HAND_SYNCHRO|EFFECT_ADD_FUSION_CODE|EFFECT_ADD_FUSION_SETCODE|EFFECT_RISE_TO_FULL_HEIGHT|EFFECT_ONLY_ATTACK_MONSTER|EFFECT_MUST_ATTACK_MONSTER|EFFECT_PATRICIAN_OF_DARKNESS|EFFECT_EXTRA_ATTACK_MONSTER|EFFECT_UNION_STATUS|EFFECT_OLDUNION_STATUS|EFFECT_ADD_FUSION_ATTRIBUTE|EFFECT_REMOVE_FUSION_ATTRIBUTE|EFFECT_CHANGE_FUSION_ATTRIBUTE|EFFECT_EXTRA_FUSION_MATERIAL|EFFECT_TUNER_MATERIAL_LIMIT|EFFECT_ADD_LINK_CODE|EFFECT_ADD_LINK_SETCODE|EFFECT_ADD_LINK_ATTRIBUTE|EFFECT_ADD_LINK_RACE|EFFECT_EXTRA_LINK_MATERIAL|EFFECT_QP_ACT_IN_SET_TURN|EFFECT_EXTRA_PENDULUM_SUMMON|EFFECT_MATERIAL_LIMIT|EFFECT_SET_BATTLE_ATTACK|EFFECT_SET_BATTLE_DEFENSE|EFFECT_OVERLAY_RITUAL_MATERIAL|EFFECT_CHANGE_GRAVE_ATTRIBUTE|EFFECT_CHANGE_GRAVE_RACE|EVENT_STARTUP|EVENT_FLIP|EVENT_FREE_CHAIN|EVENT_DESTROY|EVENT_REMOVE|EVENT_TO_HAND|EVENT_TO_DECK|EVENT_TO_GRAVE|EVENT_LEAVE_FIELD|EVENT_CHANGE_POS|EVENT_RELEASE|EVENT_DISCARD|EVENT_LEAVE_FIELD_P|EVENT_CHAIN_SOLVING|EVENT_CHAIN_ACTIVATING|EVENT_CHAIN_SOLVED|EVENT_CHAIN_ACTIVATED|EVENT_CHAIN_NEGATED|EVENT_CHAIN_DISABLED|EVENT_CHAIN_END|EVENT_CHAINING|EVENT_BECOME_TARGET|EVENT_DESTROYED|EVENT_MOVE|EVENT_LEAVE_GRAVE|EVENT_ADJUST|EVENT_BREAK_EFFECT|EVENT_SUMMON_SUCCESS|EVENT_FLIP_SUMMON_SUCCESS|EVENT_SPSUMMON_SUCCESS|EVENT_SUMMON|EVENT_FLIP_SUMMON|EVENT_SPSUMMON|EVENT_MSET|EVENT_SSET|EVENT_BE_MATERIAL|EVENT_BE_PRE_MATERIAL|EVENT_DRAW|EVENT_DAMAGE|EVENT_RECOVER|EVENT_PREDRAW|EVENT_SUMMON_NEGATED|EVENT_FLIP_SUMMON_NEGATED|EVENT_SPSUMMON_NEGATED|EVENT_CONTROL_CHANGED|EVENT_EQUIP|EVENT_ATTACK_ANNOUNCE|EVENT_BE_BATTLE_TARGET|EVENT_BATTLE_START|EVENT_BATTLE_CONFIRM|EVENT_PRE_DAMAGE_CALCULATE|EVENT_DAMAGE_CALCULATING|EVENT_PRE_BATTLE_DAMAGE|EVENT_BATTLE_END|EVENT_BATTLED|EVENT_BATTLE_DESTROYING|EVENT_BATTLE_DESTROYED|EVENT_DAMAGE_STEP_END|EVENT_ATTACK_DISABLED|EVENT_BATTLE_DAMAGE|EVENT_TOSS_DICE|EVENT_TOSS_COIN|EVENT_TOSS_COIN_NEGATE|EVENT_TOSS_DICE_NEGATE|EVENT_LEVEL_UP|EVENT_PAY_LPCOST|EVENT_DETACH_MATERIAL|EVENT_RETURN_TO_GRAVE|EVENT_TURN_END|EVENT_PHASE|EVENT_PHASE_START|EVENT_ADD_COUNTER|EVENT_REMOVE_COUNTER|EVENT_CUSTOM|CATEGORY_DESTROY|CATEGORY_RELEASE|CATEGORY_REMOVE|CATEGORY_TOHAND|CATEGORY_TODECK|CATEGORY_TOGRAVE|CATEGORY_DECKDES|CATEGORY_HANDES|CATEGORY_SUMMON|CATEGORY_SPECIAL_SUMMON|CATEGORY_TOKEN|CATEGORY_GRAVE_ACTION|CATEGORY_POSITION|CATEGORY_CONTROL|CATEGORY_DISABLE|CATEGORY_DISABLE_SUMMON|CATEGORY_DRAW|CATEGORY_SEARCH|CATEGORY_EQUIP|CATEGORY_DAMAGE|CATEGORY_RECOVER|CATEGORY_ATKCHANGE|CATEGORY_DEFCHANGE|CATEGORY_COUNTER|CATEGORY_COIN|CATEGORY_DICE|CATEGORY_LEAVE_GRAVE|CATEGORY_GRAVE_SPSUMMON|CATEGORY_NEGATE|CATEGORY_ANNOUNCE|CATEGORY_FUSION_SUMMON|CATEGORY_TOEXTRA|HINT_EVENT|HINT_MESSAGE|HINT_SELECTMSG|HINT_OPSELECTED|HINT_EFFECT|HINT_RACE|HINT_ATTRIB|HINT_CODE|HINT_NUMBER|HINT_CARD|HINT_ZONE|CHINT_TURN|CHINT_CARD|CHINT_RACE|CHINT_ATTRIBUTE|CHINT_NUMBER|CHINT_DESC|OPCODE_ADD|OPCODE_SUB|OPCODE_MUL|OPCODE_DIV|OPCODE_AND|OPCODE_OR|OPCODE_NEG|OPCODE_NOT|OPCODE_ISCODE|OPCODE_ISSETCARD|OPCODE_ISTYPE|OPCODE_ISRACE|OPCODE_ISATTRIBUTE|DOUBLE_DAMAGE|HALF_DAMAGE|HINTMSG_RELEASE|HINTMSG_DISCARD|HINTMSG_DESTROY|HINTMSG_REMOVE|HINTMSG_TOGRAVE|HINTMSG_RTOHAND|HINTMSG_ATOHAND|HINTMSG_TODECK|HINTMSG_SUMMON|HINTMSG_SPSUMMON|HINTMSG_SET|HINTMSG_FMATERIAL|HINTMSG_SMATERIAL|HINTMSG_XMATERIAL|HINTMSG_FACEUP|HINTMSG_FACEDOWN|HINTMSG_ATTACK|HINTMSG_DEFENSE|HINTMSG_EQUIP|HINTMSG_REMOVEXYZ|HINTMSG_CONTROL|HINTMSG_DESREPLACE|HINTMSG_FACEUPATTACK|HINTMSG_FACEUPDEFENSE|HINTMSG_FACEDOWNATTACK|HINTMSG_FACEDOWNDEFENSE|HINTMSG_CONFIRM|HINTMSG_TOFIELD|HINTMSG_POSCHANGE|HINTMSG_SELF|HINTMSG_OPPO|HINTMSG_TRIBUTE|HINTMSG_DEATTACHFROM|HINTMSG_LMATERIAL|HINTMSG_ATTACKTARGET|HINTMSG_EFFECT|HINTMSG_TARGET|HINTMSG_COIN|HINTMSG_DICE|HINTMSG_CARDTYPE|HINTMSG_OPTION|HINTMSG_RESOLVEEFFECT|HINTMSG_SELECT|HINTMSG_POSITION|HINTMSG_ATTRIBUTE|HINTMSG_RACE|HINTMSG_CODE|HINGMSG_NUMBER|HINGMSG_LVRANK|HINTMSG_RESOLVECARD|HINTMSG_ZONE|HINTMSG_DISABLEZONE|HINTMSG_TOZONE|HINTMSG_COUNTER|HINTMSG_DISABLE|HINTMSG_OPERATECARD|SELECT_HEADS|SELECT_TAILS|TIMING_DRAW_PHASE|TIMING_STANDBY_PHASE|TIMING_MAIN_END|TIMING_BATTLE_START|TIMING_BATTLE_END|TIMING_END_PHASE|TIMING_SUMMON|TIMING_SPSUMMON|TIMING_FLIPSUMMON|TIMING_MSET|TIMING_SSET|TIMING_POS_CHANGE|TIMING_ATTACK|TIMING_DAMAGE_STEP|TIMING_DAMAGE_CAL|TIMING_CHAIN_END|TIMING_DRAW|TIMING_DAMAGE|TIMING_RECOVER|TIMING_DESTROY|TIMING_REMOVE|TIMING_TOHAND|TIMING_TODECK|TIMING_TOGRAVE|TIMING_BATTLE_PHASE|TIMING_EQUIP|TIMING_BATTLE_STEP_END|TIMING_BATTLED|TIMINGS_CHECK_MONSTER|GLOBALFLAG_DECK_REVERSE_CHECK|GLOBALFLAG_BRAINWASHING_CHECK|GLOBALFLAG_SCRAP_CHIMERA|GLOBALFLAG_DELAYED_QUICKEFFECT|GLOBALFLAG_DETACH_EVENT|GLOBALFLAG_MUST_BE_SMATERIAL|GLOBALFLAG_SPSUMMON_COUNT|GLOBALFLAG_XMAT_COUNT_LIMIT|GLOBALFLAG_SELF_TOGRAVE|GLOBALFLAG_SPSUMMON_ONCE|GLOBALFLAG_TUNE_MAGICIAN|EFFECT_COUNT_CODE_OATH|EFFECT_COUNT_CODE_DUEL|EFFECT_COUNT_CODE_SINGLE|DUEL_TEST_MODE|DUEL_ATTACK_FIRST_TURN|DUEL_OLD_REPLAY|DUEL_OBSOLETE_RULING|DUEL_PSEUDO_SHUFFLE|DUEL_TAG_MODE|DUEL_SIMPLE_AI|DUEL_RETURN_DECK_TOP|ACTIVITY_SUMMON|ACTIVITY_NORMALSUMMON|ACTIVITY_SPSUMMON|ACTIVITY_FLIPSUMMON|ACTIVITY_ATTACK|ACTIVITY_BATTLE_PHASE|ACTIVITY_CHAIN|CARD_MARINE_DOLPHIN|CARD_TWINKLE_MOSS|CARD_QUESTION)\b
+    </Rule>
+
+    <Rule color="Functions">
+      \bCard\.(AddCounter|AddMonsterAttribute|AssumeProperty|CancelCardTarget|CancelToGrave|CheckActivateEffect|CheckEquipTarget|CheckFusionMaterial|CheckFusionSubstitute|CheckRemoveOverlayCard|CheckUnionTarget|CheckUniqueOnField|ClearEffectRelation|CompleteProcedure|CopyEffect|CreateEffectRelation|CreateRelation|EnableCounterPermit|EnableDualState|EnableReviveLimit|GetActivateEffect|GetAttack|GetAttackableTarget|GetAttackAnnouncedCount|GetAttackedCount|GetAttackedGroup|GetAttackedGroupCount|GetAttribute|GetAttributeInGrave|GetBaseAttack|GetBaseDefense|GetBattledGroup|GetBattledGroupCount|GetBattlePosition|GetBattleTarget|GetCardTarget|GetCardTargetCount|GetCode|GetColumnGroup|GetColumnGroupCount|GetColumnZone|GetControler|GetCounter|GetCurrentScale|GetDefense|GetDestination|GetEffectCount|GetEquipCount|GetEquipGroup|GetEquipTarget|GetFieldID|GetFirstCardTarget|GetFlagEffect|GetFlagEffectLabel|GetFusionAttribute|GetFusionCode|GetFusionType|GetHandSynchro|GetLeaveFieldDest|GetLeftScale|GetLevel|GetLink|GetLinkAttribute|GetLinkCode|GetLinkedGroup|GetLinkedGroupCount|GetLinkedZone|GetLinkMarker|GetLinkRace|GetLinkType|GetLocation|GetMaterial|GetMaterialCount|GetMutualLinkedGroup|GetMutualLinkedGroupCount|GetMutualLinkedZone|GetOriginalAttribute|GetOriginalCode|GetOriginalCodeRule|GetOriginalLeftScale|GetOriginalLevel|GetOriginalLinkMarker|GetOriginalRace|GetOriginalRank|GetOriginalRightScale|GetOriginalType|GetOverlayCount|GetOverlayGroup|GetOverlayTarget|GetOwner|GetOwnerTarget|GetOwnerTargetCount|GetPosition|GetPreviousAttackOnField|GetPreviousAttributeOnField|GetPreviousCodeOnField|GetPreviousControler|GetPreviousDefenseOnField|GetPreviousEquipTarget|GetPreviousLevelOnField|GetPreviousLocation|GetPreviousPosition|GetPreviousRaceOnField|GetPreviousRankOnField|GetPreviousSequence|GetPreviousTypeOnField|GetRace|GetRaceInGrave|GetRank|GetRealFieldID|GetReason|GetReasonCard|GetReasonEffect|GetReasonPlayer|GetRemovedOverlayCount|GetRightScale|GetRitualLevel|GetSequence|GetSummonLocation|GetSummonPlayer|GetSummonType|GetSynchroLevel|GetSynchroType|GetTextAttack|GetTextDefense|GetTributeRequirement|GetTunerLimit|GetTurnCounter|GetTurnID|GetType|GetUnionCount|GetXyzType|IsAbleToChangeControler|IsAbleToDeck|IsAbleToDeckAsCost|IsAbleToDeckOrExtraAsCost|IsAbleToDecreaseAttackAsCost|IsAbleToDecreaseDefenseAsCost|IsAbleToExtra|IsAbleToExtraAsCost|IsAbleToGrave|IsAbleToGraveAsCost|IsAbleToHand|IsAbleToHandAsCost|IsAbleToRemove|IsAbleToRemoveAsCost|IsAllColumn|IsAttack|IsAttackable|IsAttackAbove|IsAttackBelow|IsAttackPos|IsAttribute|IsCanAddCounter|IsCanBeBattleTarget|IsCanBeEffectTarget|IsCanBeFusionMaterial|IsCanBeLinkMaterial|IsCanBeRitualMaterial|IsCanBeSpecialSummoned|IsCanBeSynchroMaterial|IsCanBeXyzMaterial|IsCanChangePosition|IsCanHaveCounter|IsCanOverlay|IsCanRemoveCounter|IsCanTurnSet|IsChainAttackable|IsCode|IsControler|IsControlerCanBeChanged|IsDefense|IsDefenseAbove|IsDefenseBelow|IsDefensePos|IsDestructable|IsDirectAttacked|IsDisabled|IsDiscardable|IsDualState|IsExtraDeckMonster|IsExtraLinkState|IsFacedown|IsFaceup|IsForbidden|IsFusionAttribute|IsFusionCode|IsFusionSetCard|IsFusionSummonableCard|IsFusionType|IsHasCardTarget|IsHasEffect|IsImmuneToEffect|IsLevel|IsLevelAbove|IsLevelBelow|IsLink|IsLinkAbove|IsLinkAttribute|IsLinkBelow|IsLinkCode|IsLinkMarker|IsLinkRace|IsLinkSetCard|IsLinkState|IsLinkSummonable|IsLinkType|IsLocation|IsMSetable|IsNotTuner|IsOnField|IsOriginalCodeRule|IsOriginalSetCard|IsPosition|IsPreviousControler|IsPreviousLocation|IsPreviousPosition|IsPreviousSetCard|IsPublic|IsRace|IsRank|IsRankAbove|IsRankBelow|IsReason|IsRelateToBattle|IsRelateToCard|IsRelateToChain|IsRelateToEffect|IsReleasable|IsReleasableByEffect|IsRitualType|IsSetCard|IsSpecialSummonable|IsSSetable|IsStatus|IsSummonable|IsSummonableCard|IsSummonLocation|IsSummonPlayer|IsSummonType|IsSynchroSummonable|IsSynchroType|IsType|IsXyzLevel|IsXyzSummonable|IsXyzSummonableByRose|IsXyzType|RegisterEffect|RegisterFlagEffect|ReleaseEffectRelation|ReleaseRelation|RemoveCounter|RemoveOverlayCard|ReplaceEffect|ResetEffect|ResetFlagEffect|ResetNegateEffect|ReverseInDeck|SetCardData|SetCardTarget|SetCounterLimit|SetEntityCode|SetFlagEffectLabel|SetHint|SetMaterial|SetReason|SetSPSummonOnce|SetStatus|SetTurnCounter|SetUniqueOnField)\b
+    </Rule>
+    <Rule color="Functions">
+      \b([a-z]{0,3}c|a|d[0-9]{0,2}):(AddCounter|AddMonsterAttribute|AssumeProperty|CancelCardTarget|CancelToGrave|CheckActivateEffect|CheckEquipTarget|CheckFusionMaterial|CheckFusionSubstitute|CheckRemoveOverlayCard|CheckUnionTarget|CheckUniqueOnField|ClearEffectRelation|CompleteProcedure|CopyEffect|CreateEffectRelation|CreateRelation|EnableCounterPermit|EnableDualState|EnableReviveLimit|GetActivateEffect|GetAttack|GetAttackableTarget|GetAttackAnnouncedCount|GetAttackedCount|GetAttackedGroup|GetAttackedGroupCount|GetAttribute|GetAttributeInGrave|GetBaseAttack|GetBaseDefense|GetBattledGroup|GetBattledGroupCount|GetBattlePosition|GetBattleTarget|GetCardTarget|GetCardTargetCount|GetCode|GetColumnGroup|GetColumnGroupCount|GetColumnZone|GetControler|GetCounter|GetCurrentScale|GetDefense|GetDestination|GetEffectCount|GetEquipCount|GetEquipGroup|GetEquipTarget|GetFieldID|GetFirstCardTarget|GetFlagEffect|GetFlagEffectLabel|GetFusionAttribute|GetFusionCode|GetFusionType|GetHandSynchro|GetLeaveFieldDest|GetLeftScale|GetLevel|GetLink|GetLinkAttribute|GetLinkCode|GetLinkedGroup|GetLinkedGroupCount|GetLinkedZone|GetLinkMarker|GetLinkRace|GetLinkType|GetLocation|GetMaterial|GetMaterialCount|GetMutualLinkedGroup|GetMutualLinkedGroupCount|GetMutualLinkedZone|GetOriginalAttribute|GetOriginalCode|GetOriginalCodeRule|GetOriginalLeftScale|GetOriginalLevel|GetOriginalLinkMarker|GetOriginalRace|GetOriginalRank|GetOriginalRightScale|GetOriginalType|GetOverlayCount|GetOverlayGroup|GetOverlayTarget|GetOwner|GetOwnerTarget|GetOwnerTargetCount|GetPosition|GetPreviousAttackOnField|GetPreviousAttributeOnField|GetPreviousCodeOnField|GetPreviousControler|GetPreviousDefenseOnField|GetPreviousEquipTarget|GetPreviousLevelOnField|GetPreviousLocation|GetPreviousPosition|GetPreviousRaceOnField|GetPreviousRankOnField|GetPreviousSequence|GetPreviousTypeOnField|GetRace|GetRaceInGrave|GetRank|GetRealFieldID|GetReason|GetReasonCard|GetReasonEffect|GetReasonPlayer|GetRemovedOverlayCount|GetRightScale|GetRitualLevel|GetSequence|GetSummonLocation|GetSummonPlayer|GetSummonType|GetSynchroLevel|GetSynchroType|GetTextAttack|GetTextDefense|GetTributeRequirement|GetTunerLimit|GetTurnCounter|GetTurnID|GetType|GetUnionCount|GetXyzType|IsAbleToChangeControler|IsAbleToDeck|IsAbleToDeckAsCost|IsAbleToDeckOrExtraAsCost|IsAbleToDecreaseAttackAsCost|IsAbleToDecreaseDefenseAsCost|IsAbleToExtra|IsAbleToExtraAsCost|IsAbleToGrave|IsAbleToGraveAsCost|IsAbleToHand|IsAbleToHandAsCost|IsAbleToRemove|IsAbleToRemoveAsCost|IsAllColumn|IsAttack|IsAttackable|IsAttackAbove|IsAttackBelow|IsAttackPos|IsAttribute|IsCanAddCounter|IsCanBeBattleTarget|IsCanBeEffectTarget|IsCanBeFusionMaterial|IsCanBeLinkMaterial|IsCanBeRitualMaterial|IsCanBeSpecialSummoned|IsCanBeSynchroMaterial|IsCanBeXyzMaterial|IsCanChangePosition|IsCanHaveCounter|IsCanOverlay|IsCanRemoveCounter|IsCanTurnSet|IsChainAttackable|IsCode|IsControler|IsControlerCanBeChanged|IsDefense|IsDefenseAbove|IsDefenseBelow|IsDefensePos|IsDestructable|IsDirectAttacked|IsDisabled|IsDiscardable|IsDualState|IsExtraDeckMonster|IsExtraLinkState|IsFacedown|IsFaceup|IsForbidden|IsFusionAttribute|IsFusionCode|IsFusionSetCard|IsFusionSummonableCard|IsFusionType|IsHasCardTarget|IsHasEffect|IsImmuneToEffect|IsLevel|IsLevelAbove|IsLevelBelow|IsLink|IsLinkAbove|IsLinkAttribute|IsLinkBelow|IsLinkCode|IsLinkMarker|IsLinkRace|IsLinkSetCard|IsLinkState|IsLinkSummonable|IsLinkType|IsLocation|IsMSetable|IsNotTuner|IsOnField|IsOriginalCodeRule|IsOriginalSetCard|IsPosition|IsPreviousControler|IsPreviousLocation|IsPreviousPosition|IsPreviousSetCard|IsPublic|IsRace|IsRank|IsRankAbove|IsRankBelow|IsReason|IsRelateToBattle|IsRelateToCard|IsRelateToChain|IsRelateToEffect|IsReleasable|IsReleasableByEffect|IsRitualType|IsSetCard|IsSpecialSummonable|IsSSetable|IsStatus|IsSummonable|IsSummonableCard|IsSummonLocation|IsSummonPlayer|IsSummonType|IsSynchroSummonable|IsSynchroType|IsType|IsXyzLevel|IsXyzSummonable|IsXyzSummonableByRose|IsXyzType|RegisterEffect|RegisterFlagEffect|ReleaseEffectRelation|ReleaseRelation|RemoveCounter|RemoveOverlayCard|ReplaceEffect|ResetEffect|ResetFlagEffect|ResetNegateEffect|ReverseInDeck|SetCardData|SetCardTarget|SetCounterLimit|SetEntityCode|SetFlagEffectLabel|SetHint|SetMaterial|SetReason|SetSPSummonOnce|SetStatus|SetTurnCounter|SetUniqueOnField)\b
+    </Rule>
+    <Rule color="Functions">
+      \bDuel\.(Activate|AddCustomActivityCounter|AdjustInstantly|AnnounceAttribute|AnnounceCard|AnnounceCardFilter|AnnounceCoin|AnnounceLevel|AnnounceNumber|AnnounceRace|AnnounceType|BreakEffect|CalculateDamage|ChainAttack|ChangeAttacker|ChangeAttackTarget|ChangeBattleDamage|ChangeChainOperation|ChangePosition|ChangeTargetCard|ChangeTargetParam|ChangeTargetPlayer|CheckChainTarget|CheckChainUniqueness|CheckEvent|CheckLocation|CheckLPCost|CheckPhaseActivity|CheckReleaseGroup|CheckReleaseGroupEx|CheckRemoveOverlayCard|CheckSummonedCount|CheckSynchroMaterial|CheckTiming|CheckTribute|CheckTunerMaterial|CheckXyzMaterial|ClearOperationInfo|ClearTargetCard|ConfirmCards|ConfirmDecktop|ConfirmExtratop|CreateToken|Damage|Destroy|DisableActionCheck|DisableSelfDestroyCheck|DisableShuffleCheck|DiscardDeck|DiscardHand|Draw|EnableGlobalFlag|Equip|EquipComplete|Exile|GetActivityCount|GetAttacker|GetAttackTarget|GetBattleDamage|GetBattledCount|GetBattleMonster|GetCardsInZone|GetChainEvent|GetChainInfo|GetChainMaterial|GetCoinResult|GetControl|GetCounter|GetCurrentChain|GetCurrentPhase|GetCustomActivityCount|GetDecktopGroup|GetDiceResult|GetDrawCount|GetEnvironment|GetExtraTopGroup|GetFieldCard|GetFieldGroup|GetFieldGroupCount|GetFirstMatchingCard|GetFirstTarget|GetFlagEffect|GetFlagEffectLabel|GetFusionMaterial|GetLinkedGroup|GetLinkedGroupCount|GetLinkedZone|GetLocationCount|GetLocationCountFromEx|GetLP|GetMasterRule|GetMatchingGroup|GetMatchingGroupCount|GetMZoneCount|GetOperatedGroup|GetOperationCount|GetOperationInfo|GetOverlayCount|GetOverlayGroup|GetReleaseGroup|GetReleaseGroupCount|GetRitualMaterial|GetRitualMaterialEx|GetTargetCount|GetTributeCount|GetTributeGroup|GetTurnCount|GetTurnPlayer|GetUsableMZoneCount|GrabSelectedCard|Hint|HintSelection|IncreaseSummonedCount|IsAbleToEnterBP|IsCanAddCounter|IsCanRemoveCounter|IsChainDisablable|IsChainNegatable|IsDamageCalculated|IsEnvironment|IsExistingMatchingCard|IsExistingTarget|IsPlayerAffectedByEffect|IsPlayerCanAdditionalSummon|IsPlayerCanDiscardDeck|IsPlayerCanDiscardDeckAsCost|IsPlayerCanDraw|IsPlayerCanFlipSummon|IsPlayerCanMSet|IsPlayerCanRelease|IsPlayerCanRemove|IsPlayerCanSendtoDeck|IsPlayerCanSendtoGrave|IsPlayerCanSendtoHand|IsPlayerCanSpecialSummon|IsPlayerCanSpecialSummonCount|IsPlayerCanSpecialSummonMonster|IsPlayerCanSSet|IsPlayerCanSummon|IsSummonCancelable|LinkSummon|LoadScript|MajesticCopy|MoveSequence|MoveToField|MoveTurnCount|MSet|NegateActivation|NegateAttack|NegateEffect|NegateRelatedChain|NegateSummon|Overlay|PayLPCost|RaiseEvent|RaiseSingleEvent|RDComplete|ReadCard|Readjust|Recover|RegisterEffect|RegisterFlagEffect|Release|ReleaseRitualMaterial|Remove|RemoveCounter|RemoveOverlayCard|ResetFlagEffect|ResetTimeLimit|ReturnToField|RockPaperScissors|SelectDisableField|SelectEffectYesNo|SelectField|SelectFusionMaterial|SelectMatchingCard|SelectOption|SelectPosition|SelectReleaseGroup|SelectReleaseGroupEx|SelectSequence|SelectSynchroMaterial|SelectTarget|SelectTribute|SelectTunerMaterial|SelectXyzMaterial|SelectYesNo|SendtoDeck|SendtoExtraP|SendtoGrave|SendtoHand|SetChainLimit|SetChainLimitTillChainEnd|SetCoinResult|SetDiceResult|SetFlagEffectLabel|SetFusionMaterial|SetLP|SetMetatable|SetOperationInfo|SetSelectedCard|SetSummonCancelable|SetSynchroMaterial|SetTargetCard|SetTargetParam|SetTargetPlayer|ShuffleDeck|ShuffleExtra|ShuffleHand|ShuffleSetCard|SkipPhase|SortDecktop|SpecialSummon|SpecialSummonComplete|SpecialSummonRule|SpecialSummonStep|SSet|Summon|SwapControl|SwapDeckAndGrave|SwapSequence|SynchroSummon|TossCoin|TossDice|Win|XyzSummon|XyzSummonByRose)\b
+    </Rule>
+    <Rule color="Functions">
+      \bGroup\.(CreateGroup|FromCards|KeepAlive|DeleteGroup|Clone|Clear|AddCard|Merge|RemoveCard|Sub|GetNext|GetFirst|GetCount|__len|ForEach|Filter|FilterCount|FilterSelect|Select|SelectUnselect|RandomSelect|IsExists|CheckWithSumEqual|SelectWithSumEqual|CheckWithSumGreater|SelectWithSumGreater|GetMinGroup|GetMaxGroup|GetSum|GetClassCount|Remove|Equal|IsContains|SearchCard|GetBinClassCount|__add|__bor|__sub|__band|__bxor|SelectSubGroup|SelectSubGroupEach|CheckSubGroupEach|CheckSubGroup|SelectSubGroup|SelectSubGroupEach|CheckSubGroup|CheckSubGroupEach)\b
+    </Rule>
+    <Rule color="Functions">
+      \b[a-z]{0,3}g[0-9]{0,2}:(CreateGroup|FromCards|KeepAlive|DeleteGroup|Clone|Clear|AddCard|Merge|RemoveCard|Sub|GetNext|GetFirst|GetCount|__len|ForEach|Filter|FilterCount|FilterSelect|Select|SelectUnselect|RandomSelect|IsExists|CheckWithSumEqual|SelectWithSumEqual|CheckWithSumGreater|SelectWithSumGreater|GetMinGroup|GetMaxGroup|GetSum|GetClassCount|Remove|Equal|IsContains|SearchCard|GetBinClassCount|__add|__bor|__sub|__band|__bxor|SelectSubGroup|SelectSubGroupEach|CheckSubGroupEach|CheckSubGroup|SelectSubGroup|SelectSubGroupEach|CheckSubGroup|CheckSubGroupEach)\b
+    </Rule>
+    <Rule color="Functions">
+      \bEffect\.(SetOwner|GetRange|GetCountLimit|CreateEffect|GlobalEffect|Clone|Reset|GetFieldID|SetDescription|SetCode|SetRange|SetTargetRange|SetAbsoluteRange|SetCountLimit|SetReset|SetType|SetProperty|SetLabelObject|SetLabel|SetCategory|SetHintTiming|SetCondition|SetTarget|SetCost|SetValue|SetOperation|SetOwnerPlayer|GetDescription|GetCode|GetType|GetProperty|GetLabel|GetLabelObject|GetCategory|GetOwner|GetHandler|GetCondition|GetTarget|GetCost|GetValue|GetOperation|GetActiveType|IsActiveType|GetOwnerPlayer|GetHandlerPlayer|IsHasProperty|IsHasCategory|IsHasType|IsActivatable|IsActivated|GetActivateLocation|GetActivateSequence|CheckCountLimit|UseCountLimit)\b
+    </Rule>
+    <Rule color="Functions">
+      \b[a-z]{0,1}e[0-9v]{0,2}:(SetOwner|GetRange|GetCountLimit|CreateEffect|GlobalEffect|Clone|Reset|GetFieldID|SetDescription|SetCode|SetRange|SetTargetRange|SetAbsoluteRange|SetCountLimit|SetReset|SetType|SetProperty|SetLabelObject|SetLabel|SetCategory|SetHintTiming|SetCondition|SetTarget|SetCost|SetValue|SetOperation|SetOwnerPlayer|GetDescription|GetCode|GetType|GetProperty|GetLabel|GetLabelObject|GetCategory|GetOwner|GetHandler|GetCondition|GetTarget|GetCost|GetValue|GetOperation|GetActiveType|IsActiveType|GetOwnerPlayer|GetHandlerPlayer|IsHasProperty|IsHasCategory|IsHasType|IsActivatable|IsActivated|GetActivateLocation|GetActivateSequence|CheckCountLimit|UseCountLimit)\b
+    </Rule>
+    <Rule color="Functions">
+      \bDebug\.(Message|AddCard|SetPlayerInfo|PreSummon|PreEquip|PreSetTarget|PreAddCounter|ReloadFieldBegin|ReloadFieldEnd|SetAIName|ShowHint)\b
+    </Rule>
+    <Rule color="Functions">
+      \b(Auxiliary.PreloadUds|bit.band|bit.bor|bit.bxor|bit.lshift|bit.rshift|bit.bnot|bit.extract|bit.replace|Auxiliary.Stringid|Auxiliary.Next|Auxiliary.NULL|Auxiliary.TRUE|Auxiliary.FALSE|Auxiliary.AND|Auxiliary.OR|Auxiliary.NOT|Auxiliary.BeginPuzzle|Auxiliary.PuzzleOp|Auxiliary.IsDualState|Auxiliary.IsNotDualState|Auxiliary.DualNormalCondition|Auxiliary.EnableDualAttribute|Auxiliary.EnableSpiritReturn|Auxiliary.SpiritReturnReg|Auxiliary.SpiritReturnCondition|Auxiliary.SpiritReturnTarget|Auxiliary.SpiritReturnOperation|Auxiliary.IsUnionState|Auxiliary.SetUnionState|Auxiliary.CheckUnionEquip|Auxiliary.TargetEqualFunction|Auxiliary.TargetBoolFunction|Auxiliary.FilterEqualFunction|Auxiliary.FilterBoolFunction|Auxiliary.Tuner|Auxiliary.NonTuner|Auxiliary.GetValueType|Auxiliary.GetMustMaterialGroup|Auxiliary.MustMaterialCheck|Auxiliary.MustMaterialCounterFilter|Auxiliary.AddSynchroProcedure|Auxiliary.SynCondition|Auxiliary.SynTarget|Auxiliary.SynOperation|Auxiliary.AddSynchroMixProcedure|Auxiliary.SynMaterialFilter|Auxiliary.SynLimitFilter|Auxiliary.GetSynchroLevelFlowerCardian|Auxiliary.GetSynMaterials|Auxiliary.SynMixCondition|Auxiliary.SynMixTarget|Auxiliary.SynMixOperation|Auxiliary.SynMixCheck|Auxiliary.SynMixCheckRecursive|Auxiliary.SynMixCheckGoal|Auxiliary.TuneMagicianFilter|Auxiliary.TuneMagicianCheckX|Auxiliary.TuneMagicianCheckAdditionalX|Auxiliary.XyzAlterFilter|Auxiliary.AddXyzProcedure|Auxiliary.XyzCondition|Auxiliary.XyzTarget|Auxiliary.XyzOperation|Auxiliary.AddXyzProcedureLevelFree|Auxiliary.XyzLevelFreeFilter|Auxiliary.XyzLevelFreeGoal|Auxiliary.XyzLevelFreeCondition|Auxiliary.XyzLevelFreeTarget|Auxiliary.XyzLevelFreeOperation|Auxiliary.AddFusionProcMix|Auxiliary.FConditionMix|Auxiliary.FOperationMix|Auxiliary.FConditionFilterMix|Auxiliary.FCheckMix|Auxiliary.FCheckMixGoal|Auxiliary.AddFusionProcMixRep|Auxiliary.FConditionMixRep|Auxiliary.FOperationMixRep|Auxiliary.FCheckMixRep|Auxiliary.FCheckMixRepFilter|Auxiliary.FCheckMixRepGoal|Auxiliary.FCheckMixRepTemplate|Auxiliary.FCheckMixRepSelectedCond|Auxiliary.FCheckMixRepSelected|Auxiliary.FCheckSelectMixRep|Auxiliary.FCheckSelectMixRepAll|Auxiliary.FCheckSelectMixRepM|Auxiliary.FSelectMixRep|Auxiliary.AddFusionProcCodeRep|Auxiliary.AddFusionProcCodeFun|Auxiliary.AddFusionProcFunRep|Auxiliary.AddFusionProcFunFun|Auxiliary.AddFusionProcFunFunRep|Auxiliary.AddFusionProcCodeFunRep|Auxiliary.AddFusionProcShaddoll|Auxiliary.FShaddollFilter|Auxiliary.FShaddollExFilter|Auxiliary.FShaddollCondition|Auxiliary.FShaddollOperation|Auxiliary.AddContactFusionProcedure|Auxiliary.ContactFusionMaterialFilter|Auxiliary.ContactFusionCondition|Auxiliary.ContactFusionOperation|Auxiliary.AddRitualProcUltimate|Auxiliary.RitualCheckGreater|Auxiliary.RitualCheckEqual|Auxiliary.RitualCheck|Auxiliary.RitualCheckAdditionalLevel|Auxiliary.RitualCheckAdditional|Auxiliary.RitualUltimateFilter|Auxiliary.RitualExtraFilter|Auxiliary.RitualUltimateTarget|Auxiliary.RitualUltimateOperation|Auxiliary.AddRitualProcGreater|Auxiliary.AddRitualProcGreaterCode|Auxiliary.AddRitualProcEqual|Auxiliary.AddRitualProcEqualCode|Auxiliary.EnablePendulumAttribute|Auxiliary.PendulumReset|Auxiliary.PConditionExtraFilterSpecific|Auxiliary.PConditionExtraFilter|Auxiliary.PConditionFilter|Auxiliary.PendCondition|Auxiliary.PendOperationCheck|Auxiliary.PendOperation|Auxiliary.EnableReviveLimitPendulumSummonable|Auxiliary.PendulumSummonableBool|Auxiliary.PSSCompleteProcedure|Auxiliary.AddLinkProcedure|Auxiliary.LConditionFilter|Auxiliary.LExtraFilter|Auxiliary.GetLinkCount|Auxiliary.GetLinkMaterials|Auxiliary.LCheckOtherMaterial|Auxiliary.LUncompatibilityFilter|Auxiliary.LCheckGoal|Auxiliary.LExtraMaterialCount|Auxiliary.LinkCondition|Auxiliary.LinkTarget|Auxiliary.LinkOperation|Auxiliary.EnableExtraDeckSummonCountLimit|Auxiliary.ExtraDeckSummonCountLimitReset|Auxiliary.IsMaterialListCode|Auxiliary.IsMaterialListSetCard|Auxiliary.IsMaterialListType|Auxiliary.AddCodeList|Auxiliary.IsCodeListed|Auxiliary.IsCounterAdded|Auxiliary.IsInGroup|Auxiliary.GetColumn|Auxiliary.MZoneSequence|Auxiliary.SZoneSequence|Auxiliary.ChangeBattleDamage|Auxiliary.bdcon|Auxiliary.bdocon|Auxiliary.bdgcon|Auxiliary.bdogcon|Auxiliary.dogcon|Auxiliary.dogfcon|Auxiliary.exccon|Auxiliary.bpcon|Auxiliary.dscon|Auxiliary.chainreg|Auxiliary.indsval|Auxiliary.indoval|Auxiliary.tgsval|Auxiliary.tgoval|Auxiliary.nzatk|Auxiliary.nzdef|Auxiliary.sumreg|Auxiliary.fuslimit|Auxiliary.ritlimit|Auxiliary.synlimit|Auxiliary.xyzlimit|Auxiliary.penlimit|Auxiliary.linklimit|Auxiliary.qlifilter|Auxiliary.gbspcon|Auxiliary.evospcon|Auxiliary.NecroValleyFilter|Auxiliary.bfgcost|Auxiliary.dncheck|Auxiliary.dlvcheck|Auxiliary.drkcheck|Auxiliary.dlkcheck|Auxiliary.dabcheck|Auxiliary.drccheck|Auxiliary.gfcheck|Auxiliary.gffcheck|Auxiliary.mzctcheck|Auxiliary.mzctcheckrel|Auxiliary.ExceptThisCard|Auxiliary.GetMultiLinkedZone|Auxiliary.CheckGroupRecursive|Auxiliary.CheckGroupRecursiveCapture|Auxiliary.CreateChecks|Auxiliary.CheckGroupRecursiveEach|Auxiliary.nbcon|Auxiliary.tdcfop|bit.band|bit.bor|bit.bxor|bit.lshift|bit.rshift|bit.bnot|bit.extract|bit.replace|aux.Stringid|aux.Next|aux.NULL|aux.TRUE|aux.FALSE|aux.AND|aux.OR|aux.NOT|aux.BeginPuzzle|aux.PuzzleOp|aux.IsDualState|aux.IsNotDualState|aux.DualNormalCondition|aux.EnableDualAttribute|aux.EnableSpiritReturn|aux.SpiritReturnReg|aux.SpiritReturnCondition|aux.SpiritReturnTarget|aux.SpiritReturnOperation|aux.IsUnionState|aux.SetUnionState|aux.CheckUnionEquip|aux.TargetEqualFunction|aux.TargetBoolFunction|aux.FilterEqualFunction|aux.FilterBoolFunction|aux.Tuner|aux.NonTuner|aux.GetValueType|aux.GetMustMaterialGroup|aux.MustMaterialCheck|aux.MustMaterialCounterFilter|aux.AddSynchroProcedure|aux.SynCondition|aux.SynTarget|aux.SynOperation|aux.AddSynchroMixProcedure|aux.SynMaterialFilter|aux.SynLimitFilter|aux.GetSynchroLevelFlowerCardian|aux.GetSynMaterials|aux.SynMixCondition|aux.SynMixTarget|aux.SynMixOperation|aux.SynMixCheck|aux.SynMixCheckRecursive|aux.SynMixCheckGoal|aux.TuneMagicianFilter|aux.TuneMagicianCheckX|aux.TuneMagicianCheckAdditionalX|aux.XyzAlterFilter|aux.AddXyzProcedure|aux.XyzCondition|aux.XyzTarget|aux.XyzOperation|aux.AddXyzProcedureLevelFree|aux.XyzLevelFreeFilter|aux.XyzLevelFreeGoal|aux.XyzLevelFreeCondition|aux.XyzLevelFreeTarget|aux.XyzLevelFreeOperation|aux.AddFusionProcMix|aux.FConditionMix|aux.FOperationMix|aux.FConditionFilterMix|aux.FCheckMix|aux.FCheckMixGoal|aux.AddFusionProcMixRep|aux.FConditionMixRep|aux.FOperationMixRep|aux.FCheckMixRep|aux.FCheckMixRepFilter|aux.FCheckMixRepGoal|aux.FCheckMixRepTemplate|aux.FCheckMixRepSelectedCond|aux.FCheckMixRepSelected|aux.FCheckSelectMixRep|aux.FCheckSelectMixRepAll|aux.FCheckSelectMixRepM|aux.FSelectMixRep|aux.AddFusionProcCodeRep|aux.AddFusionProcCodeFun|aux.AddFusionProcFunRep|aux.AddFusionProcFunFun|aux.AddFusionProcFunFunRep|aux.AddFusionProcCodeFunRep|aux.AddFusionProcShaddoll|aux.FShaddollFilter|aux.FShaddollExFilter|aux.FShaddollCondition|aux.FShaddollOperation|aux.AddContactFusionProcedure|aux.ContactFusionMaterialFilter|aux.ContactFusionCondition|aux.ContactFusionOperation|aux.AddRitualProcUltimate|aux.RitualCheckGreater|aux.RitualCheckEqual|aux.RitualCheck|aux.RitualCheckAdditionalLevel|aux.RitualCheckAdditional|aux.RitualUltimateFilter|aux.RitualExtraFilter|aux.RitualUltimateTarget|aux.RitualUltimateOperation|aux.AddRitualProcGreater|aux.AddRitualProcGreaterCode|aux.AddRitualProcEqual|aux.AddRitualProcEqualCode|aux.EnablePendulumAttribute|aux.PendulumReset|aux.PConditionExtraFilterSpecific|aux.PConditionExtraFilter|aux.PConditionFilter|aux.PendCondition|aux.PendOperationCheck|aux.PendOperation|aux.EnableReviveLimitPendulumSummonable|aux.PendulumSummonableBool|aux.PSSCompleteProcedure|aux.AddLinkProcedure|aux.LConditionFilter|aux.LExtraFilter|aux.GetLinkCount|aux.GetLinkMaterials|aux.LCheckOtherMaterial|aux.LUncompatibilityFilter|aux.LCheckGoal|aux.LExtraMaterialCount|aux.LinkCondition|aux.LinkTarget|aux.LinkOperation|aux.EnableExtraDeckSummonCountLimit|aux.ExtraDeckSummonCountLimitReset|aux.IsMaterialListCode|aux.IsMaterialListSetCard|aux.IsMaterialListType|aux.AddCodeList|aux.IsCodeListed|aux.IsCounterAdded|aux.IsInGroup|aux.GetColumn|aux.MZoneSequence|aux.SZoneSequence|aux.ChangeBattleDamage|aux.bdcon|aux.bdocon|aux.bdgcon|aux.bdogcon|aux.dogcon|aux.dogfcon|aux.exccon|aux.bpcon|aux.dscon|aux.chainreg|aux.indsval|aux.indoval|aux.tgsval|aux.tgoval|aux.nzatk|aux.nzdef|aux.sumreg|aux.fuslimit|aux.ritlimit|aux.synlimit|aux.xyzlimit|aux.penlimit|aux.linklimit|aux.qlifilter|aux.gbspcon|aux.evospcon|aux.NecroValleyFilter|aux.bfgcost|aux.dncheck|aux.dlvcheck|aux.drkcheck|aux.dlkcheck|aux.dabcheck|aux.drccheck|aux.gfcheck|aux.gffcheck|aux.mzctcheck|aux.mzctcheckrel|aux.ExceptThisCard|aux.GetMultiLinkedZone|aux.CheckGroupRecursive|aux.CheckGroupRecursiveCapture|aux.CreateChecks|aux.CheckGroupRecursiveEach|aux.nbcon|aux.tdcfop)\b
+    </Rule>
+
+    <Rule color="Punctuation">
+      [?,.;()\[\]{}+\-/%*&lt;&gt;^+~!|&amp;]+
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Duel\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Card\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Group\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Effect\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Debug\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(Auxiliary\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b(aux\.[A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b([a-z]{0,3}c|a|d):([A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b[a-z]{0,3}g[0-9]{0,2}:([A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \b[a-z]{0,1}e[0-9v]{0,2}:([A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \be[0-9v][0-9]{0,1}:([A-Za-z_0-9]+)\b
+    </Rule>
+    <Rule color="WrongFunctions">
+      \bc[0-9]+\b
+    </Rule>
+    <!-- Mark previous rule-->
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*\() # followed by (
+    </Rule>
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*\") # followed by "
+    </Rule>
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*\') # followed by '
+    </Rule>
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*\{) # followed by {
+    </Rule>
+    <Rule color="MethodCall">
+      \b
+      [\d\w_]+  # an identifier
+      (?=\s*\[) # followed by [
+    </Rule>
+
+    <!-- Digits -->
+    <Rule color="NumberLiteral">
+      \b0[xX][0-9a-fA-F]+  # hex number
+      |
+      (	\b\d+(\.[0-9]+)?   #number with optional floating point
+      |	\.[0-9]+           #or just starting with floating point
+      )
+      ([eE][+-]?[0-9]+)? # optional exponent
+    </Rule>
+  </RuleSet>
+</SyntaxDefinition>

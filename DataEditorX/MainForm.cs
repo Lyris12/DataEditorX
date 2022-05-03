@@ -183,7 +183,7 @@ namespace DataEditorX
         {
             if (DEXConfig.ReadString(DEXConfig.USE_EDITOR) == "Avalon")
             {
-                CodeEditForm_Avalon cf = new CodeEditForm_Avalon();
+                CodeEditForm cf = new CodeEditForm();
                 //设置界面语言
                 LanguageHelper.SetFormLabel(cf);
                 //初始化函数提示

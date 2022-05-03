@@ -601,7 +601,8 @@ namespace DataEditorX
 
         private void menuitem_testlua_Click(object sender, EventArgs e)
         {
-            FileInfo fi = new FileInfo(this.nowFile);
+            if (nowFile == null) return;
+            FileInfo fi = new FileInfo(nowFile);
             string fn = fi.Name;
             if (!fn.ToUpper().EndsWith(".LUA"))
             {
@@ -667,6 +668,33 @@ namespace DataEditorX
             {
                 (this.DockPanel.Parent as MainForm).Open(file);
             }
+        }
+        private void menuitem_fixCardCode_Click(object sender, EventArgs e)
+        {
+            string text = this.fctb.Text;
+            Regex regex = new Regex(@"(c[0-9]{4,9})");
+            var matches = regex.Matches(text);
+            string cName;
+            if (nowFile != null && regex.IsMatch(nowFile))
+            {
+                cName = regex.Match(nowFile).Groups[1].Value;
+            }
+            else
+            {
+                MyMsg.Show(LMSG.InvalidFileName);
+                return;
+            }
+            HashSet<string> hs = new HashSet<string>();
+            foreach (Match match in matches)
+            {
+                hs.Add(match.Groups[1].Value);
+            }
+            foreach (string str in hs)
+            {
+                text = text.Replace(str, cName);
+                text = text.Replace(str.Substring(1), cName.Substring(1));
+            }
+            this.fctb.Text = text;
         }
         private void menuitem_tooltipFont_Click(object sender, EventArgs e)
         {

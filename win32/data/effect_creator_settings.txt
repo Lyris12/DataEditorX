@@ -1,0 +1,479 @@
+﻿#Effect Creator setting file
+#Use '#' at the start of a line to write a single-line comment.
+!EFFECT_CODES
+EFFECT_IMMUNE_EFFECT					目标卡不受效果影响
+EFFECT_DISABLE							目标卡的效果无效
+EFFECT_DISABLE_EFFECT					目标效果无效
+EFFECT_CANNOT_DISABLE					目标效果不能被无效
+EFFECT_CANNOT_INACTIVATE				目标卡的发动不会被无效化
+EFFECT_CANNOT_DISEFFECT					目标卡的效果不会被无效化
+EFFECT_SET_CONTROL						目标卡设置控制权
+EFFECT_CANNOT_CHANGE_CONTROL			目标卡的控制权不能变更
+EFFECT_CANNOT_ACTIVATE					目标卡不能把效果发动
+EFFECT_CANNOT_TRIGGER					目标卡不能把效果发动
+EFFECT_DISABLE_TRAPMONSTER				目标卡作为陷阱怪兽无效
+EFFECT_CANNOT_CHANGE_POSITION			目标卡不能改变表示形式
+EFFECT_TRAP_ACT_IN_HAND					目标玩家陷阱可以从手牌发动
+EFFECT_TRAP_ACT_IN_SET_TURN				目标玩家陷阱可以在盖放的回合发动
+EFFECT_REMAIN_FIELD						目标卡发动后继续留在场上
+EFFECT_MONSTER_SSET						目标卡可以当作魔法/陷阱卡使用从手卡到魔法与陷阱卡区域盖放
+EFFECT_CANNOT_SUMMON					目标玩家不能把怪兽召唤		不是不能通常召唤，要另写一个不能把怪兽盖放的效果
+EFFECT_CANNOT_FLIP_SUMMON				目标玩家不能把怪兽反转召唤
+EFFECT_CANNOT_SPECIAL_SUMMON			目标玩家不能把怪兽特殊召唤
+EFFECT_CANNOT_MSET						目标玩家不能把怪兽盖放		不是不能通常召唤，要另写一个不能把怪兽召唤的效果；推荐检查EFFECT_CANNOT_TURN_SET
+EFFECT_CANNOT_SSET						目标玩家不能把魔法陷阱卡盖放	推荐检查EFFECT_CANNOT_TURN_SET
+EFFECT_CANNOT_DRAW						目标玩家不能抽卡
+EFFECT_CANNOT_DISABLE_SUMMON			目标卡的召唤不会被无效化
+EFFECT_CANNOT_DISABLE_SPSUMMON			目标卡的特殊召唤不会被无效化
+EFFECT_SET_SUMMON_COUNT_LIMIT			目标玩家可以进行通常召唤最多X次
+EFFECT_EXTRA_SUMMON_COUNT				目标玩家在通常召唤外加上只有X次可以把怪兽召唤		要加上EFFECT_EXTRA_SET_COUNT才是完整的通常召唤
+EFFECT_SPSUMMON_CONDITION				目标卡(召唤条件)才能特殊召唤		这只是加上了不能正常特殊召唤的标签，正规特召方法要另用EFFECT_SPSUMMON_PROC写
+EFFECT_REVIVE_LIMIT						目标卡不能通常召唤		一般用不到，直接调用c:EnableReviveLimit()即可
+EFFECT_SUMMON_PROC						目标卡通常召唤的场合，可以(召唤条件)
+EFFECT_LIMIT_SUMMON_PROC				目标卡通常召唤的场合，必须(召唤条件)
+EFFECT_SPSUMMON_PROC_G					目标卡灵摆召唤的场合，必须(召唤条件)
+EFFECT_SET_PROC							目标卡通常召唤盖放的场合，可以(召唤条件)
+EFFECT_LIMIT_SET_PROC					目标卡通常召唤盖放的场合，必须(召唤条件)
+EFFECT_SPSUMMON_PROC					目标卡可以(召唤条件)特殊召唤
+EFFECT_EXTRA_SET_COUNT					目标玩家在通常召唤外加上只有X次可以把怪兽盖放		要加上EFFECT_EXTRA_SUMMON_COUNT才是完整的通常召唤
+EFFECT_CANNOT_DISABLE_FLIP_SUMMON		目标卡反转召唤不会无效化
+EFFECT_INDESTRUCTABLE					目标卡不会被破坏
+EFFECT_INDESTRUCTABLE_EFFECT			目标卡不会被效果破坏
+EFFECT_INDESTRUCTABLE_BATTLE			目标卡不会被战斗破坏
+EFFECT_UNRELEASABLE_SUM					目标卡不能作为上级召唤的解放
+EFFECT_UNRELEASABLE_NONSUM				目标卡不能为上级召唤以外而解放
+EFFECT_DESTROY_SUBSTITUTE				目标卡被破坏的场合，作为代替(代替动作)
+EFFECT_CANNOT_RELEASE					目标卡不能解放
+EFFECT_INDESTRUCTABLE_COUNT				目标卡一回合只有X次不会被破坏
+EFFECT_UNRELEASABLE_EFFECT				目标卡不能用效果解放
+EFFECT_DESTROY_REPLACE					目标卡被破坏的场合，可以作为代替(代替动作)
+EFFECT_RELEASE_REPLACE					目标卡解放的场合，可以作为代替(代替动作)
+EFFECT_SEND_REPLACE						目标卡送去(位置1)的场合，可以不送去(位置1)送去(位置2)
+EFFECT_CANNOT_DISCARD_HAND				目标玩家不能把手卡丢弃
+EFFECT_CANNOT_DISCARD_DECK				目标玩家不能从卡组把卡送去墓地
+EFFECT_CANNOT_USE_AS_COST				目标卡不能作为COST使用
+EFFECT_CANNOT_PLACE_COUNTER				目标玩家不能给场上的卡放置指示物
+EFFECT_CANNOT_TO_GRAVE_AS_COST			目标玩家不能把卡送去墓地来让卡的效果发动
+EFFECT_LEAVE_FIELD_REDIRECT				目标卡从场上离开的场合(重新指定去向)
+EFFECT_TO_HAND_REDIRECT					目标卡回到手卡的场合不回到手卡(重新指定去向)
+EFFECT_TO_DECK_REDIRECT					目标卡回到卡组的场合不回到卡组(重新指定去向)
+EFFECT_TO_GRAVE_REDIRECT				目标卡送去墓地的场合(重新指定去向)
+EFFECT_TO_GRAVE_REDIRECT_CB				目标卡在怪兽区域被破坏的场合，可以不送去墓地当作永续魔法卡使用在自己的魔法与陷阱区域表侧表示放置
+EFFECT_REMOVE_REDIRECT					目标卡从游戏除外的场合(重新指定去向)
+EFFECT_BATTLE_DESTROY_REDIRECT			目标卡战斗破坏对方怪兽的场合，破坏的那只怪兽不送去墓地(重新指定去向)
+EFFECT_CANNOT_TO_HAND					目标玩家不能把卡加入手卡
+EFFECT_CANNOT_TO_DECK					目标玩家不能让卡回到卡组
+EFFECT_CANNOT_REMOVE					目标玩家不能把卡除外
+EFFECT_CANNOT_TO_GRAVE					目标玩家不能把卡送去墓地
+EFFECT_CANNOT_TURN_SET					目标玩家不能把卡转为里侧	一般用于“不能把卡盖放”，检查EFFECT_CANNOT_MSET和EFFECT_CANNOT_SSET。
+EFFECT_CANNOT_BE_BATTLE_TARGET			目标卡不能选择目标卡作为攻击对象
+EFFECT_CANNOT_BE_EFFECT_TARGET			目标卡不会成为效果的对象
+EFFECT_IGNORE_BATTLE_TARGET				目标卡不会成为攻击对象（自己场上只有这个效果适用的怪兽存在的状态中的对方的攻击变成对自己的直接攻击。）
+EFFECT_CANNOT_SELECT_BATTLE_TARGET		目标玩家不能选择攻击对象
+EFFECT_CANNOT_SELECT_EFFECT_TARGET		目标玩家不能选择效果的对象
+EFFECT_CANNOT_DIRECT_ATTACK				目标卡不能直接攻击
+EFFECT_DIRECT_ATTACK					目标卡可以直接攻击对方玩家
+EFFECT_DUAL_STATUS						目标卡当作再1次召唤的状态使用
+EFFECT_EQUIP_LIMIT						目标卡必须由(装备条件)才能装备	对装备卡的限制(比如传说之剑)；另外如同盟运输车等卡片装备的怪兽也要加上这个效果
+EFFECT_DUAL_SUMMONABLE					目标卡可以当作通常召唤作再度召唤
+EFFECT_REVERSE_DAMAGE					目标玩家作为自己因战斗以及卡的效果受到伤害的代替回复基本分
+EFFECT_REVERSE_RECOVER					目标玩家基本分回复效果变成给与目标玩家基本分伤害效果
+EFFECT_CHANGE_DAMAGE					目标玩家受到的伤害变成(新数值)
+EFFECT_REFLECT_DAMAGE					目标玩家(受到)的伤害由对方代受
+EFFECT_CANNOT_ATTACK					目标卡不能攻击
+EFFECT_CANNOT_ATTACK_ANNOUNCE			目标卡不能攻击宣言
+EFFECT_CANNOT_CHANGE_POS_E				目标卡不会被卡的效果变更表示形式
+EFFECT_ACTIVATE_COST					目标玩家若不(支付某种代价)不能把卡发动
+EFFECT_SUMMON_COST						目标玩家若不(支付某种代价)不能把卡召唤
+EFFECT_SPSUMMON_COST					目标玩家若不(支付某种代价)不能把卡特殊召唤
+EFFECT_FLIPSUMMON_COST					目标玩家若不(支付某种代价)不能把卡反转召唤
+EFFECT_MSET_COST						目标玩家若不(支付某种代价)不能把怪兽盖放
+EFFECT_SSET_COST						目标玩家若不(支付某种代价)不能把魔法陷阱卡盖放
+EFFECT_ATTACK_COST						目标卡若不(支付某种代价)不能攻击
+EFFECT_UPDATE_ATTACK					目标卡攻击力上升/下降				正数上升，负数下降
+EFFECT_SET_ATTACK						目标卡攻击力变成(低优先级)			用于如召唤时就决定好攻击力的场合；被覆盖后不会复原
+EFFECT_SET_ATTACK_FINAL					目标卡攻击力变成(高优先级)			用于类似“直到回合结束变成0”的效果
+EFFECT_SET_BASE_ATTACK					目标卡原本攻击力变成				
+EFFECT_UPDATE_DEFENSE					目标卡守备力上升/下降				正数上升，负数下降
+EFFECT_SET_DEFENSE						目标卡守备力变成(低优先级)			用于如召唤时就决定好守备力的场合；被覆盖后不会复原
+EFFECT_SET_DEFENSE_FINAL				目标卡守备力变成(高优先级)			用于类似“直到回合结束变成0”的效果
+EFFECT_SET_BASE_DEFENSE					目标卡原本守备力变成
+EFFECT_REVERSE_UPDATE					目标玩家攻击力·守备力的上升·下降的效果变成逆向
+EFFECT_SWAP_AD							目标卡攻击力·守备力交换
+EFFECT_SWAP_BASE_AD						目标卡原本攻击力·守备力交换
+EFFECT_ADD_CODE							目标卡卡名在规则上也当作(某张卡片)使用
+EFFECT_CHANGE_CODE						目标卡的卡名当作(某张卡片)同名卡使用
+EFFECT_ADD_TYPE							目标卡当作(某种类)使用				用于“这张卡为素材作XX召唤的怪兽得到以下效果”给召唤出的非效果怪兽附加效果怪兽种类，或将不特定魔法陷阱卡特殊召唤后附加怪兽种类
+EFFECT_REMOVE_TYPE						目标卡不当作(某种类)使用			用于类似“这张卡只要在场上表侧表示存在，当作通常怪兽使用”的效果
+EFFECT_CHANGE_TYPE						目标卡当作(某种类)使用(并马上移动)	用于类似“当作永续魔法卡使用在自己的魔法与陷阱区域表侧表示放置”的效果
+EFFECT_ADD_RACE							目标卡也当作(某种族)使用
+EFFECT_REMOVE_RACE						目标卡不当作(某种族)使用
+EFFECT_CHANGE_RACE						目标卡当作(某种族)使用
+EFFECT_ADD_ATTRIBUTE					目标卡也当作(某属性)使用
+EFFECT_REMOVE_ATTRIBUTE					目标卡不当作(某属性)使用
+EFFECT_CHANGE_ATTRIBUTE					目标卡当作(某属性)使用
+EFFECT_UPDATE_LEVEL						目标卡等级上升/下降				正数上升，负数下降
+EFFECT_CHANGE_LEVEL						目标卡等级变成(低优先级)			用于如召唤时就决定好等级的场合；被覆盖后不会复原
+EFFECT_CHANGE_LEVEL_FINAL				目标卡等级变成(高优先级)			用于类似“直到回合结束变成1”的效果
+EFFECT_UPDATE_RANK						目标卡阶级上升/下降
+EFFECT_CHANGE_RANK						目标卡阶级变成(低优先级)			用于如召唤时就决定好阶级的场合；被覆盖后不会复原
+EFFECT_CHANGE_RANK_FINAL				目标卡等级变成(高优先级)			用于类似“直到回合结束变成1”的效果
+EFFECT_UPDATE_LSCALE					目标卡左刻度上升/下降				就规则而言，左右刻度其实应当是合一的。调用这个效果时请别忘记把右刻度也一起设了。
+EFFECT_CHANGE_LSCALE					目标卡左刻度变成					就规则而言，左右刻度其实应当是合一的。调用这个效果时请别忘记把右刻度也一起设了。
+EFFECT_UPDATE_RSCALE					目标卡改变右刻度					就规则而言，左右刻度其实应当是合一的。调用这个效果时请别忘记把左刻度也一起设了。
+EFFECT_CHANGE_RSCALE					目标卡设置右刻度					就规则而言，左右刻度其实应当是合一的。调用这个效果时请别忘记把左刻度也一起设了。
+EFFECT_SET_POSITION						目标卡变成(表示形式)
+EFFECT_SELF_DESTROY						目标卡在满足(某种条件)的场合目标卡破坏。		用于不入连锁的破坏
+EFFECT_SELF_TOGRAVE						目标卡在满足(某种条件)的场合目标卡送去墓地。	用于不入连锁的送墓
+EFFECT_DOUBLE_TRIBUTE					目标卡1只怪兽可以作为2只数量的祭品
+EFFECT_TRIPLE_TRIBUTE					目标卡1只怪兽可以作为3只数量的祭品
+EFFECT_DECREASE_TRIBUTE					目标玩家把(满足条件的)怪兽召唤的场合需要的解放减少(数量)只
+EFFECT_DECREASE_TRIBUTE_SET				目标玩家把(满足条件的)怪兽盖放的场合需要的解放减少(数量)只
+EFFECT_TRIBUTE_LIMIT					目标卡上级召唤的场合，解放的怪兽必须是(条件)
+EFFECT_ADD_EXTRA_TRIBUTE				目标玩家上级召唤的场合，可以作为怪兽的代替而把(指定的卡)解放
+EFFECT_EXTRA_RELEASE					目标玩家把怪兽解放的场合，必须作为1只自己怪兽的代替而把(某些卡)解放
+EFFECT_EXTRA_RELEASE_SUM				目标玩家把怪兽解放的场合，可以作为1只自己怪兽的代替而把(某些卡)解放
+EFFECT_EXTRA_RELEASE_NONSUM				目标玩家为让卡的效果发动而把卡解放的场合，可以作为代替而把(某些卡)解放
+EFFECT_PUBLIC							目标卡公开
+EFFECT_COUNTER_PERMIT					目标卡标记为可以放置(某类型)指示物的卡
+EFFECT_COUNTER_LIMIT					目标卡标记为最多能放置某类型指示物(数量)个的卡
+EFFECT_RCOUNTER_REPLACE					目标玩家把(某类型)指示物取除的场合，可以作为代替
+EFFECT_LPCOST_CHANGE					目标玩家支付的基本分变成(新数值)
+EFFECT_LPCOST_REPLACE					目标玩家支付基本分的场合，可以作为代替(做动作)
+EFFECT_SKIP_DP							目标玩家跳过抽卡阶段
+EFFECT_SKIP_SP							目标玩家跳过准备阶段
+EFFECT_SKIP_M1							目标玩家跳过主要阶段1
+EFFECT_SKIP_BP							目标玩家跳过战斗阶段
+EFFECT_SKIP_M2							目标玩家跳过主要阶段2
+EFFECT_CANNOT_BP						目标玩家不能进入战斗阶段
+EFFECT_CANNOT_M2						目标玩家不能进入主要阶段2
+EFFECT_CANNOT_EP						目标玩家不能进入结束阶段
+EFFECT_SKIP_TURN						目标玩家跳过整个回合
+EFFECT_DEFENSE_ATTACK					目标卡可以用表侧守备表示的状态作出攻击
+EFFECT_MUST_ATTACK						目标玩家必须选择(某张卡)作为攻击对象				不封锁直接攻击
+EFFECT_ONLY_BE_ATTACKED					目标卡控制者来看的对方只能向目标卡攻击				封锁直接攻击
+EFFECT_FIRST_ATTACK						目标卡必须继续攻击/目标卡必须首先进行攻击
+EFFECT_ATTACK_ALL						目标卡可以向对方怪兽全部各作1次攻击
+EFFECT_EXTRA_ATTACK						目标卡在同1次的战斗阶段中可以多作(数量)次攻击		注意是增加的数量而不是最终设置的数量
+EFFECT_NO_BATTLE_DAMAGE					目标卡的战斗发生的双方的战斗伤害变成0
+EFFECT_AVOID_BATTLE_DAMAGE				目标卡的战斗发生的对自己的战斗伤害变成0
+EFFECT_REFLECT_BATTLE_DAMAGE			目标卡的战斗发生的战斗伤害由对方代受
+EFFECT_BOTH_BATTLE_DAMAGE				目标卡的战斗发生的战斗伤害由双方玩家承受
+EFFECT_ALSO_BATTLE_DAMAGE				目标卡的战斗发生的对自己的战斗伤害让对方也承受
+EFFECT_PIERCE							目标卡向守备表示怪兽攻击的场合，给与攻击力超过那个守备力的数值的战斗伤害
+EFFECT_BATTLE_DAMAGE_TO_EFFECT			目标卡给与对方玩家的战斗伤害当作效果伤害使用
+EFFECT_CHANGE_BATTLE_DAMAGE				目标卡的战斗发生的对自己的战斗伤害变成(新数值)
+#EFFECT_TOSS_COIN_REPLACE				重新抛硬币									TODO:没卡在用，思考下怎么介绍
+#EFFECT_TOSS_DICE_REPLACE				重新掷骰子
+EFFECT_FUSION_MATERIAL					目标卡的正规融合素材条件						多数场合还是推荐使用aux中的函数而不是自己写
+EFFECT_CHAIN_MATERIAL					目标玩家融合召唤的场合，可以把融合怪兽卡决定的融合素材怪兽从自己的手卡·卡组·场上·墓地选出从游戏中除外，用这些作为融合素材
+EFFECT_SYNCHRO_MATERIAL					目标卡的正规同调素材条件
+EFFECT_XYZ_MATERIAL						目标卡的正规XYZ素材条件
+EFFECT_FUSION_SUBSTITUTE				目标卡可以作为融合怪兽卡有卡名记述的1只融合素材怪兽的代替
+EFFECT_CANNOT_BE_FUSION_MATERIAL		目标卡不能作为融合素材
+EFFECT_CANNOT_BE_SYNCHRO_MATERIAL		目标卡不能作为同调素材
+EFFECT_SYNCHRO_MATERIAL_CUSTOM			目标卡为素材作同调召唤的场合，(本来不符合规则的特定)怪兽也能作为同调素材
+EFFECT_CANNOT_BE_XYZ_MATERIAL			目标卡不能作为XYZ素材
+EFFECT_CANNOT_BE_LINK_MATERIAL			目标卡不能作为连接素材
+EFFECT_SYNCHRO_LEVEL					目标卡作为同调素材的场合，可以当作(其他等级)怪兽使用
+EFFECT_RITUAL_LEVEL						目标卡作为仪式素材的场合，可以作为(其他等级)的解放使用
+EFFECT_XYZ_LEVEL						目标卡作为XYZ素材的场合，可以作为(其他等级)怪兽使用
+EFFECT_EXTRA_RITUAL_MATERIAL			目标卡-仪式召唤进行的场合，可以作为那次仪式召唤需要的等级数值的1只怪兽，(做动作)
+EFFECT_NONTUNER							目标卡可以当作调整以外的怪兽使用
+EFFECT_OVERLAY_REMOVE_REPLACE			目标玩家可以作为取除的XYZ素材的代替(做动作)
+EFFECT_SCRAP_CHIMERA					目标卡作为同调素材的场合，其他的同调素材必须全部是(条件)
+EFFECT_TUNE_MAGICIAN_X					目标卡作为XYZ素材的场合，其他的XYZ素材必须全部是(条件)
+EFFECT_TUNE_MAGICIAN_F					目标卡作为融合素材的场合，其他的融合素材必须全部是(条件)
+EFFECT_MATERIAL_CHECK					目标卡上场时进行一次素材检查						用来辅助“以(条件)为素材/作解放对这张卡的(召唤方式)成功时”		
+EFFECT_DISABLE_FIELD					目标玩家的怪兽卡区域最多(数量)处变成不能使用
+EFFECT_USE_EXTRA_MZONE					目标卡只要在场上表侧表示存在，自己的怪兽卡区域(数量)处变成不能使用		实质上其实是“这张卡需要占据多个格子”
+EFFECT_USE_EXTRA_SZONE					目标卡只要在场上表侧表示存在，自己的魔法卡区域(数量)处变成不能使用		实质上其实是“这张卡需要占据多个格子”
+EFFECT_MAX_MZONE						目标玩家场上能出的怪兽变成最多到3只
+EFFECT_MAX_SZONE						目标玩家场上能出的魔法·陷阱卡变成最多到3张
+EFFECT_MUST_USE_MZONE					目标玩家必须使用怪兽区的某些格子					一般反向用于“自己不能在作为这张卡所连接区的额外怪兽区域让怪兽出现”
+EFFECT_HAND_LIMIT						目标玩家手牌数量限制改变
+EFFECT_DRAW_COUNT						目标玩家抽卡阶段时的通常抽卡可以抽(数量)张卡
+EFFECT_SPIRIT_DONOT_RETURN				目标玩家场上存在的灵魂怪兽在结束阶段时回到手卡效果不发动
+EFFECT_SPIRIT_MAYNOT_RETURN				目标玩家场上存在的灵魂怪兽在结束阶段时回到手卡效果可以不发动
+EFFECT_CHANGE_ENVIRONMENT				目标玩家场上变成(场地卡)
+EFFECT_NECRO_VALLEY						目标玩家受到「王家长眠之谷」影响
+EFFECT_FORBIDDEN						目标卡受到「禁止令」影响
+EFFECT_NECRO_VALLEY_IM					目标卡这个效果不会被「王家长眠之谷」的效果无效化
+EFFECT_REVERSE_DECK						目标玩家把卡组翻转进行决斗
+EFFECT_REMOVE_BRAINWASHING				目标玩家场上存在的全部怪兽的控制权回到持有者手中
+EFFECT_BP_TWICE							目标玩家的战斗阶段可以进行2次
+EFFECT_UNIQUE_CHECK						目标卡在自己场上只能有1只表侧表示存在				请直接使用Card.SetUniqueOnField()
+EFFECT_MATCH_KILL						目标卡的直接攻击让对方基本分变成0的场合，目标卡的控制者比赛胜利
+EFFECT_SYNCHRO_CHECK					目标卡作为同调素材的场合，其他的同调素材怪兽当作(其他条件)使用
+EFFECT_QP_ACT_IN_NTPHAND				目标玩家在对方回合可以把1张速攻魔法卡从手卡发动
+EFFECT_MUST_BE_SMATERIAL				目标卡的控制者不能作以目标卡为同调素材的同调召唤以外的特殊召唤
+EFFECT_MUST_BE_FMATERIAL				目标卡的控制者不能作以目标卡为融合素材的融合召唤以外的特殊召唤
+EFFECT_MUST_BE_XMATERIAL				目标卡的控制者不能作以目标卡为XYZ素材的XYZ召唤以外的特殊召唤
+EFFECT_MUST_BE_LMATERIAL				目标卡的控制者不能作以目标卡为连接素材的连接召唤以外的特殊召唤
+EFFECT_SPSUMMON_COUNT_LIMIT				目标卡-自己对目标卡1回合只能有(数值)次特殊召唤
+EFFECT_LEFT_SPSUMMON_COUNT				目标玩家1回合只能有合计最多(数值)次把怪兽特殊召唤
+EFFECT_ADD_SETCODE						目标卡也当作(字段)卡使用
+EFFECT_NO_EFFECT_DAMAGE					目标玩家-效果让目标玩家受到的效果伤害变成0
+#EFFECT_UNSUMMONABLE_CARD				N/A
+#EFFECT_DISABLE_CHAIN_FIELD				N/A
+EFFECT_DISCARD_COST_CHANGE				目标玩家要(因某种原因)而丢弃的手卡变成不需要
+EFFECT_HAND_SYNCHRO						目标卡作为同调素材的场合，其他的同调素材怪兽必须是手卡1只怪兽
+EFFECT_ADD_FUSION_CODE					目标卡作为融合素材的场合，可以作为(卡名)来成为融合素材
+EFFECT_ADD_FUSION_SETCODE				目标卡作为融合素材的场合，可以作为(字段)来成为融合素材
+#EFFECT_RISE_TO_FULL_HEIGHT				N/A
+EFFECT_ONLY_ATTACK_MONSTER				目标玩家的对方只能向(某只怪兽)攻击
+EFFECT_MUST_ATTACK_MONSTER				目标卡控制者对方场上的怪兽可以攻击的场合，必须向目标卡作出攻击
+EFFECT_PATRICIAN_OF_DARKNESS			目标卡在场上表侧表示存在，对方怪兽的攻击对象由目标卡的控制者选择
+EFFECT_EXTRA_ATTACK_MONSTER				目标卡可以再向对方怪兽作出(数值)数量的攻击						注意是多攻击几次而不是总数
+EFFECT_UNION_STATUS						目标卡处于同盟状态					请直接使用aux.SetUnionState(c)
+EFFECT_OLDUNION_STATUS					目标卡有旧同盟卡共通效果			请直接使用aux.SetUnionState(c)；旧效果：1只怪兽可以装备的同盟最多1张。装备怪兽被战斗破坏的场合，作为代替把这张卡破坏。
+EFFECT_ADD_FUSION_ATTRIBUTE				目标卡作为融合素材的场合，可以作为(属性)来成为融合素材
+EFFECT_REMOVE_FUSION_ATTRIBUTE			目标卡作为融合素材的场合，不能作为(属性)来成为融合素材
+EFFECT_CHANGE_FUSION_ATTRIBUTE			目标卡作为融合素材的场合，必须作为(属性)来成为融合素材
+EFFECT_EXTRA_FUSION_MATERIAL			目标卡可以作为(特定某只)融合怪兽的融合素材使用
+EFFECT_TUNER_MATERIAL_LIMIT				目标卡作为同调素材的场合，其他的同调素材必须全部是(条件)
+EFFECT_ADD_LINK_CODE					目标卡作为连接素材的场合，可以作为(卡名)来成为连接素材
+EFFECT_ADD_LINK_SETCODE					目标卡作为连接素材的场合，可以作为(字段)来成为连接素材
+EFFECT_ADD_LINK_ATTRIBUTE				目标卡作为连接素材的场合，可以作为(属性)来成为连接素材
+EFFECT_ADD_LINK_RACE					目标卡作为连接素材的场合，可以作为(种族)来成为连接素材
+EFFECT_EXTRA_LINK_MATERIAL				目标卡作为连接素材的场合，其他的连接素材必须全部是(条件)
+EFFECT_QP_ACT_IN_SET_TURN				目标玩家的速攻魔法可以在盖放的回合发动
+EFFECT_EXTRA_PENDULUM_SUMMON			目标玩家在通常的灵摆召唤外加上只有1次，可以把怪兽灵摆召唤
+EFFECT_MATERIAL_LIMIT					目标卡的召唤素材必须全部是(条件)
+EFFECT_SET_BATTLE_ATTACK				目标卡进行战斗的伤害计算用设置的攻击力进行
+EFFECT_SET_BATTLE_DEFENSE				目标卡进行战斗的伤害计算用设置的守备力进行
+!EVENT_CODES
+#以下全写成时，自己加EFFECT_FLAG_DELAY吧
+EVENT_FLIP						卡反转时
+EVENT_FREE_CHAIN				任何时点
+EVENT_REMOVE					卡从游戏中除外时
+EVENT_TO_HAND					卡加入手卡时			包括抽到时
+EVENT_TO_DECK					卡回到卡组时
+EVENT_TO_GRAVE					卡送去墓地时			从除外区回到墓地不算
+EVENT_CHANGE_POS				卡的表示形式变更时
+EVENT_RELEASE					卡被解放时
+EVENT_DISCARD					玩家丢弃手卡时
+EVENT_LEAVE_FIELD				卡离开场上时
+EVENT_LEAVE_FIELD_P				卡从场上离开之际
+EVENT_CHAIN_SOLVING				卡的效果处理开始时		多用于效果无效化
+#EVENT_CHAIN_ACTIVATING			连锁处理准备中
+EVENT_CHAIN_SOLVED				卡的效果处理结束时		多用于“每次(玩家)把魔法卡发动”
+EVENT_CHAIN_NEGATED				效果发动无效时
+EVENT_CHAIN_DISABLED			效果无效时
+EVENT_CHAIN_END					连锁结束时			用于“连锁的场合”“自己的反击陷阱发动成功的场合”等
+EVENT_CHAINING					效果发动时			用于各类反击陷阱
+EVENT_BECOME_TARGET				卡成为效果的对象时
+EVENT_DESTROY					卡被破坏之际			TODO:区别？
+EVENT_DESTROYED					卡被破坏时
+EVENT_MOVE						卡片移动时
+EVENT_ADJUST					场面和阶段有变化时		实质为adjust_all()调整后，御前试合。在此间使用Duel.Readjust()有可能死循环，请谨慎
+EVENT_SUMMON_SUCCESS			通常召唤成功时
+EVENT_FLIP_SUMMON_SUCCESS		反转召唤成功时
+EVENT_SPSUMMON_SUCCESS			特殊召唤成功时
+EVENT_SUMMON					召唤之际(怪兽还没上场、神宣等时点)
+EVENT_FLIP_SUMMON				反转召唤之际
+EVENT_SPSUMMON					特殊召唤之际
+EVENT_MSET						怪兽盖放时
+EVENT_SSET						魔法·陷阱卡被盖放时
+EVENT_BE_MATERIAL				作为(召唤方法)素材时
+EVENT_BE_PRE_MATERIAL			将要作为(召唤方法)素材时
+EVENT_DRAW						抽卡时
+EVENT_DAMAGE					受到伤害时
+EVENT_RECOVER					回复生命值时
+EVENT_PREDRAW					抽卡阶段通常抽卡前
+EVENT_SUMMON_NEGATED			召唤被无效时
+EVENT_FLIP_SUMMON_NEGATED		反转召唤被无效时
+EVENT_SPSUMMON_NEGATED			特殊召唤被无效时
+EVENT_CONTROL_CHANGED			控制权变更时
+EVENT_EQUIP						装备卡被装备时
+EVENT_ATTACK_ANNOUNCE			攻击宣言时
+EVENT_BE_BATTLE_TARGET			被选为攻击对象时
+EVENT_BATTLE_START				伤害步骤开始时				反转前
+EVENT_BATTLE_CONFIRM			伤害计算前				反转后
+EVENT_PRE_DAMAGE_CALCULATE		伤害计算时
+#EVENT_DAMAGE_CALCULATING		N/A
+EVENT_PRE_BATTLE_DAMAGE			即将产生战斗伤害			只能使用EFFECT_TYPE_CONTINUOUS，用于变化战斗伤害
+#EVENT_BATTLE_END				N/A
+EVENT_BATTLED					伤害计算后
+EVENT_BATTLE_DESTROYING			战斗破坏对方怪兽送去墓地时
+EVENT_BATTLE_DESTROYED			被战斗破坏送去墓地时
+EVENT_DAMAGE_STEP_END			伤害步骤结束时				电 光 皇
+EVENT_ATTACK_DISABLED			攻击无效时				翻倍机会
+EVENT_BATTLE_DAMAGE				造成战斗伤害时
+EVENT_TOSS_DICE					掷骰子之际
+EVENT_TOSS_COIN					抛硬币之际
+EVENT_TOSS_COIN_NEGATE			掷硬币的效果适用之际
+EVENT_TOSS_DICE_NEGATE			掷骰子的效果适用之际
+EVENT_LEVEL_UP					等级上升时
+EVENT_PAY_LPCOST				支付生命值时
+EVENT_DETACH_MATERIAL			去除XYZ素材时
+EVENT_RETURN_TO_GRAVE			回到墓地时
+EVENT_TURN_END					回合结束时
+EVENT_PHASE						阶段结束时
+EVENT_PHASE_START				阶段开始时
+EVENT_ADD_COUNTER				增加指示物时
+EVENT_REMOVE_COUNTER			去除指示物时				Card.RemoveCounter()必须手动触发此事件
+EVENT_CUSTOM					自定义事件
+!EFFECT_PROPERTY
+EFFECT_FLAG_CARD_TARGET				此效果取对象
+EFFECT_FLAG_IGNORE_RANGE			此效果影响任何区域的卡
+EFFECT_FLAG_ABSOLUTE_TARGET			此效果的Target Range不会因为控制权的改变而改变
+EFFECT_FLAG_IGNORE_IMMUNE			此效果无视效果免疫
+EFFECT_FLAG_SET_AVAILABLE			此效果影响场上里侧的卡，或可在里侧状态发动
+EFFECT_FLAG_CANNOT_INACTIVATE		此卡的发动不能被无效
+EFFECT_FLAG_CANNOT_NEGATE			此效果的发动不能被无效
+EFFECT_FLAG_CANNOT_DISABLE			此效果的效果不能被无效
+EFFECT_FLAG_PLAYER_TARGET			此效果以玩家为对象
+EFFECT_FLAG_BOTH_SIDE				此效果双方都能使用				如王宫的弹压
+EFFECT_FLAG_COPY_INHERIT			此效果若被复制，则继承其Reset属性
+EFFECT_FLAG_DAMAGE_STEP				此效果可以在伤害步骤发动
+EFFECT_FLAG_DAMAGE_CAL				此效果可以在伤害计算时发动
+EFFECT_FLAG_DELAY					此效果是“场合”效果(另开连锁)而非“时”效果
+EFFECT_FLAG_SINGLE_RANGE			此效果只对持有效果的卡有效
+EFFECT_FLAG_UNCOPYABLE				此效果不能复制
+EFFECT_FLAG_OATH					此效果是对卡效果的誓约限制(发动无效不适用，效果无效也适用)
+EFFECT_FLAG_SPSUM_PARAM				此效果将怪兽出场时需要遵守一定表示形式				用于EFFECT_SPSUMMON_PROC等正规召唤手续相关Code，在TargetRange设置
+EFFECT_FLAG_REPEAT					此效果在场面变化后需要重新计算					只适用于永续效果
+EFFECT_FLAG_NO_TURN_RESET			此效果的使用次数计数不随回合结束而重置				发条全家
+EFFECT_FLAG_EVENT_PLAYER			此效果视为玩家进行的动作						影响效果处理的触发者是“效果持有者”还是“受影响的玩家/受影响的卡的持有者”
+EFFECT_FLAG_OWNER_RELATE			此效果在效果持有者(Owner)失效后也失效
+EFFECT_FLAG_CLIENT_HINT				此效果在触发时需要进行提示客户端					用于诸如全场代破的效果，让玩家知道效果适用
+EFFECT_FLAG_CONTINUOUS_TARGET		此效果要与其他卡建立持续对象关系
+EFFECT_FLAG_LIMIT_ZONE				此魔法·陷阱卡发动时只能在某些区域发动				如灵摆转移：要将卡转移到灵摆区，就不能在灵摆区发动
+EFFECT_FLAG_IMMEDIATELY_APPLY		此效果在发动时而不是效果处理时就适用				基本上只用于永续效果。大概只能用于辅助其他事件？
+EFFECT_FLAG2_COF					此通常魔法卡可以在主要阶段以外发动
+!CATEGORY
+CATEGORY_DESTROY				破坏效果
+CATEGORY_RELEASE				解放效果
+CATEGORY_REMOVE					除外效果
+CATEGORY_TOHAND					回手牌效果
+CATEGORY_TODECK					回卡组效果
+CATEGORY_TOGRAVE				送去墓地效果
+CATEGORY_DECKDES				從卡组送去墓地效果
+CATEGORY_HANDES					丢弃手牌效果
+CATEGORY_SUMMON					含召唤的效果
+CATEGORY_SPECIAL_SUMMON			含特殊召唤的效果
+CATEGORY_TOKEN					含衍生物效果
+CATEGORY_GRAVE_ACTION			包含涉及墓地的部分的效果
+CATEGORY_POSITION				改变表示形式效果
+CATEGORY_CONTROL				改变控制权效果
+CATEGORY_DISABLE				使效果无效效果
+CATEGORY_DISABLE_SUMMON			无效召唤效果
+CATEGORY_DRAW					抽卡效果
+CATEGORY_SEARCH					检索卡组效果
+CATEGORY_EQUIP					装备效果
+CATEGORY_DAMAGE					伤害效果
+CATEGORY_RECOVER				回复效果
+CATEGORY_ATKCHANGE				改变攻击效果
+CATEGORY_DEFCHANGE				改变防御效果
+CATEGORY_COUNTER				指示物效果
+CATEGORY_COIN					硬币效果
+CATEGORY_DICE					骰子效果
+CATEGORY_LEAVE_GRAVE			涉及墓地的效果
+CATEGORY_LVCHANGE				改变等级效果
+CATEGORY_NEGATE					使发动无效效果
+CATEGORY_ANNOUNCE				发动時宣言卡名的效果
+CATEGORY_FUSION_SUMMON			融合召唤效果
+CATEGORY_TOEXTRA				回额外卡组效果
+!TIMING
+TIMING_DRAW_PHASE				抽卡阶段时点
+TIMING_STANDBY_PHASE			准备阶段时点
+TIMING_MAIN_END					主要阶段结束时点
+TIMING_BATTLE_START				战斗阶段开始时点
+TIMING_BATTLE_END				战斗阶段结束时点
+TIMING_END_PHASE				结束阶段时点
+TIMING_SUMMON					召唤时点
+TIMING_SPSUMMON					特殊召唤时点
+TIMING_FLIPSUMMON				翻转召唤时点
+TIMING_MSET						放置怪兽时点
+TIMING_SSET						放置魔陷时点
+TIMING_POS_CHANGE				表示形式变更时点
+TIMING_ATTACK					攻击宣言时点
+TIMING_DAMAGE_STEP				伤害步骤时点
+TIMING_DAMAGE_CAL				伤害计算时点
+TIMING_CHAIN_END				连锁结束时点
+TIMING_DRAW						抽卡时点(不是抽卡阶段)
+TIMING_DAMAGE					造成伤害时点
+TIMING_RECOVER					回复时点
+TIMING_DESTROY					破坏时点
+TIMING_REMOVE					除外时点
+TIMING_TOHAND					加入手牌时点(检索、回收等)
+TIMING_TODECK					回卡组时点
+TIMING_TOGRAVE					进墓地时点
+TIMING_BATTLE_PHASE				战斗阶段时点
+TIMING_EQUIP					装备时点
+TIMING_BATTLE_STEP_END			戰鬥步驟結束時
+TIMING_BATTLED					伤害计算后时点
+!LOCATIONS
+LOCATION_DECK	  				卡组
+LOCATION_HAND	  				手牌
+LOCATION_MZONE	  				怪兽区
+LOCATION_SZONE	  				魔陷区(0~4)+场地区(5)
+LOCATION_GRAVE	  				墓地
+LOCATION_REMOVED  				除外区
+LOCATION_EXTRA	  				额外
+LOCATION_OVERLAY  				XYZ素材
+LOCATION_ONFIELD  				场上(LOCATION_MZONE+LOCATION_SZONE)
+LOCATION_FZONE  				场地区
+LOCATION_PZONE  				灵摆区
+!TYPES
+TYPE_MONSTER		怪兽卡
+TYPE_SPELL			魔法卡
+TYPE_TRAP			陷阱卡
+TYPE_NORMAL			通常怪兽
+TYPE_EFFECT			效果
+TYPE_FUSION			融合
+TYPE_RITUAL			仪式
+TYPE_TRAPMONSTER	陷阱怪兽
+TYPE_SPIRIT			灵魂
+TYPE_UNION			同盟
+TYPE_DUAL			二重
+TYPE_TUNER			调整
+TYPE_SYNCHRO		同调
+TYPE_TOKEN			衍生物
+TYPE_QUICKPLAY		速攻
+TYPE_CONTINUOUS		永续
+TYPE_EQUIP			装备
+TYPE_FIELD			场地
+TYPE_COUNTER		反击
+TYPE_FLIP			翻转
+TYPE_TOON			卡通
+TYPE_XYZ			XYZ
+TYPE_PENDULUM		灵摆
+TYPE_SPSUMMON		特殊召唤
+TYPE_LINK			连接
+!ATTRIBUTES
+ATTRIBUTE_EARTH		地
+ATTRIBUTE_WATER		水
+ATTRIBUTE_FIRE		炎
+ATTRIBUTE_WIND		风
+ATTRIBUTE_LIGHT		光
+ATTRIBUTE_DARK		暗
+ATTRIBUTE_DIVINE	神
+!RACES
+RACE_ALL			全种族
+RACE_WARRIOR		战士
+RACE_SPELLCASTER	魔法师
+RACE_FAIRY			天使
+RACE_FIEND			恶魔
+RACE_ZOMBIE			不死
+RACE_MACHINE		机械
+RACE_AQUA			水
+RACE_PYRO			炎
+RACE_ROCK			岩石
+RACE_WINDBEAST		鸟兽
+RACE_PLANT			植物
+RACE_INSECT			昆虫
+RACE_THUNDER		雷
+RACE_DRAGON			龙
+RACE_BEAST			兽
+RACE_BEASTWARRIOR	兽战士
+RACE_DINOSAUR		恐龙
+RACE_FISH			鱼
+RACE_SEASERPENT		海龙
+RACE_REPTILE		爬虫类
+RACE_PSYCHO			念动力
+RACE_DIVINE			幻神兽
+RACE_CREATORGOD		创造神
+RACE_WYRM			幻龙
+RACE_CYBERSE		电子界

@@ -56,7 +56,9 @@ namespace DataEditorX.Config
         //字符串id
         public string GetImage(string id)
         {
-            return MyPath.Combine(this.picpath, id + ".jpg");
+            string img = MyPath.Combine(this.picpath, id + ".png");
+            if (!File.Exists(img)) img = MyPath.Combine(this.picpath, id + ".jpg");
+            return img;
         }
         //public string GetImageThum(string id)
         //{

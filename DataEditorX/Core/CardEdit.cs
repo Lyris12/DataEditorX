@@ -57,7 +57,7 @@ namespace DataEditorX.Core
                     }
                 }
                 if (DataBase.Command(this.dataform.GetOpenFile(),
-                    DataBase.GetInsertSQL(c, true)) >= 2)
+                    (this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true))) >= 2)
                 {
                     MyMsg.Show(LMSG.AddSucceed);
                     this.undoSQL = DataBase.GetDeleteSQL(c);
@@ -119,7 +119,7 @@ namespace DataEditorX.Core
                 string sql;
                 if (c.id != oldCard.id)//修改了id
                 {
-                    sql = DataBase.GetInsertSQL(c, false);//插入
+                    sql = this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetInsertSQL(c, false) : DataBase.GetInsertSQL(c, false);//插入
                     bool delold = MyMsg.Question(LMSG.IfDeleteCard);
                     if (delold)//是否删除旧卡片
                     {
@@ -132,7 +132,7 @@ namespace DataEditorX.Core
                         }
                         else
                         {//删除成功，添加还原sql
-                            this.undoSQL = DataBase.GetDeleteSQL(c) + DataBase.GetInsertSQL(oldCard, false);
+                            this.undoSQL = DataBase.GetDeleteSQL(c) + (this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetInsertSQL(oldCard, false) : DataBase.GetInsertSQL(oldCard, false));
                         }
                     }
                     else
@@ -159,8 +159,8 @@ namespace DataEditorX.Core
                 }
                 else
                 {//更新数据
-                    sql = DataBase.GetUpdateSQL(c);
-                    this.undoSQL = DataBase.GetUpdateSQL(oldCard);
+                    sql = this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetUpdateSQL(c) : DataBase.GetUpdateSQL(c);
+                    this.undoSQL = this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetUpdateSQL(oldCard) : DataBase.GetUpdateSQL(oldCard);
                 }
                 if (DataBase.Command(this.dataform.GetOpenFile(), sql) > 0)
                 {
@@ -236,7 +236,7 @@ namespace DataEditorX.Core
                 foreach (Card c in cards)
                 {
                     sql.Add(DataBase.GetDeleteSQL(c));//删除
-                    undo += DataBase.GetInsertSQL(c, true);
+                    undo += this.dataform.GetOpenFile().EndsWith(".db") ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true);
                     //删除资源
                     if (deletefiles)
                     {

@@ -35,6 +35,7 @@ namespace DataEditorX.Core
             this.race = 0;
             this.attribute = 0;
             this.category = 0;
+            this.omega = new long[5]{ 0, 0, 0, 253402207200, 253402207200 };
             this.desc = "";
             this.str = new string[STR_MAX];
             for (int i = 0; i < STR_MAX; i++)
@@ -67,6 +68,8 @@ namespace DataEditorX.Core
         public int attribute;
         /// <summary>效果种类</summary>
         public long category;
+        /// <summary>Omega-exclusive parameters</summary>
+        public long[] omega;
         /// <summary>卡片名称</summary>
         public string name;
         /// <summary>描述文本</summary>
@@ -125,6 +128,15 @@ namespace DataEditorX.Core
                 }
             }
         }
+        public void SetSupport(long setcodes)
+        {
+            this.omega[2] = setcodes;
+        }
+        public void SetSupport(string setcodes)
+        {
+            if (long.TryParse(setcodes, NumberStyles.HexNumber, null, out long temp))
+                this.omega[2] = temp;
+        }
         public long GetLeftScale()
         {
             return (this.level >> 24) & 0xff;
@@ -132,6 +144,14 @@ namespace DataEditorX.Core
         public long GetRightScale()
         {
             return (this.level >> 16) & 0xff;
+        }
+        public string GetDate(byte offset = 0)
+        {
+            return new DateTime(new DateTime(1970, 1, 1).AddSeconds(this.omega[3 + offset]).ToBinary()).ToString("yyyy-MM-dd HH:mm:ss");
+        }
+        public void SetDate(string date, byte offset = 0)
+        {
+            this.omega[3 + offset] = Math.Abs(DateTime.Parse(date).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000;
         }
         #endregion
 
@@ -204,6 +224,10 @@ namespace DataEditorX.Core
             {
                 equalBool = false;
             }
+            else if (this.omega[0] != other.omega[0])
+            {
+                equalBool = false;
+            }
             else if (!this.name.Equals(other.name))
             {
                 equalBool = false;
@@ -211,6 +235,17 @@ namespace DataEditorX.Core
             else if (!this.desc.Equals(other.desc))
             {
                 equalBool = false;
+            }
+            else if (this.omega[0] > 0)
+            {
+                for (byte i = 1; i < 5; i++)
+                {
+                    if (this.omega[i] != other.omega[i])
+                    {
+                        equalBool = false;
+                        break;
+                    }
+                }
             }
 
             return equalBool;
