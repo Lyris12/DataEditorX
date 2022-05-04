@@ -51,10 +51,6 @@ namespace DataEditorX.Core
                 ost.Append(" text");
             }
             ost.Append(");");
-            ost.Append(@"CREATE TABLE banlists (id integer unique primary key, name text);");
-            ost.Append(@"CREATE TABLE bandatas (id integer default 1,flag integer default 0,
-            banlistid integer default 0,flagtype integer default 0,limits integer default 0,
-            mode integer default 0,location integer default 0);");
             ost.Append(@"CREATE TABLE datas(id integer primary key default 0,ot integer default 0,
             alias integer default 0,setcode integer default 0,type integer default 0,atk integer default 0,
             def integer default 0,level integer default 0,race integer default 0,attribute integer default 0,

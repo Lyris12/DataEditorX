@@ -163,7 +163,7 @@ MainForm.mainMenu.menuitem_closeall	Close All
 0x1e	About  :
 0x1f	Version:
 0x20	Author :
-0x21	Databases(*.cdb)|*.cdb|Databases(*.db)|*.db|Databases(*.bytes)|*.bytes|Databases(*.bytes)|*.bytes|Scripts(*.lua)|*.lua|all files(*.*)|*.*
+0x21	Databases(*.cdb)|*.cdb|Databases(*.db)|*.db|Databases(*.bytes)|*.bytes|Scripts(*.lua)|*.lua|all files(*.*)|*.*
 0x22	ydk file(*.ydk)|*.ydk|all files(*.*)|*.*
 0x23	Invalid SetCode!
 0x24	Select Image File
