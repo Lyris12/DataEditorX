@@ -47,6 +47,8 @@ namespace DataEditorX.Core
                     MyMsg.Error(LMSG.CodeCanNotIsZero);
                     return false;
                 }
+                else if (c.id > 268435455)
+                    return false;
                 Card[] cards = this.dataform.GetCardList(false);
                 foreach (Card ckey in cards)//卡片id存在
                 {

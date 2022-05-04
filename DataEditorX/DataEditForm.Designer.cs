@@ -136,6 +136,7 @@ namespace DataEditorX
             this.tb_tdate = new System.Windows.Forms.TextBox();
             this.lb_date = new System.Windows.Forms.Label();
             this.lb_odate = new System.Windows.Forms.Label();
+            this.lb_name = new System.Windows.Forms.Label();
             this.lb_support = new System.Windows.Forms.Label();
             this.lb_tdate = new System.Windows.Forms.Label();
             this.mainMenu.SuspendLayout();
@@ -439,7 +440,7 @@ namespace DataEditorX
             this.cb_cardattribute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_cardattribute.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cb_cardattribute.FormattingEnabled = true;
-            this.cb_cardattribute.Location = new System.Drawing.Point(194, 56);
+            this.cb_cardattribute.Location = new System.Drawing.Point(194, 68);
             this.cb_cardattribute.Name = "cb_cardattribute";
             this.cb_cardattribute.Size = new System.Drawing.Size(150, 20);
             this.cb_cardattribute.TabIndex = 2;
@@ -448,7 +449,7 @@ namespace DataEditorX
             // 
             this.tb_cardname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_cardname.Location = new System.Drawing.Point(5, 3);
+            this.tb_cardname.Location = new System.Drawing.Point(5, 17);
             this.tb_cardname.Name = "tb_cardname";
             this.tb_cardname.Size = new System.Drawing.Size(339, 21);
             this.tb_cardname.TabIndex = 1;
@@ -462,7 +463,7 @@ namespace DataEditorX
             this.cb_cardrule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_cardrule.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cb_cardrule.FormattingEnabled = true;
-            this.cb_cardrule.Location = new System.Drawing.Point(194, 30);
+            this.cb_cardrule.Location = new System.Drawing.Point(194, 44);
             this.cb_cardrule.Name = "cb_cardrule";
             this.cb_cardrule.Size = new System.Drawing.Size(150, 20);
             this.cb_cardrule.TabIndex = 2;
@@ -474,7 +475,7 @@ namespace DataEditorX
             this.cb_cardlevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_cardlevel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cb_cardlevel.FormattingEnabled = true;
-            this.cb_cardlevel.Location = new System.Drawing.Point(194, 83);
+            this.cb_cardlevel.Location = new System.Drawing.Point(194, 93);
             this.cb_cardlevel.Name = "cb_cardlevel";
             this.cb_cardlevel.Size = new System.Drawing.Size(150, 20);
             this.cb_cardlevel.TabIndex = 2;
@@ -487,7 +488,7 @@ namespace DataEditorX
             this.cb_cardrace.DropDownWidth = 107;
             this.cb_cardrace.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.cb_cardrace.FormattingEnabled = true;
-            this.cb_cardrace.Location = new System.Drawing.Point(194, 108);
+            this.cb_cardrace.Location = new System.Drawing.Point(194, 118);
             this.cb_cardrace.Name = "cb_cardrace";
             this.cb_cardrace.Size = new System.Drawing.Size(150, 20);
             this.cb_cardrace.TabIndex = 2;
@@ -503,7 +504,7 @@ namespace DataEditorX
             this.cb_setname2.FormattingEnabled = true;
             this.cb_setname2.IntegralHeight = false;
             this.cb_setname2.ItemHeight = 12;
-            this.cb_setname2.Location = new System.Drawing.Point(195, 160);
+            this.cb_setname2.Location = new System.Drawing.Point(195, 170);
             this.cb_setname2.Name = "cb_setname2";
             this.cb_setname2.Size = new System.Drawing.Size(113, 20);
             this.cb_setname2.TabIndex = 2;
@@ -520,7 +521,7 @@ namespace DataEditorX
             this.cb_setname1.FormattingEnabled = true;
             this.cb_setname1.IntegralHeight = false;
             this.cb_setname1.ItemHeight = 12;
-            this.cb_setname1.Location = new System.Drawing.Point(195, 134);
+            this.cb_setname1.Location = new System.Drawing.Point(195, 144);
             this.cb_setname1.Name = "cb_setname1";
             this.cb_setname1.Size = new System.Drawing.Size(113, 20);
             this.cb_setname1.TabIndex = 2;
@@ -537,7 +538,7 @@ namespace DataEditorX
             this.cb_setname4.FormattingEnabled = true;
             this.cb_setname4.IntegralHeight = false;
             this.cb_setname4.ItemHeight = 12;
-            this.cb_setname4.Location = new System.Drawing.Point(195, 212);
+            this.cb_setname4.Location = new System.Drawing.Point(195, 222);
             this.cb_setname4.Name = "cb_setname4";
             this.cb_setname4.Size = new System.Drawing.Size(113, 20);
             this.cb_setname4.TabIndex = 2;
@@ -554,7 +555,7 @@ namespace DataEditorX
             this.cb_setname3.FormattingEnabled = true;
             this.cb_setname3.IntegralHeight = false;
             this.cb_setname3.ItemHeight = 12;
-            this.cb_setname3.Location = new System.Drawing.Point(195, 186);
+            this.cb_setname3.Location = new System.Drawing.Point(195, 196);
             this.cb_setname3.Name = "cb_setname3";
             this.cb_setname3.Size = new System.Drawing.Size(113, 20);
             this.cb_setname3.TabIndex = 2;
@@ -568,7 +569,7 @@ namespace DataEditorX
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_cardtext.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_cardtext.Location = new System.Drawing.Point(4, 373);
+            this.tb_cardtext.Location = new System.Drawing.Point(4, 375);
             this.tb_cardtext.MaxLength = 5000;
             this.tb_cardtext.Multiline = true;
             this.tb_cardtext.Name = "tb_cardtext";
@@ -581,12 +582,12 @@ namespace DataEditorX
             // 
             this.tb_edittext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_edittext.HideSelection = false;
-            this.tb_edittext.Location = new System.Drawing.Point(348, 492);
+            this.tb_edittext.Location = new System.Drawing.Point(348, 513);
             this.tb_edittext.MaxLength = 2000;
             this.tb_edittext.Multiline = true;
             this.tb_edittext.Name = "tb_edittext";
             this.tb_edittext.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb_edittext.Size = new System.Drawing.Size(301, 57);
+            this.tb_edittext.Size = new System.Drawing.Size(301, 40);
             this.tb_edittext.TabIndex = 4;
             this.tb_edittext.WordWrap = false;
             this.tb_edittext.TextChanged += new System.EventHandler(this.Tb_edittextTextChanged);
@@ -595,7 +596,7 @@ namespace DataEditorX
             // 
             this.lb_pleft_right.AutoSize = true;
             this.lb_pleft_right.BackColor = System.Drawing.SystemColors.Control;
-            this.lb_pleft_right.Location = new System.Drawing.Point(10, 301);
+            this.lb_pleft_right.Location = new System.Drawing.Point(10, 311);
             this.lb_pleft_right.Name = "lb_pleft_right";
             this.lb_pleft_right.Size = new System.Drawing.Size(41, 12);
             this.lb_pleft_right.TabIndex = 7;
@@ -603,7 +604,7 @@ namespace DataEditorX
             // 
             // tb_pleft
             // 
-            this.tb_pleft.Location = new System.Drawing.Point(63, 298);
+            this.tb_pleft.Location = new System.Drawing.Point(63, 306);
             this.tb_pleft.MaxLength = 12;
             this.tb_pleft.Name = "tb_pleft";
             this.tb_pleft.Size = new System.Drawing.Size(40, 21);
@@ -613,7 +614,7 @@ namespace DataEditorX
             // 
             // tb_pright
             // 
-            this.tb_pright.Location = new System.Drawing.Point(119, 298);
+            this.tb_pright.Location = new System.Drawing.Point(119, 306);
             this.tb_pright.MaxLength = 12;
             this.tb_pright.Name = "tb_pright";
             this.tb_pright.Size = new System.Drawing.Size(40, 21);
@@ -624,7 +625,7 @@ namespace DataEditorX
             // lb_atkdef
             // 
             this.lb_atkdef.AutoSize = true;
-            this.lb_atkdef.Location = new System.Drawing.Point(10, 325);
+            this.lb_atkdef.Location = new System.Drawing.Point(10, 335);
             this.lb_atkdef.Name = "lb_atkdef";
             this.lb_atkdef.Size = new System.Drawing.Size(47, 12);
             this.lb_atkdef.TabIndex = 7;
@@ -700,7 +701,7 @@ namespace DataEditorX
             // lb5
             // 
             this.lb5.AutoSize = true;
-            this.lb5.Location = new System.Drawing.Point(105, 325);
+            this.lb5.Location = new System.Drawing.Point(105, 333);
             this.lb5.Name = "lb5";
             this.lb5.Size = new System.Drawing.Size(11, 12);
             this.lb5.TabIndex = 7;
@@ -708,7 +709,7 @@ namespace DataEditorX
             // 
             // tb_atk
             // 
-            this.tb_atk.Location = new System.Drawing.Point(63, 322);
+            this.tb_atk.Location = new System.Drawing.Point(63, 330);
             this.tb_atk.MaxLength = 12;
             this.tb_atk.Name = "tb_atk";
             this.tb_atk.Size = new System.Drawing.Size(40, 21);
@@ -718,7 +719,7 @@ namespace DataEditorX
             // 
             // tb_def
             // 
-            this.tb_def.Location = new System.Drawing.Point(119, 322);
+            this.tb_def.Location = new System.Drawing.Point(119, 330);
             this.tb_def.MaxLength = 12;
             this.tb_def.Name = "tb_def";
             this.tb_def.Size = new System.Drawing.Size(40, 21);
@@ -729,7 +730,7 @@ namespace DataEditorX
             // tb_cardcode
             // 
             this.tb_cardcode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_cardcode.Location = new System.Drawing.Point(277, 322);
+            this.tb_cardcode.Location = new System.Drawing.Point(277, 330);
             this.tb_cardcode.MaxLength = 12;
             this.tb_cardcode.Name = "tb_cardcode";
             this.tb_cardcode.Size = new System.Drawing.Size(67, 21);
@@ -742,7 +743,7 @@ namespace DataEditorX
             // 
             this.lb_cardalias.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_cardalias.AutoSize = true;
-            this.lb_cardalias.Location = new System.Drawing.Point(206, 301);
+            this.lb_cardalias.Location = new System.Drawing.Point(212, 311);
             this.lb_cardalias.Name = "lb_cardalias";
             this.lb_cardalias.Size = new System.Drawing.Size(65, 12);
             this.lb_cardalias.TabIndex = 7;
@@ -751,7 +752,7 @@ namespace DataEditorX
             // tb_cardalias
             // 
             this.tb_cardalias.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_cardalias.Location = new System.Drawing.Point(277, 298);
+            this.tb_cardalias.Location = new System.Drawing.Point(277, 306);
             this.tb_cardalias.MaxLength = 12;
             this.tb_cardalias.Name = "tb_cardalias";
             this.tb_cardalias.Size = new System.Drawing.Size(67, 21);
@@ -832,7 +833,7 @@ namespace DataEditorX
             // lb2
             // 
             this.lb2.AutoSize = true;
-            this.lb2.Location = new System.Drawing.Point(105, 301);
+            this.lb2.Location = new System.Drawing.Point(105, 309);
             this.lb2.Name = "lb2";
             this.lb2.Size = new System.Drawing.Size(11, 12);
             this.lb2.TabIndex = 7;
@@ -844,9 +845,9 @@ namespace DataEditorX
             this.pl_image.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.pl_image.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pl_image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pl_image.Location = new System.Drawing.Point(5, 27);
+            this.pl_image.Location = new System.Drawing.Point(5, 40);
             this.pl_image.Name = "pl_image";
-            this.pl_image.Size = new System.Drawing.Size(184, 266);
+            this.pl_image.Size = new System.Drawing.Size(184, 264);
             this.pl_image.TabIndex = 14;
             this.pl_image.DragDrop += new System.Windows.Forms.DragEventHandler(this.Pl_imageDragDrop);
             this.pl_image.DragEnter += new System.Windows.Forms.DragEventHandler(this.Pl_imageDragEnter);
@@ -912,7 +913,7 @@ namespace DataEditorX
             // tb_setcode1
             // 
             this.tb_setcode1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_setcode1.Location = new System.Drawing.Point(314, 133);
+            this.tb_setcode1.Location = new System.Drawing.Point(314, 143);
             this.tb_setcode1.MaxLength = 4;
             this.tb_setcode1.Name = "tb_setcode1";
             this.tb_setcode1.Size = new System.Drawing.Size(30, 21);
@@ -924,7 +925,7 @@ namespace DataEditorX
             // tb_setcode2
             // 
             this.tb_setcode2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_setcode2.Location = new System.Drawing.Point(314, 159);
+            this.tb_setcode2.Location = new System.Drawing.Point(314, 169);
             this.tb_setcode2.MaxLength = 4;
             this.tb_setcode2.Name = "tb_setcode2";
             this.tb_setcode2.Size = new System.Drawing.Size(30, 21);
@@ -936,7 +937,7 @@ namespace DataEditorX
             // tb_setcode3
             // 
             this.tb_setcode3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_setcode3.Location = new System.Drawing.Point(314, 185);
+            this.tb_setcode3.Location = new System.Drawing.Point(314, 195);
             this.tb_setcode3.MaxLength = 4;
             this.tb_setcode3.Name = "tb_setcode3";
             this.tb_setcode3.Size = new System.Drawing.Size(30, 21);
@@ -948,7 +949,7 @@ namespace DataEditorX
             // tb_setcode4
             // 
             this.tb_setcode4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_setcode4.Location = new System.Drawing.Point(314, 211);
+            this.tb_setcode4.Location = new System.Drawing.Point(314, 221);
             this.tb_setcode4.MaxLength = 4;
             this.tb_setcode4.Name = "tb_setcode4";
             this.tb_setcode4.Size = new System.Drawing.Size(30, 21);
@@ -961,7 +962,7 @@ namespace DataEditorX
             // 
             this.lb_cardcode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_cardcode.AutoSize = true;
-            this.lb_cardcode.Location = new System.Drawing.Point(206, 325);
+            this.lb_cardcode.Location = new System.Drawing.Point(212, 335);
             this.lb_cardcode.Name = "lb_cardcode";
             this.lb_cardcode.Size = new System.Drawing.Size(59, 12);
             this.lb_cardcode.TabIndex = 7;
@@ -971,7 +972,7 @@ namespace DataEditorX
             // 
             this.lb_markers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_markers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.lb_markers.Location = new System.Drawing.Point(203, 274);
+            this.lb_markers.Location = new System.Drawing.Point(203, 285);
             this.lb_markers.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.lb_markers.Name = "lb_markers";
             this.lb_markers.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
@@ -1076,6 +1077,7 @@ namespace DataEditorX
             this.splitContainer.Panel2.Controls.Add(this.lb_pleft_right);
             this.splitContainer.Panel2.Controls.Add(this.lb_date);
             this.splitContainer.Panel2.Controls.Add(this.lb_odate);
+            this.splitContainer.Panel2.Controls.Add(this.lb_name);
             this.splitContainer.Panel2.Controls.Add(this.lb_support);
             this.splitContainer.Panel2.Controls.Add(this.lb_tdate);
             this.splitContainer.Panel2.Controls.Add(this.lb_cardalias);
@@ -1105,7 +1107,7 @@ namespace DataEditorX
             this.lv_cardlist.Name = "lv_cardlist";
             this.lv_cardlist.Scrollable = false;
             this.lv_cardlist.ShowItemToolTips = true;
-            this.lv_cardlist.Size = new System.Drawing.Size(322, 547);
+            this.lv_cardlist.Size = new System.Drawing.Size(322, 551);
             this.lv_cardlist.TabIndex = 1;
             this.lv_cardlist.UseCompatibleStateImageBehavior = false;
             this.lv_cardlist.View = System.Windows.Forms.View.Details;
@@ -1126,7 +1128,7 @@ namespace DataEditorX
             // 
             this.tb_support.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_support.Location = new System.Drawing.Point(195, 250);
+            this.tb_support.Location = new System.Drawing.Point(195, 260);
             this.tb_support.MaxLength = 20;
             this.tb_support.Name = "tb_support";
             this.tb_support.Size = new System.Drawing.Size(81, 21);
@@ -1140,7 +1142,7 @@ namespace DataEditorX
             this.pl_markers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pl_markers.AutoScroll = true;
             this.pl_markers.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pl_markers.Location = new System.Drawing.Point(285, 233);
+            this.pl_markers.Location = new System.Drawing.Point(285, 244);
             this.pl_markers.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.pl_markers.Name = "pl_markers";
             this.pl_markers.Padding = new System.Windows.Forms.Padding(2);
@@ -1198,7 +1200,7 @@ namespace DataEditorX
             this.lb_scripttext.Location = new System.Drawing.Point(348, 432);
             this.lb_scripttext.Name = "lb_scripttext";
             this.lb_scripttext.ScrollAlwaysVisible = true;
-            this.lb_scripttext.Size = new System.Drawing.Size(301, 77);
+            this.lb_scripttext.Size = new System.Drawing.Size(301, 86);
             this.lb_scripttext.TabIndex = 6;
             this.lb_scripttext.SelectedIndexChanged += new System.EventHandler(this.Lb_scripttextSelectedIndexChanged);
             // 
@@ -1218,7 +1220,7 @@ namespace DataEditorX
             // tb_odate
             // 
             this.tb_odate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_odate.Location = new System.Drawing.Point(74, 347);
+            this.tb_odate.Location = new System.Drawing.Point(74, 354);
             this.tb_odate.MaxLength = 20;
             this.tb_odate.Name = "tb_odate";
             this.tb_odate.Size = new System.Drawing.Size(120, 21);
@@ -1230,7 +1232,7 @@ namespace DataEditorX
             // tb_tdate
             // 
             this.tb_tdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_tdate.Location = new System.Drawing.Point(227, 346);
+            this.tb_tdate.Location = new System.Drawing.Point(227, 354);
             this.tb_tdate.MaxLength = 20;
             this.tb_tdate.Name = "tb_tdate";
             this.tb_tdate.Size = new System.Drawing.Size(120, 21);
@@ -1242,7 +1244,7 @@ namespace DataEditorX
             // 
             this.lb_date.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_date.AutoSize = true;
-            this.lb_date.Location = new System.Drawing.Point(8, 352);
+            this.lb_date.Location = new System.Drawing.Point(8, 360);
             this.lb_date.Name = "lb_date";
             this.lb_date.Size = new System.Drawing.Size(41, 12);
             this.lb_date.TabIndex = 7;
@@ -1252,16 +1254,26 @@ namespace DataEditorX
             // 
             this.lb_odate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_odate.AutoSize = true;
-            this.lb_odate.Location = new System.Drawing.Point(49, 352);
+            this.lb_odate.Location = new System.Drawing.Point(49, 360);
             this.lb_odate.Name = "lb_odate";
             this.lb_odate.Size = new System.Drawing.Size(23, 12);
             this.lb_odate.TabIndex = 7;
             this.lb_odate.Text = "OCG";
             // 
+            // lb_name
+            // 
+            this.lb_name.AutoSize = true;
+            this.lb_name.Location = new System.Drawing.Point(2, 3);
+            this.lb_name.Margin = new System.Windows.Forms.Padding(3);
+            this.lb_name.Name = "lb_name";
+            this.lb_name.Size = new System.Drawing.Size(29, 12);
+            this.lb_name.TabIndex = 7;
+            this.lb_name.Text = "Name";
+            // 
             // lb_support
             // 
             this.lb_support.AutoSize = true;
-            this.lb_support.Location = new System.Drawing.Point(195, 235);
+            this.lb_support.Location = new System.Drawing.Point(195, 245);
             this.lb_support.Margin = new System.Windows.Forms.Padding(3);
             this.lb_support.Name = "lb_support";
             this.lb_support.Size = new System.Drawing.Size(47, 12);
@@ -1272,7 +1284,7 @@ namespace DataEditorX
             // 
             this.lb_tdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_tdate.AutoSize = true;
-            this.lb_tdate.Location = new System.Drawing.Point(202, 352);
+            this.lb_tdate.Location = new System.Drawing.Point(202, 360);
             this.lb_tdate.Name = "lb_tdate";
             this.lb_tdate.Size = new System.Drawing.Size(23, 12);
             this.lb_tdate.TabIndex = 7;
@@ -1417,5 +1429,6 @@ namespace DataEditorX
         private System.Windows.Forms.Label lb_odate;
         private System.Windows.Forms.Label lb_support;
         private System.Windows.Forms.Label lb_date;
+        private System.Windows.Forms.Label lb_name;
     }
 }

@@ -181,30 +181,16 @@ namespace DataEditorX
         //打开脚本
         void OpenScript(string file)
         {
-            if (DEXConfig.ReadString(DEXConfig.USE_EDITOR) == "Avalon")
-            {
-                CodeEditForm cf = new CodeEditForm();
-                //设置界面语言
-                LanguageHelper.SetFormLabel(cf);
-                //初始化函数提示
-                cf.InitTooltip(this.codecfg);
-                //打开文件
-                cf.Open(file);
-                cf.Show(this.dockPanel, DockState.Document);
-            }
-            else
-            {
-                CodeEditForm cf = new CodeEditForm();
-                //设置界面语言
-                LanguageHelper.SetFormLabel(cf);
-                //设置cdb列表
-                cf.SetCDBList(this.history.GetcdbHistory());
-                //初始化函数提示
-                cf.InitTooltip(this.codecfg);
-                //打开文件
-                cf.Open(file);
-                cf.Show(this.dockPanel, DockState.Document);
-            }
+            CodeEditForm cf = new CodeEditForm();
+            //设置界面语言
+            LanguageHelper.SetFormLabel(cf);
+            //设置cdb列表
+            cf.SetCDBList(this.history.GetcdbHistory());
+            //初始化函数提示
+            cf.InitTooltip(this.codecfg);
+            //打开文件
+            cf.Open(file);
+            cf.Show(this.dockPanel, DockState.Document);
         }
         //打开数据库
         void OpenDataBase(string file)

@@ -47,6 +47,7 @@ CodeEditForm_Avalon.mainMenu.menuitem_CEFont	Set CodeEditor Font...
 CodeEditForm_Avalon.mainMenu.menuitem_fixCardCode	Fix Card Codes
 #
 DataEditForm.pl_bottom.btn_img	Load Image
+DataEditForm.pl_main.splitContainer..lb_name	Name
 DataEditForm.pl_main.splitContainer..lb_types	Card Type
 DataEditForm.pl_main.splitContainer..lb_markers	Link Markers
 DataEditForm.pl_main.splitContainer..lb_tiptexts	Strings

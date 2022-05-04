@@ -373,6 +373,20 @@ namespace DataEditorX
             }
             this.oldtext = this.fctb.Text;
             File.WriteAllText(this.nowFile, alltext, new UTF8Encoding(false));
+            try
+            {
+                long.TryParse(new FileInfo(this.nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
+                if (tl > 0)
+                {
+                    //获取卡片信息
+                    if (this.cardlist.ContainsKey(tl) && File.Exists(this.nowcdb) &&
+                        (this.nowcdb.EndsWith(".db") || this.nowcdb.EndsWith(".bytes")))
+                    {
+                        DataBase.Command(this.nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
+                    }
+                }
+            }
+            catch { }
             return true;
         }
         #endregion
