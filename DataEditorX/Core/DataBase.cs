@@ -171,7 +171,7 @@ namespace DataEditorX.Core
                 c.name = reader.GetString(reader.GetOrdinal("name"));
                 c.desc = reader.GetString(reader.GetOrdinal("desc"));
             }
-            catch(Exception e)
+            catch
             {
                 c.id = reader.GetInt64(reader.GetOrdinal("id"));
                 c.ot = reader.GetInt32(reader.GetOrdinal("ot"));

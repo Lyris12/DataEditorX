@@ -67,7 +67,7 @@ namespace DataEditorX
         //初始标题
         string title;
         string nowCdbFile = "";
-        int maxRow = 20;
+        int maxRow = 37;
         int page = 1, pageNum = 1;
         /// <summary>
         /// 卡片总数
