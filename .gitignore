@@ -2,21 +2,16 @@ Images/
 Images_backup/
 *.tmp
 mse-set.txt
-/win32/EntityFramework.SqlServer.dll
-/win32/EntityFramework.SqlServer.xml
-/win32/EntityFramework.dll
-/win32/EntityFramework.xml
-/win32/FastColoredTextBox.xml
-/win32/ICSharpCode.AvalonEdit.dll
-/win32/ICSharpCode.AvalonEdit.xml
-/win32/Neo.Lua.dll
-/win32/Neo.Lua.xml
-/win32/Newtonsoft.Json.dll
-/win32/Newtonsoft.Json.xml
-/win32/System.Data.SQLite.EF6.dll
-/win32/System.Data.SQLite.Linq.dll
-/win32/System.Data.SQLite.dll
-/win32/System.Data.SQLite.xml
+/win32/*.dll
+/win32/*.xml
+/win32/*.exe
+/win32/de
+/win32/data
+/win32/Magic Set Editor 2
+/win32/x86
+/win32/*.config
+/win32/pack.db
+
 #################
 ## Eclipse
 #################
