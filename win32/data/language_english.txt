@@ -85,7 +85,7 @@ DataEditForm.mainMenu.menu_image	MSE(&M)
 DataEditForm.mainMenu.menuitem_importmseimg	Import MSE Images
 DataEditForm.mainMenu.menuitem_mseconfig	Set MSE Config File
 DataEditForm.mainMenu.menu_data	Data(&D)
-DataEditForm.mainMenu.menuitem_operacardsfile	Rename both Code and Image
+DataEditForm.mainMenu.menuitem_operacardsfile	Rename both Script and Image
 DataEditForm.mainMenu.menuitem_openfileinthis	Open Lua with CodeEditor
 DataEditForm.mainMenu.menuitem_addrequire	Auto Add Requires
 DataEditForm.mainMenu.menuitem_findluafunc	Find Lua Functions from C++ Code
@@ -110,7 +110,7 @@ DataEditForm.mainMenu.menuitem_about	About
 DataEditForm.mainMenu.menuitem_language	Language
 DataEditForm.mainMenu.menuitem_checkupdate	Check Update
 DataEditForm.mainMenu.menuitem_autocheckupdate	Auto Check Update
-DataEditForm.mainMenu.menuitem_github	Source Code in Mycard Git
+DataEditForm.mainMenu.menuitem_github	Source Code
 #
 MainForm.mainMenu.menuitem_file	File(&F)
 MainForm.mainMenu.menuitem_open	Open
@@ -139,7 +139,7 @@ MainForm.mainMenu.menuitem_closeall	Close All
 0x5	Creation failed!
 0x6	Added successfully!
 0x7	Addition failed!
-0x8	Code can't be 0!
+0x8	Passcode can't be 0!
 0x9	The card is already existed!
 0xa	There is no difference between editing card and the card in database.
 0xb	Delete card(s)?
