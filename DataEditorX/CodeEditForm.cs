@@ -430,7 +430,7 @@ namespace DataEditorX
         {
             MyMsg.Show(
                 LanguageHelper.GetMsg(LMSG.About) + "\t" + Application.ProductName + "\n"
-                + LanguageHelper.GetMsg(LMSG.Version) + "\t1.1.0.0\n"
+                + LanguageHelper.GetMsg(LMSG.Version) + "\t1.0.0.0\n"
                 + LanguageHelper.GetMsg(LMSG.Author) + "\tNanahira & JoyJ");
         }
 
