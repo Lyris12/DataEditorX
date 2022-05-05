@@ -1,5 +1,5 @@
-﻿[DataEditorX]4.0.0.2[DataEditorX]
-[URL]https://cdn01.moecube.com/DataEditorX/releases/DataEditorX-4.0.0.2.zip[URL]
+﻿[DataEditorX]1.0.0.0[DataEditorX]
+[URL]https://github.com/Lyris12/DataEditorX/raw/master/win32/win32.zip [URL]
 
 ★运行环境(Environment)
 本程序基于.Net framework 4.6开发
