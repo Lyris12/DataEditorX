@@ -6,10 +6,10 @@ namespace DataEditorX
     {
         public DFlowLayoutPanel()
         {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.AllPaintingInWmPaint,
                      true);
-            this.UpdateStyles();
+            UpdateStyles();
         }
     }
 }

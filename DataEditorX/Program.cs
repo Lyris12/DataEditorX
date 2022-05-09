@@ -8,7 +8,9 @@
 using DataEditorX.Config;
 using DataEditorX.Language;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 
@@ -42,6 +44,49 @@ namespace DataEditorX
                 mainForm.SetDataPath(MyPath.Combine(Application.StartupPath, DEXConfig.TAG_DATA));
 
                 Application.Run(mainForm);
+
+                Dictionary<long, string> dic = mainForm.GetDataConfig().dicSetnames;
+                Dictionary<long, string> old = mainForm.GetDataConfig(true).dicSetnames;
+                foreach (long setcode in dic.Keys)
+                {
+                    if (old.ContainsKey(setcode))
+                        continue;
+                    string cardinfo = DEXConfig.GetCardInfoFile(MyPath.Combine(Application.StartupPath,
+                        DEXConfig.TAG_DATA));
+                    if (File.Exists(cardinfo))
+                        using (FileStream cStream = new FileStream(cardinfo, FileMode.Open, FileAccess.ReadWrite))
+                        {
+                            try
+                            {
+                                byte[] content = Encoding.UTF8.GetBytes($"\n0x{setcode:x}\t{dic[setcode]}\n#end");
+                                cStream.Seek(-5, SeekOrigin.End);
+                                cStream.Write(content, 0, content.Length);
+                            }
+                            catch { }
+                            finally
+                            {
+                                cStream.Close();
+                            }
+                        }
+                    string file = MyPath.Combine(Application.StartupPath, DEXConfig.TAG_DATA, DEXConfig.FILE_STRINGS);
+                    if (!string.IsNullOrEmpty(file) && File.Exists(file))
+                    {
+                        using (FileStream sStream = new FileStream(file, FileMode.Open, FileAccess.Write))
+                        {
+                            try
+                            {
+                                byte[] content = Encoding.UTF8.GetBytes($"!setname 0x{setcode:x} {dic[setcode]}\n");
+                                sStream.Seek(0, SeekOrigin.End);
+                                sStream.Write(content, 0, content.Length);
+                            }
+                            catch { }
+                            finally
+                            {
+                                sStream.Close();
+                            }
+                        }
+                    }
+                }
             }
         }
         static void SaveLanguage()

@@ -55,7 +55,8 @@ namespace DataEditorX.Core
             alias integer default 0,setcode integer default 0,type integer default 0,atk integer default 0,
             def integer default 0,level integer default 0,race integer default 0,attribute integer default 0,
             category integer default 0,genre integer default 0, script blob,support integer default 0,
-            ocgdate integer default 253402207200,tcgdate integer default 253402207200);");
+            ocgdate integer default 253402207200,tcgdate integer default 253402207200); CREATE TABLE
+            setcodes(officialcode integer, betacode integer, name text unique, cardid integer default 0);");
             _defaultOTableSQL = ost.ToString();
             ost.Remove(0, ost.Length);
         }
@@ -149,18 +150,18 @@ namespace DataEditorX.Core
         static Card ReadCard(SQLiteDataReader reader, bool reNewLine)
         {
             Card c = new Card(0);
+            c.id = reader.GetInt64(reader.GetOrdinal("id"));
+            c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
+            c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
+            c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
+            c.type = reader.GetInt64(reader.GetOrdinal("type"));
+            c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
+            c.def = reader.GetInt32(reader.GetOrdinal("def"));
+            c.level = reader.GetInt64(reader.GetOrdinal("level"));
+            c.race = reader.GetInt64(reader.GetOrdinal("race"));
+            c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
             try
             {
-                c.id = reader.GetInt64(reader.GetOrdinal("id"));
-                c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
-                c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
-                c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
-                c.type = reader.GetInt64(reader.GetOrdinal("type"));
-                c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
-                c.def = reader.GetInt32(reader.GetOrdinal("def"));
-                c.level = reader.GetInt64(reader.GetOrdinal("level"));
-                c.race = reader.GetInt64(reader.GetOrdinal("race"));
-                c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
                 c.category = reader.GetInt64(reader.GetOrdinal("genre"));
                 c.omega = new long[5];
                 c.omega[0] = 1L;
@@ -168,26 +169,16 @@ namespace DataEditorX.Core
                 c.omega[2] = reader.GetInt64(reader.GetOrdinal("support"));
                 c.omega[3] = reader.GetInt64(reader.GetOrdinal("ocgdate"));
                 c.omega[4] = reader.GetInt64(reader.GetOrdinal("tcgdate"));
-                c.name = reader.GetString(reader.GetOrdinal("name"));
-                c.desc = reader.GetString(reader.GetOrdinal("desc"));
+                c.script = reader.GetBlob(reader.GetOrdinal("script"), true).ToString();
             }
             catch
             {
-                c.id = reader.GetInt64(reader.GetOrdinal("id"));
-                c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
-                c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
-                c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
-                c.type = reader.GetInt64(reader.GetOrdinal("type"));
-                c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
-                c.def = reader.GetInt32(reader.GetOrdinal("def"));
-                c.level = reader.GetInt64(reader.GetOrdinal("level"));
-                c.race = reader.GetInt64(reader.GetOrdinal("race"));
-                c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
                 c.category = reader.GetInt64(reader.GetOrdinal("category"));
                 c.omega = new long[5] { 0L, 0L, 0L, 253402207200L, 253402207200L };
-                c.name = reader.GetString(reader.GetOrdinal("name"));
-                c.desc = reader.GetString(reader.GetOrdinal("desc"));
+                c.script = "";
             }
+            c.name = reader.GetString(reader.GetOrdinal("name"));
+            c.desc = reader.GetString(reader.GetOrdinal("desc"));
             if (reNewLine)
             {
                 c.desc = Retext(c.desc);
@@ -658,11 +649,14 @@ namespace DataEditorX.Core
                 st.Append("0x" + c.category.ToString("x"));
                 if (c.omega[0] > 0)
                 {
-                    st.Append(",null,"); st.Append("0x" + c.omega[2].ToString("x"));
+                    st.Append(",");
+                    if (string.IsNullOrEmpty(c.script)) st.Append("null");
+                    else st.Append(c.script.ToCharArray());
+                    st.Append(","); st.Append("0x" + c.omega[2].ToString("x"));
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
                 }
-                else st.Append(",0x0,null,253402207200,253402207200");
+                else st.Append(",null,0x0,253402207200,253402207200");
             }
             else
             {
@@ -674,11 +668,14 @@ namespace DataEditorX.Core
                 st.Append(c.category.ToString());
                 if (c.omega[0] > 0)
                 {
-                    st.Append(",null,"); st.Append(c.omega[2].ToString());
+                    st.Append(",");
+                    if (string.IsNullOrEmpty(c.script)) st.Append("null");
+                    else st.Append(c.script.ToCharArray());
+                    st.Append(","); st.Append(c.omega[2].ToString());
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
                 }
-                else st.Append(",0,null,253402207200,253402207200");
+                else st.Append(",null,0,253402207200,253402207200");
             }
             st.Append(")");
             if (ignore)
@@ -875,7 +872,7 @@ namespace DataEditorX.Core
                 StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
                 foreach (Card c in cards)
                 {
-                    sw.WriteLine(GetInsertSQL(c, false, true));
+                    sw.WriteLine(c.omega[0] > 0 ? OmegaGetInsertSQL(c, false, true) : GetInsertSQL(c, false, true));
                 }
                 sw.Close();
             }

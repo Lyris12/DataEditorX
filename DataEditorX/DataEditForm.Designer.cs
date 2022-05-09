@@ -410,7 +410,6 @@ namespace DataEditorX
             this.menuitem_language.Name = "menuitem_language";
             this.menuitem_language.Size = new System.Drawing.Size(177, 22);
             this.menuitem_language.Text = "Language";
-            this.menuitem_language.Click += new System.EventHandler(this.menuitem_language_Click);
             // 
             // menuitem_checkupdate
             // 
@@ -635,7 +634,7 @@ namespace DataEditorX
             // 
             this.lb4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lb4.AutoSize = true;
-            this.lb4.Location = new System.Drawing.Point(106, 11);
+            this.lb4.Location = new System.Drawing.Point(107, 11);
             this.lb4.Name = "lb4";
             this.lb4.Size = new System.Drawing.Size(11, 12);
             this.lb4.TabIndex = 7;

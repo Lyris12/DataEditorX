@@ -11,7 +11,7 @@ namespace DataEditorX
     {
         public EffectCreatorForm()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         class EffectCreatorItem
@@ -23,13 +23,13 @@ namespace DataEditorX
 
             public EffectCreatorItem(string key, string value)
             {
-                this.Key = key ?? throw new ArgumentNullException(nameof(key));
-                this.Value = value;
+                Key = key ?? throw new ArgumentNullException(nameof(key));
+                Value = value;
             }
 
             public EffectCreatorItem(string key, string value, string hint) : this(key, value)
             {
-                this.Hint = hint;
+                Hint = hint;
             }
 
             public override string ToString()
@@ -86,13 +86,13 @@ namespace DataEditorX
         private void btnStart_Click(object sender, EventArgs e)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(this.ProcessDescription());
-            sb.Append(this.ProcessSpecialOptions());
-            sb.Append(this.ProcessEffectType());
-            sb.Append(this.ProcessEffectCategory());
-            sb.Append(this.ProcessEffectCountLimit());
-            sb.Append(this.ProcessEffectProperty());
-            sb.Append(this.ProcessEffectCode());
+            sb.Append(ProcessDescription());
+            sb.Append(ProcessSpecialOptions());
+            sb.Append(ProcessEffectType());
+            sb.Append(ProcessEffectCategory());
+            sb.Append(ProcessEffectCountLimit());
+            sb.Append(ProcessEffectProperty());
+            sb.Append(ProcessEffectCode());
             txtOutput.Text = sb.ToString();
         }
         private string LinkStrings(List<string> list)
@@ -137,7 +137,7 @@ namespace DataEditorX
             }
             if (extraOptions.Count > 0)
             {
-                return $"e{numEffectNum.Value}:SetCountLimit({countLimit.Count},{this.LinkStrings(extraOptions)})";
+                return $"e{numEffectNum.Value}:SetCountLimit({countLimit.Count},{LinkStrings(extraOptions)})";
             }
             return $"e{numEffectNum.Value}:SetCountLimit({countLimit.Count})";
         }
@@ -209,14 +209,14 @@ namespace DataEditorX
             {
                 if (radio.Name.StartsWith("radioEffectType"))
                 {
-                    this.AddEffectTypeByCheckRadio(radio, ref effectType);
+                    AddEffectTypeByCheckRadio(radio, ref effectType);
                 }
             }
             foreach (RadioButton radio in gbEffectType2.Controls)
             {
                 if (radio.Name.StartsWith("radioEffectType"))
                 {
-                    this.AddEffectTypeByCheckRadio(radio, ref effectType);
+                    AddEffectTypeByCheckRadio(radio, ref effectType);
                 }
             }
             return $"e{numEffectNum.Value}:SetType({effectType})";
@@ -281,7 +281,7 @@ namespace DataEditorX
 
         private void txtSearchEffectCode_TextChanged(object sender, EventArgs e)
         {
-            this.SearchListBoxWithTextBox(ref listEffectCode, txtSearchEffectCode);
+            SearchListBoxWithTextBox(ref listEffectCode, txtSearchEffectCode);
         }
 
         private void listEffectCode_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -302,12 +302,12 @@ namespace DataEditorX
 
         private void txtSearchEffectCategory_TextChanged(object sender, EventArgs e)
         {
-            this.SearchListBoxWithTextBox(ref listEffectCategory, txtSearchEffectCategory);
+            SearchListBoxWithTextBox(ref listEffectCategory, txtSearchEffectCategory);
         }
 
         private void txtSearchProperty_TextChanged(object sender, EventArgs e)
         {
-            this.SearchListBoxWithTextBox(ref listEffectProperty, txtSearchProperty);
+            SearchListBoxWithTextBox(ref listEffectProperty, txtSearchProperty);
         }
 
         EffectCountLimit countLimit = null;

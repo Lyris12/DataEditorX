@@ -8,22 +8,22 @@ namespace DataEditorX
         public EffectCountLimit CountLimit;
         public CountLimitForm(EffectCountLimit ecl)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             CountLimit = ecl;
-            this.checkIsOath.Checked = ecl.IsOath;
-            this.checkIsInDuel.Checked = ecl.IsInDuel;
-            this.checkIsHasCode.Checked = ecl.IsHasCode;
-            this.checkIsSingle.Checked = ecl.IsSingle;
-            this.numCount.Value = ecl.Count;
+            checkIsOath.Checked = ecl.IsOath;
+            checkIsInDuel.Checked = ecl.IsInDuel;
+            checkIsHasCode.Checked = ecl.IsHasCode;
+            checkIsSingle.Checked = ecl.IsSingle;
+            numCount.Value = ecl.Count;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            CountLimit.IsOath = this.checkIsOath.Checked;
-            CountLimit.IsInDuel = this.checkIsInDuel.Checked;
-            CountLimit.IsHasCode = this.checkIsHasCode.Checked;
-            CountLimit.IsSingle = this.checkIsSingle.Checked;
-            CountLimit.Count = this.numCount.Value;
+            CountLimit.IsOath = checkIsOath.Checked;
+            CountLimit.IsInDuel = checkIsInDuel.Checked;
+            CountLimit.IsHasCode = checkIsHasCode.Checked;
+            CountLimit.IsSingle = checkIsSingle.Checked;
+            CountLimit.Count = numCount.Value;
         }
     }
     public class EffectCountLimit

@@ -16,25 +16,25 @@ namespace DataEditorX.Config
     {
         public ImageSet()
         {
-            this.Init();
+            Init();
         }
         //初始化
         void Init()
         {
-            this.normalArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_OTHER);
+            normalArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_OTHER);
 
-            this.xyzArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_XYZ);
+            xyzArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_XYZ);
 
-            this.pendulumArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_PENDULUM);
+            pendulumArea = DEXConfig.ReadArea(DEXConfig.TAG_IMAGE_PENDULUM);
 
             int[] ints = DEXConfig.ReadIntegers(DEXConfig.TAG_IMAGE_SIZE, 4);
 
-            this.w = ints[0];
-            this.h = ints[1];
-            this.W = ints[2];
-            this.H = ints[3];
+            w = ints[0];
+            h = ints[1];
+            W = ints[2];
+            H = ints[3];
 
-            this.quilty = DEXConfig.ReadInteger(DEXConfig.TAG_IMAGE_QUILTY, 95);
+            quilty = DEXConfig.ReadInteger(DEXConfig.TAG_IMAGE_QUILTY, 95);
         }
         /// <summary>
         /// jpeg质量

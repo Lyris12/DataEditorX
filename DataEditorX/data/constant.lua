@@ -2,13 +2,14 @@
 MIN_ID		=1000		--4 digits, by DataManager::GetDesc()
 MAX_ID		=268435455	--28 bits, by DataManager::GetDesc()
 MAX_COUNTER	=65535		--max number for adding/removing counters, by card::add_counter(), field::remove_counter()
+MAX_PARAMETER	=0xffff
 --Locations 区域
 LOCATION_DECK		=0x01		--卡组
 LOCATION_HAND		=0x02		--手牌
 LOCATION_MZONE		=0x04		--怪兽区
 LOCATION_SZONE		=0x08		--魔陷区(0~4)+场地区(5)
 LOCATION_GRAVE		=0x10		--墓地
-LOCATION_REMOVED	=0x20		--除外的卡
+LOCATION_REMOVED	=0x20		--除外区
 LOCATION_EXTRA		=0x40		--额外
 LOCATION_OVERLAY	=0x80		--超量素材
 LOCATION_ONFIELD	=0x0c		--场上（LOCATION_MZONE+LOCATION_SZONE）
@@ -576,6 +577,7 @@ EFFECT_SET_BATTLE_DEFENSE		=363    --战斗的伤害计算用设置的守备力�
 EFFECT_OVERLAY_RITUAL_MATERIAL  =364    --此卡的超量素材也能用于仪式召唤
 EFFECT_CHANGE_GRAVE_ATTRIBUTE	=365	--墓地的卡将会改变属性（升级转变）
 EFFECT_CHANGE_GRAVE_RACE		=366	--墓地的卡将会改变种族（升级转变）
+EFFECT_LIMIT_SPECIAL_SUMMON_POSITION	=368	--不能以特定表示形式特殊召唤
 
 --下面是诱发效果的诱发事件、时点 （如果是TYPE_SINGLE则自己发生以下事件后触发，如果TYPE_FIELD则场上任何卡发生以下事件都触发）
 EVENT_STARTUP					=1000	--N/A
@@ -829,7 +831,7 @@ EFFECT_COUNT_CODE_OATH			=0x10000000 --发动次数限制(誓约次数, 发动�
 EFFECT_COUNT_CODE_DUEL			=0x20000000 --决斗中使用次数
 EFFECT_COUNT_CODE_SINGLE		=0x1		--同一张卡的多个效果公共使用次数
 --特殊选项
-DUEL_TEST_MODE			=0x01		--测试模式(目前暂无)
+DUEL_TEST_MODE			=0x01		--测试模式(目前暫無)
 DUEL_ATTACK_FIRST_TURN	=0x02		--第一回合可以攻击(用于残局)
 DUEL_OLD_REPLAY			=0x04		--旧录像
 DUEL_OBSOLETE_RULING	=0x08		--使用舊規則
@@ -840,13 +842,13 @@ DUEL_RETURN_DECK_TOP	=0x80		--回卡组洗切的卡放到卡组最上方（不�
 --Activity counter
 --global: 1-6 (binary: 5,6)
 --custom: 1-5,7 (binary: 1-5)
-ACTIVITY_SUMMON			=1		--召唤
-ACTIVITY_NORMALSUMMON	=2		--通常召唤
-ACTIVITY_SPSUMMON		=3		--特殊召唤
-ACTIVITY_FLIPSUMMON		=4		--反转召唤
-ACTIVITY_ATTACK			=5		--攻击
-ACTIVITY_BATTLE_PHASE	=6		--进入战斗阶段（custom不可用）
-ACTIVITY_CHAIN			=7		--发动效果（custom才可用）
+ACTIVITY_SUMMON			=1		--
+ACTIVITY_NORMALSUMMON	=2		--
+ACTIVITY_SPSUMMON		=3		--
+ACTIVITY_FLIPSUMMON		=4		--
+ACTIVITY_ATTACK			=5		--
+ACTIVITY_BATTLE_PHASE	=6		-- not available in custom counter
+ACTIVITY_CHAIN			=7		-- only available in custom counter
 --Special cards
 CARD_MARINE_DOLPHIN		=78734254	--海洋海豚(double name)
 CARD_TWINKLE_MOSS		=13857930	--光輝苔蘚(double name)

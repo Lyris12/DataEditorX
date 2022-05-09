@@ -16,7 +16,7 @@ namespace DataEditorX.Core
     {
         public CardPack(long id)
         {
-            this.CardId = id;
+            CardId = id;
         }
 
         public long CardId

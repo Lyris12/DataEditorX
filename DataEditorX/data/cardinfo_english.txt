@@ -4,13 +4,7 @@
 0x1	OCG
 0x2	TCG
 0x3	OCG & TCG
-0x4	Anime/Manga
-0x8	Illegal
-0x9	Simplified Chinese
-0xb	Simplified Chinese & TCG
-0x10	VG
-0x20	Custom
-0x24	Custom & Anime/Manga
+0x4	Custom & Illegal
 ##attribute
 0x0	Attribute
 0x1	EARTH
@@ -652,4 +646,8 @@
 0x182	Vernalizer Fairy
 0x183	Mokey Mokey
 0x184	Wingman
+0xac1	Action Card
+0xac2	Action Field
+0x14	Allure Queen
+0x4d	Beast's Battle
 #end

@@ -160,16 +160,16 @@ namespace DataEditorX.Language
             }
             // fm.SuspendLayout();
             //fm.ResumeLayout(true);
-            this.GetControlLabel(fm, "", fm.Name);
+            GetControlLabel(fm, "", fm.Name);
             //fm.ResumeLayout(false);
             //fm.PerformLayout();
         }
 
         void AddLabel(string key, string title)
         {
-            if (!this.mWordslist.ContainsKey(key))
+            if (!mWordslist.ContainsKey(key))
             {
-                this.mWordslist.Add(key, title);
+                mWordslist.Add(key, title);
             }
         }
 
@@ -192,7 +192,7 @@ namespace DataEditorX.Language
                 int i, count = lv.Columns.Count;
                 for (i = 0; i < count; i++)
                 {
-                    this.AddLabel(pName + SEP_CONTROL + i.ToString(),
+                    AddLabel(pName + SEP_CONTROL + i.ToString(),
                         lv.Columns[i].Text);
                 }
             }
@@ -200,19 +200,19 @@ namespace DataEditorX.Language
             {
                 foreach (ToolStripItem tsi in ms.Items)
                 {
-                    this.GetMenuItem(formName + SEP_CONTROL + ms.Name, tsi);
+                    GetMenuItem(formName + SEP_CONTROL + ms.Name, tsi);
                 }
             }
             else
             {
-                this.AddLabel(pName, c.Text);
+                AddLabel(pName, c.Text);
             }
 
             if (c.Controls.Count > 0)
             {
                 foreach (Control sc in c.Controls)
                 {
-                    this.GetControlLabel(sc, pName, formName);
+                    GetControlLabel(sc, pName, formName);
                 }
             }
             ContextMenuStrip conms = c.ContextMenuStrip;
@@ -220,7 +220,7 @@ namespace DataEditorX.Language
             {
                 foreach (ToolStripItem ts in conms.Items)
                 {
-                    this.GetMenuItem(formName + SEP_CONTROL + conms.Text, ts);
+                    GetMenuItem(formName + SEP_CONTROL + conms.Text, ts);
                 }
             }
         }
@@ -234,18 +234,18 @@ namespace DataEditorX.Language
 
             if (tsi is ToolStripMenuItem tsmi)
             {
-                this.AddLabel(pName + SEP_CONTROL + tsmi.Name, tsmi.Text);
+                AddLabel(pName + SEP_CONTROL + tsmi.Name, tsmi.Text);
                 if (tsmi.HasDropDownItems)
                 {
                     foreach (ToolStripItem subtsi in tsmi.DropDownItems)
                     {
-                        this.GetMenuItem(pName, subtsi);
+                        GetMenuItem(pName, subtsi);
                     }
                 }
             }
             else if (tsi is ToolStripLabel tlbl)
             {
-                this.AddLabel(pName + SEP_CONTROL + tlbl.Name, tlbl.Text);
+                AddLabel(pName + SEP_CONTROL + tlbl.Name, tlbl.Text);
             }
         }
 
@@ -257,9 +257,9 @@ namespace DataEditorX.Language
             using (FileStream fs = new FileStream(conf, FileMode.Create, FileAccess.Write))
             {
                 StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
-                foreach (string k in this.mWordslist.Keys)
+                foreach (string k in mWordslist.Keys)
                 {
-                    sw.WriteLine(k + SEP_LINE + this.mWordslist[k]);
+                    sw.WriteLine(k + SEP_LINE + mWordslist[k]);
                 }
                 sw.WriteLine("#");
                 foreach (LMSG k in _gMsgList.Keys)

@@ -17,17 +17,17 @@ namespace DataEditorX.Controls
         readonly List<string> luahistory;
         public string[] GetcdbHistory()
         {
-            return this.cdbhistory.ToArray();
+            return cdbhistory.ToArray();
         }
         public string[] GetluaHistory()
         {
-            return this.luahistory.ToArray();
+            return luahistory.ToArray();
         }
         public History(IMainForm mainForm)
         {
             this.mainForm = mainForm;
-            this.cdbhistory = new List<string>();
-            this.luahistory = new List<string>();
+            cdbhistory = new List<string>();
+            luahistory = new List<string>();
         }
         //读取历史记录
         public void ReadHistory(string historyFile)
@@ -39,13 +39,13 @@ namespace DataEditorX.Controls
             }
 
             string[] lines = File.ReadAllLines(historyFile);
-            this.AddHistorys(lines);
+            AddHistorys(lines);
         }
         //添加历史记录
         void AddHistorys(string[] lines)
         {
-            this.luahistory.Clear();
-            this.cdbhistory.Clear();
+            luahistory.Clear();
+            cdbhistory.Clear();
             foreach (string line in lines)
             {
                 if (string.IsNullOrEmpty(line) || line.StartsWith("#"))
@@ -57,18 +57,18 @@ namespace DataEditorX.Controls
                 {
                     if (YGOUtil.IsScript(line))
                     {
-                        if (this.luahistory.Count < DEXConfig.MAX_HISTORY
-                            && this.luahistory.IndexOf(line) < 0)
+                        if (luahistory.Count < DEXConfig.MAX_HISTORY
+                            && luahistory.IndexOf(line) < 0)
                         {
-                            this.luahistory.Add(line);
+                            luahistory.Add(line);
                         }
                     }
                     else
                     {
-                        if (this.cdbhistory.Count < DEXConfig.MAX_HISTORY
-                            && this.cdbhistory.IndexOf(line) < 0)
+                        if (cdbhistory.Count < DEXConfig.MAX_HISTORY
+                            && cdbhistory.IndexOf(line) < 0)
                         {
-                            this.cdbhistory.Add(line);
+                            cdbhistory.Add(line);
                         }
                     }
                 }
@@ -82,18 +82,18 @@ namespace DataEditorX.Controls
                 file
             };
             //添加旧记录
-            tmplist.AddRange(this.cdbhistory.ToArray());
-            tmplist.AddRange(this.luahistory.ToArray());
+            tmplist.AddRange(cdbhistory.ToArray());
+            tmplist.AddRange(luahistory.ToArray());
             //
-            this.AddHistorys(tmplist.ToArray());
-            this.SaveHistory();
-            this.MenuHistory();
+            AddHistorys(tmplist.ToArray());
+            SaveHistory();
+            MenuHistory();
         }
         //保存历史
         void SaveHistory()
         {
             string texts = "# database history";
-            foreach (string str in this.cdbhistory)
+            foreach (string str in cdbhistory)
             {
                 if (File.Exists(str))
                 {
@@ -101,60 +101,60 @@ namespace DataEditorX.Controls
                 }
             }
             texts += Environment.NewLine + "# script history";
-            foreach (string str in this.luahistory)
+            foreach (string str in luahistory)
             {
                 if (File.Exists(str))
                 {
                     texts += Environment.NewLine + str;
                 }
             }
-            if (File.Exists(this.historyFile))
+            if (File.Exists(historyFile))
             {
-                File.Delete(this.historyFile);
+                File.Delete(historyFile);
             }
 
-            File.WriteAllText(this.historyFile, texts);
+            File.WriteAllText(historyFile, texts);
         }
         //添加历史记录菜单
         public void MenuHistory()
         {
             //cdb历史
-            this.mainForm.CdbMenuClear();
-            foreach (string str in this.cdbhistory)
+            mainForm.CdbMenuClear();
+            foreach (string str in cdbhistory)
             {
                 ToolStripMenuItem tsmi = new ToolStripMenuItem(str);
-                tsmi.Click += this.MenuHistoryItem_Click;
-                this.mainForm.AddCdbMenu(tsmi);
+                tsmi.Click += MenuHistoryItem_Click;
+                mainForm.AddCdbMenu(tsmi);
             }
-            this.mainForm.AddCdbMenu(new ToolStripSeparator());
+            mainForm.AddCdbMenu(new ToolStripSeparator());
             ToolStripMenuItem tsmiclear = new ToolStripMenuItem(LanguageHelper.GetMsg(LMSG.ClearHistory));
-            tsmiclear.Click += this.MenuHistoryClear_Click;
-            this.mainForm.AddCdbMenu(tsmiclear);
+            tsmiclear.Click += MenuHistoryClear_Click;
+            mainForm.AddCdbMenu(tsmiclear);
             //lua历史
-            this.mainForm.LuaMenuClear();
-            foreach (string str in this.luahistory)
+            mainForm.LuaMenuClear();
+            foreach (string str in luahistory)
             {
                 ToolStripMenuItem tsmi = new ToolStripMenuItem(str);
-                tsmi.Click += this.MenuHistoryItem_Click;
-                this.mainForm.AddLuaMenu(tsmi);
+                tsmi.Click += MenuHistoryItem_Click;
+                mainForm.AddLuaMenu(tsmi);
             }
-            this.mainForm.AddLuaMenu(new ToolStripSeparator());
+            mainForm.AddLuaMenu(new ToolStripSeparator());
             ToolStripMenuItem tsmiclear2 = new ToolStripMenuItem(LanguageHelper.GetMsg(LMSG.ClearHistory));
-            tsmiclear2.Click += this.MenuHistoryClear2_Click;
-            this.mainForm.AddLuaMenu(tsmiclear2);
+            tsmiclear2.Click += MenuHistoryClear2_Click;
+            mainForm.AddLuaMenu(tsmiclear2);
         }
 
         void MenuHistoryClear2_Click(object sender, EventArgs e)
         {
-            this.luahistory.Clear();
-            this.MenuHistory();
-            this.SaveHistory();
+            luahistory.Clear();
+            MenuHistory();
+            SaveHistory();
         }
         void MenuHistoryClear_Click(object sender, EventArgs e)
         {
-            this.cdbhistory.Clear();
-            this.MenuHistory();
-            this.SaveHistory();
+            cdbhistory.Clear();
+            MenuHistory();
+            SaveHistory();
         }
         void MenuHistoryItem_Click(object sender, EventArgs e)
         {
@@ -163,7 +163,7 @@ namespace DataEditorX.Controls
                 string file = tsmi.Text;
                 if (File.Exists(file))
                 {
-                    this.mainForm.Open(file);
+                    mainForm.Open(file);
                 }
             }
         }

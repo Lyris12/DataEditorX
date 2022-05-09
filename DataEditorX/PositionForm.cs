@@ -7,27 +7,27 @@ namespace DataEditorX
     {
         public LocationForm()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void checkLocationMZone0x4_CheckedChanged(object sender, EventArgs e)
         {
             if (!noCheck)
             {
-                this.CheckOnField();
+                CheckOnField();
             }
         }
 
         private void CheckOnField()
         {
-            this.checkMZoneAndSZone.Checked = this.checkLocationMZone0x4.Checked && this.checkLocationSZone0x8.Checked;
+            checkMZoneAndSZone.Checked = checkLocationMZone0x4.Checked && checkLocationSZone0x8.Checked;
         }
 
         private void checkLocationSZone0x8_CheckedChanged(object sender, EventArgs e)
         {
             if (!noCheck)
             {
-                this.CheckOnField();
+                CheckOnField();
             }
         }
         bool noCheck = false;

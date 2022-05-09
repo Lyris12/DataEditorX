@@ -6,10 +6,10 @@ namespace DataEditorX
     {
         public DListView()
         {
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
+            SetStyle(ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.AllPaintingInWmPaint,
                      true);
-            this.UpdateStyles();
+            UpdateStyles();
         }
     }
 }

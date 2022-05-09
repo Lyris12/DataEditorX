@@ -29,8 +29,8 @@ namespace DataEditorX.Core
 
         public CommandManager()
         {
-            UndoStateChanged += new StatusBool(this.CommandManager_UndoStateChanged);
-            UndoStateChanged += new StatusBool(this.CommandManager_ReverseUndoStateChanged);
+            UndoStateChanged += new StatusBool(CommandManager_UndoStateChanged);
+            UndoStateChanged += new StatusBool(CommandManager_ReverseUndoStateChanged);
         }
 
         private void CommandManager_UndoStateChanged(bool val)
@@ -51,47 +51,47 @@ namespace DataEditorX.Core
                 return;
             }
 
-            this.reverseStack.Clear();
+            reverseStack.Clear();
 
             if (command is IBackableCommand)
             {
-                this.undoStack.Push((ICommand)command.Clone());
+                undoStack.Push((ICommand)command.Clone());
             }
             else
             {
-                this.undoStack.Clear();
+                undoStack.Clear();
             }
 
-            UndoStateChanged(this.undoStack.Count > 0);
+            UndoStateChanged(undoStack.Count > 0);
         }
 
         public void Undo()
         {
-            IBackableCommand command = (IBackableCommand)this.undoStack.Pop();
+            IBackableCommand command = (IBackableCommand)undoStack.Pop();
             if (command == null)
             {
                 return;
             }
 
             command.Undo();
-            this.reverseStack.Push((ICommand)command.Clone());
+            reverseStack.Push((ICommand)command.Clone());
 
-            UndoStateChanged(this.undoStack.Count > 0);
+            UndoStateChanged(undoStack.Count > 0);
             //UndoStateChanged(reverseStack.Count > 0);
         }
 
         public void ReverseUndo()
         {
-            IBackableCommand command = (IBackableCommand)this.reverseStack.Pop();
+            IBackableCommand command = (IBackableCommand)reverseStack.Pop();
             if (command == null)
             {
                 return;
             }
 
             command.Execute();
-            this.undoStack.Push((ICommand)command.Clone());
+            undoStack.Push((ICommand)command.Clone());
 
-            UndoStateChanged(this.undoStack.Count > 0);
+            UndoStateChanged(undoStack.Count > 0);
         }
         #endregion
     }

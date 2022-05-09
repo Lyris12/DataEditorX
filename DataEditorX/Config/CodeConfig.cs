@@ -14,9 +14,9 @@ namespace DataEditorX.Config
         #region 成员
         public CodeConfig()
         {
-            this.tooltipDic = new SortedList<string, string>();
-            this.longTooltipDic = new SortedList<string, string>();
-            this.items = new List<AutocompleteItem>();
+            tooltipDic = new SortedList<string, string>();
+            longTooltipDic = new SortedList<string, string>();
+            items = new List<AutocompleteItem>();
         }
 
         //函数提示
@@ -28,15 +28,15 @@ namespace DataEditorX.Config
         /// </summary>
         public SortedList<string, string> TooltipDic
         {
-            get { return this.tooltipDic; }
+            get { return tooltipDic; }
         }
         public SortedList<string, string> LongTooltipDic
         {
-            get { return this.longTooltipDic; }
+            get { return longTooltipDic; }
         }
         public AutocompleteItem[] Items
         {
-            get { return this.items.ToArray(); }
+            get { return items.ToArray(); }
         }
         #endregion
 
@@ -50,9 +50,9 @@ namespace DataEditorX.Config
             foreach (long k in dic.Keys)
             {
                 string key = "0x" + k.ToString("x");
-                if (!this.tooltipDic.ContainsKey(key))
+                if (!tooltipDic.ContainsKey(key))
                 {
-                    this.AddToolIipDic(key, dic[k]);
+                    AddToolIipDic(key, dic[k]);
                 }
             }
         }
@@ -71,10 +71,10 @@ namespace DataEditorX.Config
                     if (line.StartsWith("!victory")
                        || line.StartsWith("!counter"))
                     {
-                        string[] ws = line.Split(' ');
+                        string[] ws = line.Split(new char[] { ' ' }, 3);
                         if (ws.Length > 2)
                         {
-                            this.AddToolIipDic(ws[1], ws[2]);
+                            AddToolIipDic(ws[1], ws[2]);
                         }
                     }
                 }
@@ -107,7 +107,7 @@ namespace DataEditorX.Config
                 if (line.StartsWith("●"))
                 {
                     //add
-                    this.AddToolIipDic(name, desc);
+                    AddToolIipDic(name, desc);
                     int w = line.IndexOf("(");
                     int t = line.IndexOf(" ");
 
@@ -124,7 +124,7 @@ namespace DataEditorX.Config
                     desc += Environment.NewLine + line;
                 }
             }
-            this.AddToolIipDic(name, desc);
+            AddToolIipDic(name, desc);
         }
         #endregion
 
@@ -152,7 +152,7 @@ namespace DataEditorX.Config
                     : line;
                 string desc = (t > 0) ? line.Substring(t + 1).Replace("--", "\n")
     : line;
-                this.AddToolIipDic(k, desc);
+                AddToolIipDic(k, desc);
             }
         }
         #endregion
@@ -160,19 +160,19 @@ namespace DataEditorX.Config
         #region 处理
         public void InitAutoMenus()
         {
-            this.items.Clear();
-            foreach (string k in this.tooltipDic.Keys)
+            items.Clear();
+            foreach (string k in tooltipDic.Keys)
             {
                 AutocompleteItem item = new AutocompleteItem(k)
                 {
                     ToolTipTitle = k,
-                    ToolTipText = this.tooltipDic[k]
+                    ToolTipText = tooltipDic[k]
                 };
-                this.items.Add(item);
+                items.Add(item);
             }
-            foreach (string k in this.longTooltipDic.Keys)
+            foreach (string k in longTooltipDic.Keys)
             {
-                if (this.tooltipDic.ContainsKey(k))
+                if (tooltipDic.ContainsKey(k))
                 {
                     continue;
                 }
@@ -180,9 +180,9 @@ namespace DataEditorX.Config
                 AutocompleteItem item = new AutocompleteItem(k)
                 {
                     ToolTipTitle = k,
-                    ToolTipText = this.longTooltipDic[k]
+                    ToolTipText = longTooltipDic[k]
                 };
-                this.items.Add(item);
+                items.Add(item);
             }
         }
         string GetShortName(string name)
@@ -199,41 +199,41 @@ namespace DataEditorX.Config
         }
         void AddToolIipDic(string key, string val)
         {
-            string skey = this.GetShortName(key);
-            if (this.tooltipDic.ContainsKey(skey))//存在
+            string skey = GetShortName(key);
+            if (tooltipDic.ContainsKey(skey))//存在
             {
-                string nval = this.tooltipDic[skey];
+                string nval = tooltipDic[skey];
                 if (!nval.EndsWith(Environment.NewLine))
                 {
                     nval += Environment.NewLine;
                 }
 
                 nval += Environment.NewLine + val;
-                this.tooltipDic[skey] = nval;
+                tooltipDic[skey] = nval;
             }
             else
             {
-                this.tooltipDic.Add(skey, val);
+                tooltipDic.Add(skey, val);
             }
             //
-            this.AddLongToolIipDic(key, val);
+            AddLongToolIipDic(key, val);
         }
         void AddLongToolIipDic(string key, string val)
         {
-            if (this.longTooltipDic.ContainsKey(key))//存在
+            if (longTooltipDic.ContainsKey(key))//存在
             {
-                string nval = this.longTooltipDic[key];
+                string nval = longTooltipDic[key];
                 if (!nval.EndsWith(Environment.NewLine))
                 {
                     nval += Environment.NewLine;
                 }
 
                 nval += Environment.NewLine + val;
-                this.longTooltipDic[key] = nval;
+                longTooltipDic[key] = nval;
             }
             else
             {
-                this.longTooltipDic.Add(key, val);
+                longTooltipDic.Add(key, val);
             }
         }
         #endregion

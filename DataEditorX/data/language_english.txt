@@ -26,26 +26,6 @@ FindReplaceForm.btnClose	Close
 FindReplaceForm.lbFind	Find
 FindReplaceForm.lbReplace	Replace
 #
-CodeEditForm_Avalon.mainMenu.menuitem_file	File...(&F)
-CodeEditForm_Avalon.mainMenu.menuitem_open	Open...
-CodeEditForm_Avalon.mainMenu.menuitem_save	Save...
-CodeEditForm_Avalon.mainMenu.menuitem_saveas	Save as...
-CodeEditForm_Avalon.mainMenu.menuitem_quit	Exit
-CodeEditForm_Avalon.mainMenu.menuitem_setting	Settings...(&S)
-CodeEditForm_Avalon.mainMenu.menuitem_tooltipFont	Set Tooltip Font...
-CodeEditForm_Avalon.mainMenu.menuitem_showmap	Show/Hide Codemap
-CodeEditForm_Avalon.mainMenu.menuitem_showinput	Show/Hide Input Box
-CodeEditForm_Avalon.mainMenu.menuitem_find	Find
-CodeEditForm_Avalon.mainMenu.menuitem_replace	Replace
-CodeEditForm_Avalon.mainMenu.menuitem_setcard	Set Card Database...
-CodeEditForm_Avalon.mainMenu.menuitem_help	Help...(&H)
-CodeEditForm_Avalon.mainMenu.menuitem_about	About...
-CodeEditForm_Avalon.mainMenu.menuitem_tools	Tools(&T)
-CodeEditForm_Avalon.mainMenu.menuitem_testlua	Lua Syntax Check
-CodeEditForm_Avalon.mainMenu.menuitem_effectcreator	Effect Creator...
-CodeEditForm_Avalon.mainMenu.menuitem_CEFont	Set CodeEditor Font...
-CodeEditForm_Avalon.mainMenu.menuitem_fixCardCode	Fix Card Codes
-#
 DataEditForm.pl_bottom.btn_img	Load Image
 DataEditForm.pl_main.splitContainer..lb_name	Name
 DataEditForm.pl_main.splitContainer..lb_types	Card Type
@@ -64,14 +44,15 @@ DataEditForm.pl_main.splitContainer..lb_odate	OCG
 DataEditForm.pl_main.splitContainer..lv_cardlist.0	Code
 DataEditForm.pl_main.splitContainer..lv_cardlist.1	Name
 DataEditForm.pl_bottom.btn_reset	Clear All
-DataEditForm.pl_bottom.btn_lua	Open Lua File
+DataEditForm.pl_bottom.btn_lua	Open Lua
 DataEditForm.pl_bottom.btn_serach	Search
 DataEditForm.pl_bottom.btn_del	Delete
 DataEditForm.pl_bottom.btn_undo	Undo
 DataEditForm.pl_bottom.btn_mod	Modify
 DataEditForm.pl_bottom.btn_add	Add Card
-DataEditForm.pl_bottom.btn_PageDown	Next Page
-DataEditForm.pl_bottom.btn_PageUp	Previous Page
+DataEditForm.pl_bottom.btn_PageDown	Next
+DataEditForm.pl_bottom.btn_PageUp	Previous
+DataEditForm.pl_bottom.btn_addArchetype	Add Arche&type
 DataEditForm.pl_main.lv_cardlist.0	Code
 DataEditForm.pl_main.lv_cardlist.1	Name
 DataEditForm.mainMenu.menuitem_file	File(&L)
@@ -164,7 +145,7 @@ MainForm.mainMenu.menuitem_closeall	Close All
 0x1e	About  :
 0x1f	Version:
 0x20	Author :
-0x21	Databases(*.cdb)|*.cdb|Databases(*.db)|*.db|Databases(*.bytes)|*.bytes|Scripts(*.lua)|*.lua|all files(*.*)|*.*
+0x21	Databases(*.db)|*.db|Databases(*.cdb)|*.cdb|Databases(*.bytes)|*.bytes|Scripts(*.lua)|*.lua|all files(*.*)|*.*
 0x22	ydk file(*.ydk)|*.ydk|all files(*.*)|*.*
 0x23	Invalid SetCode!
 0x24	Select Image File
@@ -198,7 +179,7 @@ MainForm.mainMenu.menuitem_closeall	Close All
 0x40	Compare cards with text?
 0x41	Cards compared.
 0x42	Open File
-0x43	Scripts(*.lua)|*.lua|Databases(*.cdb)|*.cdb|Databases(*.db)|*.db|Databases(*.bytes)|*.bytes|all files(*.*)|*.*
+0x43	Scripts(*.lua)|*.lua|Databases(*.db)|*.db|Databases(*.cdb)|*.cdb|Databases(*.bytes)|*.bytes|all files(*.*)|*.*
 0x44	New File
 0x45	Saved Successfully.
 0x46	Save Script?

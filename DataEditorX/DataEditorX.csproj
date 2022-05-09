@@ -152,6 +152,12 @@
     <Compile Include="FindReplaceForm.Designer.cs">
       <DependentUpon>FindReplaceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddArchetypeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddArchetypeForm.Designer.cs">
+      <DependentUpon>AddArchetypeForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PositionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,6 +263,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddArchetypeForm.resx">
+      <DependentUpon>AddArchetypeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PositionForm.resx">
       <DependentUpon>PositionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -320,6 +329,6 @@
     <PostBuildEvent>rm $(OutDir)win32.zip
 7z a $(OutDir)win32.zip "$(OutDir)*"</PostBuildEvent>
     <PostBuildEvent>if exist "win32.zip" del "win32.zip"
-7z a -x!"*.dll" -x!"*.pdb" -x!"*.xml" "win32.zip" "*" &amp;&amp; 7z a "win32.zip" "FastColoredTextBox.dll" "WeifenLuo.WinFormsUI.Docking.dll" "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" "System.Data.SQLite.dll"</PostBuildEvent>
+7z a -x!"*.dll" -x!"*.pdb" -x!"*.xml" "win32.zip" "*" &amp;&amp; 7z a "win32.zip" "FastColoredTextBox.dll" "WeifenLuo.WinFormsUI.Docking.dll" "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" "System.Data.SQLite.dll" "Neo.Lua.dll"</PostBuildEvent>
   </PropertyGroup>
 </Project>

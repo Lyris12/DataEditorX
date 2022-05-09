@@ -45,7 +45,7 @@ namespace DataEditorX
         public string copyright;
         public override string ToString()
         {
-            return string.Format("[CardInfo Title={0}, Artwork={1}, Artwork_crop={2}, Background={3}, Rarity={4}, Attribute={5}, Level={6}, Icon={7}, Description={8}, Pendulum_description={9}, Pendulum_scales={10}, Subtypes={11}, Atk={12}, Def={13}, Edition={14}, Set={15}, Card_number={16}, Limitation={17}, Sticker={18}, Copyright={19}]", this.title, this.artwork, this.artwork_crop, this.background, this.rarity, this.attribute, this.level, this.icon, this.description, this.pendulum_description, this.pendulum_scales, this.subtypes, this.atk, this.def, this.edition, this.set, this.card_number, this.limitation, this.sticker, this.copyright);
+            return string.Format("[CardInfo Title={0}, Artwork={1}, Artwork_crop={2}, Background={3}, Rarity={4}, Attribute={5}, Level={6}, Icon={7}, Description={8}, Pendulum_description={9}, Pendulum_scales={10}, Subtypes={11}, Atk={12}, Def={13}, Edition={14}, Set={15}, Card_number={16}, Limitation={17}, Sticker={18}, Copyright={19}]", title, artwork, artwork_crop, background, rarity, attribute, level, icon, description, pendulum_description, pendulum_scales, subtypes, atk, def, edition, set, card_number, limitation, sticker, copyright);
         }
     }
 

@@ -45,64 +45,64 @@ namespace DataEditorX
         string nowcdb;
         public CodeEditForm()
         {
-            this.InitForm();
+            InitForm();
         }
 
         void InitForm()
         {
-            this.cardlist = new SortedDictionary<long, string>();
-            this.tooltipDic = new SortedList<string, string>();
-            this.InitializeComponent();
+            cardlist = new SortedDictionary<long, string>();
+            tooltipDic = new SortedList<string, string>();
+            InitializeComponent();
             //设置字体，大小
             string fontname = DEXConfig.ReadString(DEXConfig.TAG_FONT_NAME);
-            float fontsize = DEXConfig.ReadFloat(DEXConfig.TAG_FONT_SIZE, this.fctb.Font.Size);
-            this.fctb.Font = new Font(fontname, fontsize);
+            float fontsize = DEXConfig.ReadFloat(DEXConfig.TAG_FONT_SIZE, fctb.Font.Size);
+            fctb.Font = new Font(fontname, fontsize);
             if (DEXConfig.ReadBoolean(DEXConfig.TAG_IME))
             {
-                this.fctb.ImeMode = ImeMode.On;
+                fctb.ImeMode = ImeMode.On;
             }
 
             if (DEXConfig.ReadBoolean(DEXConfig.TAG_WORDWRAP))
             {
-                this.fctb.WordWrap = true;
+                fctb.WordWrap = true;
             }
             else
             {
-                this.fctb.WordWrap = false;
+                fctb.WordWrap = false;
             }
 
             if (DEXConfig.ReadBoolean(DEXConfig.TAG_TAB2SPACES))
             {
-                this.tabisspaces = true;
+                tabisspaces = true;
             }
             else
             {
-                this.tabisspaces = false;
+                tabisspaces = false;
             }
 
-            Font ft = new Font(this.fctb.Font.Name, this.fctb.Font.Size / 1.2f, FontStyle.Regular);
-            this.popupMenu = new AutocompleteMenu(this.fctb)
+            Font ft = new Font(fctb.Font.Name, fctb.Font.Size / 1.2f, FontStyle.Regular);
+            popupMenu = new AutocompleteMenu(fctb)
             {
                 MinFragmentLength = 2
             };
-            this.fctb.TextChanged += this.Fctb_TextChanged;
-            this.popupMenu.ToolTip.Popup += this.ToolTip_Popup;
-            this.popupMenu.Items.Font = ft;
-            this.popupMenu.AutoSize = true;
-            this.popupMenu.MinimumSize = new Size(300, 0);
-            this.popupMenu.BackColor = this.fctb.BackColor;
-            this.popupMenu.ForeColor = this.fctb.ForeColor;
-            this.popupMenu.Closed += new ToolStripDropDownClosedEventHandler(this.popupMenu_Closed);
-            this.popupMenu.SelectedColor = Color.LightGray;
-            this.popupMenu.VisibleChanged += this.PopupMenu_VisibleChanged;
-            this.popupMenu.Opened += this.PopupMenu_VisibleChanged;
-            this.popupMenu.Items.FocussedItemIndexChanged += this.Items_FocussedItemIndexChanged;
-            this.title = this.Text;
+            fctb.TextChanged += Fctb_TextChanged;
+            popupMenu.ToolTip.Popup += ToolTip_Popup;
+            popupMenu.Items.Font = ft;
+            popupMenu.AutoSize = true;
+            popupMenu.MinimumSize = new Size(300, 0);
+            popupMenu.BackColor = fctb.BackColor;
+            popupMenu.ForeColor = fctb.ForeColor;
+            popupMenu.Closed += new ToolStripDropDownClosedEventHandler(popupMenu_Closed);
+            popupMenu.SelectedColor = Color.LightGray;
+            popupMenu.VisibleChanged += PopupMenu_VisibleChanged;
+            popupMenu.Opened += PopupMenu_VisibleChanged;
+            popupMenu.Items.FocussedItemIndexChanged += Items_FocussedItemIndexChanged;
+            title = Text;
         }
 
         private void Fctb_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.PopupMenu_VisibleChanged(null, null);
+            PopupMenu_VisibleChanged(null, null);
         }
 
         private void ToolTip_Popup(object sender, PopupEventArgs e)
@@ -112,61 +112,61 @@ namespace DataEditorX
 
         private void PopupMenu_VisibleChanged(object sender, EventArgs e)
         {
-            if (!this.popupMenu.Visible)
+            if (!popupMenu.Visible)
             {
-                this.AdjustPopupMenuSize();
+                AdjustPopupMenuSize();
                 return;
             }
-            if (this.popupMenu.Items.FocussedItem == null)
+            if (popupMenu.Items.FocussedItem == null)
             {
-                if (this.popupMenu.Items.Count == 0)
+                if (popupMenu.Items.Count == 0)
                 {
                     return;
                 }
-                this.popupMenu.Items.FocussedItemIndex = 0;
+                popupMenu.Items.FocussedItemIndex = 0;
             }
-            this.fctb.ShowTooltipWithLabel(this.popupMenu.Items.FocussedItem.ToolTipTitle,
-                this.popupMenu.Items.FocussedItem.ToolTipText);
-            this.AdjustPopupMenuSize();
+            fctb.ShowTooltipWithLabel(popupMenu.Items.FocussedItem.ToolTipTitle,
+                popupMenu.Items.FocussedItem.ToolTipText);
+            AdjustPopupMenuSize();
         }
         private void AdjustPopupMenuSize()
         {
-            if (!this.popupMenu.Visible || this.popupMenu.Items.FocussedItem == null)
+            if (!popupMenu.Visible || popupMenu.Items.FocussedItem == null)
             {
-                this.popupMenu.Size = new Size(300, 0);
-                this.popupMenu.MinimumSize = new Size(300, 0);
+                popupMenu.Size = new Size(300, 0);
+                popupMenu.MinimumSize = new Size(300, 0);
                 return;
             }
-            Size s = TextRenderer.MeasureText(this.popupMenu.Items.FocussedItem.ToolTipTitle,
-                this.popupMenu.Items.Font, new Size(0, 0), TextFormatFlags.NoPadding);
-            s = new Size(s.Width + 50, this.popupMenu.Size.Height);
-            if (this.popupMenu.Size.Width < s.Width)
+            Size s = TextRenderer.MeasureText(popupMenu.Items.FocussedItem.ToolTipTitle,
+                popupMenu.Items.Font, new Size(0, 0), TextFormatFlags.NoPadding);
+            s = new Size(s.Width + 50, popupMenu.Size.Height);
+            if (popupMenu.Size.Width < s.Width)
             {
-                this.popupMenu.Size = s;
-                this.popupMenu.MinimumSize = s;
+                popupMenu.Size = s;
+                popupMenu.MinimumSize = s;
             }
         }
         private void Items_FocussedItemIndexChanged(object sender, EventArgs e)
         {
-            if (this.popupMenu.Items.FocussedItem == null)
+            if (popupMenu.Items.FocussedItem == null)
             {
                 return;
             }
-            this.AdjustPopupMenuSize();
-            this.fctb.ShowTooltipWithLabel(this.popupMenu.Items.FocussedItem.ToolTipTitle,
-                this.popupMenu.Items.FocussedItem.ToolTipText);
+            AdjustPopupMenuSize();
+            fctb.ShowTooltipWithLabel(popupMenu.Items.FocussedItem.ToolTipTitle,
+                popupMenu.Items.FocussedItem.ToolTipText);
         }
 
         void popupMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            this.popupMenu.Items.SetAutocompleteItems(this.items);
+            popupMenu.Items.SetAutocompleteItems(items);
         }
         #endregion
 
         #region IEditForm接口
         public void SetActived()
         {
-            this.Activate();
+            Activate();
         }
         public bool CanOpen(string file)
         {
@@ -174,15 +174,15 @@ namespace DataEditorX
         }
         public string GetOpenFile()
         {
-            return this.nowFile;
+            return nowFile;
         }
         public bool Create(string file)
         {
-            return this.Open(file);
+            return Open(file);
         }
         public bool Save(bool shift)
         {
-            return this.savefile(shift);
+            return savefile(shift);
         }
         public bool Open(string file)
         {
@@ -193,19 +193,19 @@ namespace DataEditorX
                     FileStream fs = new FileStream(file, FileMode.Create);
                     fs.Close();
                 }
-                this.nowFile = file;
+                nowFile = file;
                 FileInfo fi = new FileInfo(file);
                 if (fi.Name.ToUpper().EndsWith(".LUA"))
                 {
-                    (this.fctb.SyntaxHighlighter as MySyntaxHighlighter).cCode
+                    (fctb.SyntaxHighlighter as MySyntaxHighlighter).cCode
                         = fi.Name.Substring(0, fi.Name.Length - 4);
                 }
                 string cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "../cards.cdb");
-                this.SetCardDB(cdb);//后台加载卡片数据
-                this.fctb.OpenFile(this.nowFile, new UTF8Encoding(false));
-                this.oldtext = this.fctb.Text;
-                this.SetTitle();
+                SetCardDB(cdb);//后台加载卡片数据
+                fctb.OpenFile(nowFile, new UTF8Encoding(false));
+                oldtext = fctb.Text;
+                SetTitle();
                 return true;
             }
             return false;
@@ -217,17 +217,17 @@ namespace DataEditorX
         //文档视图
         void ShowMapToolStripMenuItemClick(object sender, EventArgs e)
         {
-            if (this.menuitem_showmap.Checked)
+            if (menuitem_showmap.Checked)
             {
-                this.documentMap1.Visible = false;
-                this.menuitem_showmap.Checked = false;
-                this.fctb.Width += this.documentMap1.Width;
+                documentMap1.Visible = false;
+                menuitem_showmap.Checked = false;
+                fctb.Width += documentMap1.Width;
             }
             else
             {
-                this.documentMap1.Visible = true;
-                this.menuitem_showmap.Checked = true;
-                this.fctb.Width -= this.documentMap1.Width;
+                documentMap1.Visible = true;
+                menuitem_showmap.Checked = true;
+                fctb.Width -= documentMap1.Width;
             }
         }
         #endregion
@@ -236,51 +236,51 @@ namespace DataEditorX
         void SetTitle()
         {
             string str;
-            if (string.IsNullOrEmpty(this.nowFile))
+            if (string.IsNullOrEmpty(nowFile))
             {
-                str = this.title;
+                str = title;
             }
             else
             {
-                str = new FileInfo(this.nowFile).Name;
+                str = new FileInfo(nowFile).Name;
             }
 
-            if (this.MdiParent != null)//如果父容器不为空
+            if (MdiParent != null)//如果父容器不为空
             {
-                if (string.IsNullOrEmpty(this.nowFile))
+                if (string.IsNullOrEmpty(nowFile))
                 {
-                    this.Text = this.title;
-                    this.TabText = this.title;
+                    Text = title;
+                    TabText = title;
                 }
                 else
                 {
-                    this.Text = Path.GetFileName(this.nowFile);
+                    Text = Path.GetFileName(nowFile);
                 }
-                this.MdiParent.Text = str;
+                MdiParent.Text = str;
             }
             else
             {
-                this.Text = str;
-                this.TabText = str;
+                Text = str;
+                TabText = str;
             }
         }
 
         void CodeEditFormEnter(object sender, EventArgs e)
         {
-            this.SetTitle();
+            SetTitle();
         }
         #endregion
 
         #region 自动完成
         public void LoadXml(string xmlfile)
         {
-            this.fctb.DescriptionFile = xmlfile;
+            fctb.DescriptionFile = xmlfile;
         }
         public void InitTooltip(CodeConfig codeconfig)
         {
-            this.tooltipDic = codeconfig.TooltipDic;
-            this.items = codeconfig.Items;
-            this.popupMenu.Items.SetAutocompleteItems(this.items);
+            tooltipDic = codeconfig.TooltipDic;
+            items = codeconfig.Items;
+            popupMenu.Items.SetAutocompleteItems(items);
         }
         #endregion
 
@@ -289,7 +289,7 @@ namespace DataEditorX
         string FindTooltip(string word)
         {
             string desc = "";
-            foreach (string v in this.tooltipDic.Keys)
+            foreach (string v in tooltipDic.Keys)
             {
                 int t = v.IndexOf(".");
                 string k = v;
@@ -300,7 +300,7 @@ namespace DataEditorX
 
                 if (word == k)
                 {
-                    desc = this.tooltipDic[v];
+                    desc = tooltipDic[v];
                 }
             }
             return desc;
@@ -323,14 +323,14 @@ namespace DataEditorX
                 if (tl > 0)
                 {
                     //获取卡片信息
-                    if (this.cardlist.ContainsKey(tl))
+                    if (cardlist.ContainsKey(tl))
                     {
-                        desc = this.cardlist[tl];
+                        desc = cardlist[tl];
                     }
                 }
                 else
                 {
-                    desc = this.FindTooltip(e.HoveredWord);
+                    desc = FindTooltip(e.HoveredWord);
                 }
 
                 if (!string.IsNullOrEmpty(desc))
@@ -345,8 +345,8 @@ namespace DataEditorX
         #region 保存文件
         bool savefile(bool saveas)
         {
-            string alltext = this.fctb.Text;
-            if (!this.tabisspaces)
+            string alltext = fctb.Text;
+            if (!tabisspaces)
             {
                 alltext = alltext.Replace("    ", "\t");
             }
@@ -362,8 +362,8 @@ namespace DataEditorX
                     catch { }
                     if (sfdlg.ShowDialog() == DialogResult.OK)
                     {
-                        this.nowFile = sfdlg.FileName;
-                        this.SetTitle();
+                        nowFile = sfdlg.FileName;
+                        SetTitle();
                     }
                     else
                     {
@@ -371,18 +371,19 @@ namespace DataEditorX
                     }
                 }
             }
-            this.oldtext = this.fctb.Text;
-            File.WriteAllText(this.nowFile, alltext, new UTF8Encoding(false));
+            oldtext = fctb.Text;
+            File.WriteAllText(nowFile, alltext, new UTF8Encoding(false));
             try
             {
-                long.TryParse(new FileInfo(this.nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
+                long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
                 if (tl > 0)
                 {
                     //获取卡片信息
-                    if (this.cardlist.ContainsKey(tl) && File.Exists(this.nowcdb) &&
-                        (this.nowcdb.EndsWith(".db") || this.nowcdb.EndsWith(".bytes")))
+                    if (cardlist.ContainsKey(tl) && File.Exists(nowcdb) &&
+                        (nowcdb.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
+                        || nowcdb.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)))
                     {
-                        DataBase.Command(this.nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
+                        DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
                     }
                 }
             }
@@ -395,15 +396,15 @@ namespace DataEditorX
         //显示/隐藏输入框
         void Menuitem_showinputClick(object sender, EventArgs e)
         {
-            if (this.menuitem_showinput.Checked)
+            if (menuitem_showinput.Checked)
             {
-                this.menuitem_showinput.Checked = false;
-                this.tb_input.Visible = false;
+                menuitem_showinput.Checked = false;
+                tb_input.Visible = false;
             }
             else
             {
-                this.menuitem_showinput.Checked = true;
-                this.tb_input.Visible = true;
+                menuitem_showinput.Checked = true;
+                tb_input.Visible = true;
             }
         }
 
@@ -413,17 +414,17 @@ namespace DataEditorX
         }
         void Menuitem_findClick(object sender, EventArgs e)
         {
-            this.fctb.ShowFindDialog();
+            fctb.ShowFindDialog();
         }
 
         void Menuitem_replaceClick(object sender, EventArgs e)
         {
-            this.fctb.ShowReplaceDialog();
+            fctb.ShowReplaceDialog();
         }
 
         void QuitToolStripMenuItemClick(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         void AboutToolStripMenuItemClick(object sender, EventArgs e)
@@ -445,8 +446,8 @@ namespace DataEditorX
                 catch { }
                 if (sfdlg.ShowDialog() == DialogResult.OK)
                 {
-                    this.nowFile = sfdlg.FileName;
-                    this.fctb.OpenFile(this.nowFile, new UTF8Encoding(false));
+                    nowFile = sfdlg.FileName;
+                    fctb.OpenFile(nowFile, new UTF8Encoding(false));
                 }
             }
         }
@@ -459,17 +460,17 @@ namespace DataEditorX
         {
             if (e.KeyCode == Keys.Enter)
             {
-                string key = this.tb_input.Text;
+                string key = tb_input.Text;
                 List<AutocompleteItem> list = new List<AutocompleteItem>();
-                foreach (AutocompleteItem item in this.items)
+                foreach (AutocompleteItem item in items)
                 {
                     if (item.ToolTipText.Contains(key))
                     {
                         list.Add(item);
                     }
                 }
-                this.popupMenu.Items.SetAutocompleteItems(list.ToArray());
-                this.popupMenu.Show(true);
+                popupMenu.Items.SetAutocompleteItems(list.ToArray());
+                popupMenu.Show(true);
             }
         }
         #endregion
@@ -477,21 +478,21 @@ namespace DataEditorX
         #region 提示保存
         void CodeEditFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.oldtext))
+            if (!string.IsNullOrEmpty(oldtext))
             {
-                if (this.fctb.Text != this.oldtext)
+                if (fctb.Text != oldtext)
                 {
                     if (MyMsg.Question(LMSG.IfSaveScript))
                     {
-                        this.Save(false);
+                        Save(false);
                     }
                 }
             }
-            else if (this.fctb.Text.Length > 0)
+            else if (fctb.Text.Length > 0)
             {
                 if (MyMsg.Question(LMSG.IfSaveScript))
                 {
-                    this.Save(true);
+                    Save(true);
                 }
             }
         }
@@ -508,8 +509,8 @@ namespace DataEditorX
             foreach (string cdb in cdbs)
             {
                 ToolStripMenuItem tsmi = new ToolStripMenuItem(cdb);
-                tsmi.Click += this.MenuItem_Click;
-                this.menuitem_setcard.DropDownItems.Add(tsmi);
+                tsmi.Click += MenuItem_Click;
+                menuitem_setcard.DropDownItems.Add(tsmi);
             }
         }
         void MenuItem_Click(object sender, EventArgs e)
@@ -517,23 +518,23 @@ namespace DataEditorX
             if (sender is ToolStripMenuItem tsmi)
             {
                 string file = tsmi.Text;
-                this.SetCardDB(file);
+                SetCardDB(file);
             }
         }
         public void SetCardDB(string name)
         {
-            this.nowcdb = name;
-            if (!this.backgroundWorker1.IsBusy)
+            nowcdb = name;
+            if (!backgroundWorker1.IsBusy)
             {
-                this.backgroundWorker1.RunWorkerAsync();
+                backgroundWorker1.RunWorkerAsync();
             }
         }
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if (this.nowcdb != null && File.Exists(this.nowcdb))
+            if (nowcdb != null && File.Exists(nowcdb))
             {
-                this.SetCards(DataBase.Read(this.nowcdb, true, ""));
+                SetCards(DataBase.Read(nowcdb, true, ""));
             }
         }
         public void SetCards(Card[] cards)
@@ -543,10 +544,10 @@ namespace DataEditorX
                 return;
             }
 
-            this.cardlist.Clear();
+            cardlist.Clear();
             foreach (Card c in cards)
             {
-                this.cardlist.Add(c.id, c.ToString());
+                cardlist.Add(c.id, c.ToString());
             }
         }
         #endregion
@@ -554,25 +555,25 @@ namespace DataEditorX
         #region 选择高亮
         void FctbSelectionChangedDelayed(object sender, EventArgs e)
         {
-            this.tb_input.Text = this.fctb.SelectedText;
-            this.fctb.VisibleRange.ClearStyle(this.sameWordsStyle);
-            if (!this.fctb.Selection.IsEmpty)
+            tb_input.Text = fctb.SelectedText;
+            fctb.VisibleRange.ClearStyle(sameWordsStyle);
+            if (!fctb.Selection.IsEmpty)
             {
                 return;//user selected diapason
             }
 
             //get fragment around caret
-            var fragment = this.fctb.Selection.GetFragment(@"\w");
+            var fragment = fctb.Selection.GetFragment(@"\w");
             string text = fragment.Text;
             if (text.Length == 0)
             {
                 return;
             }
             //highlight same words
-            var ranges = this.fctb.Range.GetRanges("\\b" + text + "\\b");
+            var ranges = fctb.Range.GetRanges("\\b" + text + "\\b");
             foreach (var r in ranges)
             {
-                r.SetStyle(this.sameWordsStyle);
+                r.SetStyle(sameWordsStyle);
             }
         }
         #endregion
@@ -580,7 +581,7 @@ namespace DataEditorX
         #region 调转函数
         void FctbMouseClick(object sender, MouseEventArgs e)
         {
-            var fragment = this.fctb.Selection.GetFragment(@"\w");
+            var fragment = fctb.Selection.GetFragment(@"\w");
             string text = fragment.Text;
             if (text.Length == 0)
             {
@@ -589,10 +590,10 @@ namespace DataEditorX
 
             if (e.Button == MouseButtons.Left && ModifierKeys == Keys.Control)
             {
-                List<int> linenums = this.fctb.FindLines(@"function\s+?\S+?\." + text + @"\(", RegexOptions.Singleline);
+                List<int> linenums = fctb.FindLines(@"function\s+?\S+?\." + text + @"\(", RegexOptions.Singleline);
                 if (linenums.Count > 0)
                 {
-                    this.fctb.Navigate(linenums[0]);
+                    fctb.Navigate(linenums[0]);
                     //MessageBox.Show(linenums[0].ToString());
                 }
             }
@@ -616,7 +617,7 @@ namespace DataEditorX
                 Lua lua = new Lua();
                 var env = lua.CreateEnvironment();
                 string pre = "Duel={} Effect={} Card={} aux={} Auxiliary={} " + cCode + "={} Duel.LoadScript=function(str) end ";
-                env.DoChunk(pre + this.fctb.Text, "test.lua");
+                env.DoChunk(pre + fctb.Text, "test.lua");
             }
             catch (LuaException ex)
             {
@@ -666,12 +667,12 @@ namespace DataEditorX
             }
             foreach (string file in files)
             {
-                (this.DockPanel.Parent as MainForm).Open(file);
+                (DockPanel.Parent as MainForm).Open(file);
             }
         }
         private void menuitem_fixCardCode_Click(object sender, EventArgs e)
         {
-            string text = this.fctb.Text;
+            string text = fctb.Text;
             Regex regex = new Regex(@"(c[0-9]{4,9})");
             var matches = regex.Matches(text);
             string cName;
@@ -694,7 +695,7 @@ namespace DataEditorX
                 text = text.Replace(str, cName);
                 text = text.Replace(str.Substring(1), cName.Substring(1));
             }
-            this.fctb.Text = text;
+            fctb.Text = text;
         }
         private void menuitem_tooltipFont_Click(object sender, EventArgs e)
         {
@@ -711,7 +712,7 @@ namespace DataEditorX
             if (fd.ShowDialog() == DialogResult.OK)
             {
                 Common.XMLReader.Save(DEXConfig.TOOLTIP_FONT, jss.Serialize(fd.Font));
-                this.fctb.lbTooltip.Font = fd.Font;
+                fctb.lbTooltip.Font = fd.Font;
             }
         }
     }

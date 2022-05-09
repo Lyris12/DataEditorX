@@ -5,6 +5,12 @@
  * 时间: 9:19
  * 
  */
+using DataEditorX.Config;
+using DataEditorX.Core;
+using System;
+using System.IO;
+using System.Collections.Generic;
+
 namespace DataEditorX
 {
 	partial class MainForm
@@ -19,8 +25,8 @@ namespace DataEditorX
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
-		{
-			if (disposing) {
+        {
+            if (disposing) {
 				if (components != null) {
 					components.Dispose();
 				}
@@ -42,6 +48,7 @@ namespace DataEditorX
             this.menuitem_open = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_new = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_save = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuitem_saveas = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuitem_copyselect = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_copyall = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +69,7 @@ namespace DataEditorX
             this.menuitem_closeother = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_closeall = new System.Windows.Forms.ToolStripMenuItem();
             this.bgWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.menuitem_saveas = new System.Windows.Forms.ToolStripMenuItem();
+            this.addArchetypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +94,8 @@ namespace DataEditorX
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuitem_file,
-            this.menuitem_windows});
+            this.menuitem_windows,
+            this.addArchetypeToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.MdiWindowListItem = this.menuitem_windows;
             this.mainMenu.Name = "mainMenu";
@@ -145,7 +153,8 @@ namespace DataEditorX
             // menuitem_saveas
             // 
             this.menuitem_saveas.Name = "menuitem_saveas";
-            this.menuitem_saveas.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.S)));
+            this.menuitem_saveas.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
             this.menuitem_saveas.Size = new System.Drawing.Size(243, 22);
             this.menuitem_saveas.Text = "Save As";
             this.menuitem_saveas.Click += new System.EventHandler(this.Menuitem_saveAsClick);
@@ -288,6 +297,13 @@ namespace DataEditorX
             this.bgWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker1_DoWork);
             this.bgWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker1_RunWorkerCompleted);
             // 
+            // addArchetypeToolStripMenuItem
+            // 
+            this.addArchetypeToolStripMenuItem.Name = "addArchetypeToolStripMenuItem";
+            this.addArchetypeToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
+            this.addArchetypeToolStripMenuItem.Text = "Add Arche&type";
+            this.addArchetypeToolStripMenuItem.Click += new System.EventHandler(this.addArchetypeToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -339,5 +355,6 @@ namespace DataEditorX
         private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme theme;
         private System.Windows.Forms.ToolStripMenuItem menuitem_save;
         private System.Windows.Forms.ToolStripMenuItem menuitem_saveas;
+        private System.Windows.Forms.ToolStripMenuItem addArchetypeToolStripMenuItem;
     }
 }

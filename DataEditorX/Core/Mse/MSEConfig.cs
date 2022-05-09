@@ -59,7 +59,7 @@ namespace DataEditorX.Core.Mse
         #endregion
         public MSEConfig(string path)
         {
-            this.Init(path);
+            Init(path);
         }
         public void SetConfig(string config, string path)
         {
@@ -68,15 +68,15 @@ namespace DataEditorX.Core.Mse
                 return;
             }
 
-            this.regx_monster = "(\\s\\S*?)";
-            this.regx_pendulum = "(\\s\\S*?)";
+            regx_monster = "(\\s\\S*?)";
+            regx_pendulum = "(\\s\\S*?)";
             //设置文件名
-            this.configName = MyPath.GetFullFileName(TAG, config);
+            configName = MyPath.GetFullFileName(TAG, config);
 
-            this.replaces = new SortedList<string, string>();
+            replaces = new SortedList<string, string>();
 
-            this.typeDic = new SortedList<long, string>();
-            this.raceDic = new SortedList<long, string>();
+            typeDic = new SortedList<long, string>();
+            raceDic = new SortedList<long, string>();
             string[] lines = File.ReadAllLines(config, Encoding.UTF8);
             foreach (string line in lines)
             {
@@ -87,79 +87,79 @@ namespace DataEditorX.Core.Mse
 
                 if (line.StartsWith(TAG_CN2TW))
                 {
-                    this.Iscn2tw = ConfHelper.GetBooleanValue(line);
+                    Iscn2tw = ConfHelper.GetBooleanValue(line);
                 }
                 else if (line.StartsWith(TAG_SPELL))
                 {
-                    this.str_spell = ConfHelper.GetValue(line);
+                    str_spell = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_HEAD))
                 {
-                    this.head = ConfHelper.GetMultLineValue(line);
+                    head = ConfHelper.GetMultLineValue(line);
                 }
                 else if (line.StartsWith(TAG_END))
                 {
-                    this.end = ConfHelper.GetMultLineValue(line);
+                    end = ConfHelper.GetMultLineValue(line);
                 }
                 else if (line.StartsWith(TAG_TEXT))
                 {
-                    this.temp_text = ConfHelper.GetMultLineValue(line);
+                    temp_text = ConfHelper.GetMultLineValue(line);
                 }
                 else if (line.StartsWith(TAG_TRAP))
                 {
-                    this.str_trap = ConfHelper.GetValue(line);
+                    str_trap = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_REG_PENDULUM))
                 {
-                    this.regx_pendulum = ConfHelper.GetValue(line);
+                    regx_pendulum = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_REG_MONSTER))
                 {
-                    this.regx_monster = ConfHelper.GetValue(line);
+                    regx_monster = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_MAXCOUNT))
                 {
-                    this.maxcount = ConfHelper.GetIntegerValue(line, 0);
+                    maxcount = ConfHelper.GetIntegerValue(line, 0);
                 }
                 else if (line.StartsWith(TAG_WIDTH))
                 {
-                    this.width = ConfHelper.GetIntegerValue(line, 0);
+                    width = ConfHelper.GetIntegerValue(line, 0);
                 }
                 else if (line.StartsWith(TAG_HEIGHT))
                 {
-                    this.height = ConfHelper.GetIntegerValue(line, 0);
+                    height = ConfHelper.GetIntegerValue(line, 0);
                 }
                 else if (line.StartsWith(TAG_PEND_WIDTH))
                 {
-                    this.pwidth = ConfHelper.GetIntegerValue(line, 0);
+                    pwidth = ConfHelper.GetIntegerValue(line, 0);
                 }
                 else if (line.StartsWith(TAG_PEND_HEIGHT))
                 {
-                    this.pheight = ConfHelper.GetIntegerValue(line, 0);
+                    pheight = ConfHelper.GetIntegerValue(line, 0);
                 }
                 else if (line.StartsWith(TAG_NO_TEN))
                 {
-                    this.no10 = ConfHelper.GetBooleanValue(line);
+                    no10 = ConfHelper.GetBooleanValue(line);
                 }
                 else if (line.StartsWith(TAG_NO_START_CARDS))
                 {
                     string val = ConfHelper.GetValue(line);
                     string[] cs = val.Split(',');
-                    this.noStartCards = new long[cs.Length];
+                    noStartCards = new long[cs.Length];
                     int i = 0;
                     foreach (string str in cs)
                     {
                         long.TryParse(str, out long l);
-                        this.noStartCards[i++] = l;
+                        noStartCards[i++] = l;
                     }
                 }
                 else if (line.StartsWith(TAG_IMAGE))
                 {
                     //如果路径不合法，则为后面的路径
-                    this.imagepath = MyPath.CheckDir(ConfHelper.GetValue(line), MyPath.Combine(path, PATH_IMAGE));
+                    imagepath = MyPath.CheckDir(ConfHelper.GetValue(line), MyPath.Combine(path, PATH_IMAGE));
                     //图片缓存目录
-                    this.imagecache = MyPath.Combine(this.imagepath, "cache");
-                    MyPath.CreateDir(this.imagecache);
+                    imagecache = MyPath.Combine(imagepath, "cache");
+                    MyPath.CreateDir(imagecache);
                 }
                 else if (line.StartsWith(TAG_REPALCE))
                 {//特数字替换
@@ -168,26 +168,26 @@ namespace DataEditorX.Core.Mse
                     string r = ConfHelper.GetRegex(ConfHelper.GetValue2(word));
                     if (!string.IsNullOrEmpty(p))
                     {
-                        this.replaces.Add(p, r);
+                        replaces.Add(p, r);
                     }
                 }
                 else if (line.StartsWith(TAG_RACE))
                 {//种族
-                    ConfHelper.DicAdd(this.raceDic, line);
+                    ConfHelper.DicAdd(raceDic, line);
                 }
                 else if (line.StartsWith(TAG_TYPE))
                 {//类型
-                    ConfHelper.DicAdd(this.typeDic, line);
+                    ConfHelper.DicAdd(typeDic, line);
                 }
                 else if (line.StartsWith(TAG_REIMAGE))
                 {
-                    this.reimage = ConfHelper.GetBooleanValue(line);
+                    reimage = ConfHelper.GetBooleanValue(line);
                 }
             }
         }
         public void Init(string path)
         {
-            this.Iscn2tw = false;
+            Iscn2tw = false;
 
             //读取配置
             string tmp = MyPath.Combine(path, MyPath.GetFileName(TAG, DEXConfig.ReadString(DEXConfig.TAG_MSE)));
@@ -200,7 +200,7 @@ namespace DataEditorX.Core.Mse
                     return;//如果默认的也不存在
                 }
             }
-            this.SetConfig(tmp, path);
+            SetConfig(tmp, path);
         }
         /// <summary>
         /// 是否调整图片

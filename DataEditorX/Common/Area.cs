@@ -8,10 +8,10 @@ namespace DataEditorX.Common
     {
         public Area()
         {
-            this.left = 0;
-            this.top = 0;
-            this.width = 0;
-            this.height = 0;
+            left = 0;
+            top = 0;
+            width = 0;
+            height = 0;
         }
         /// <summary>
         /// 左

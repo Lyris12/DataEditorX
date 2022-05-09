@@ -10,7 +10,7 @@ namespace DataEditorX
         }
         public ResetForm()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }
