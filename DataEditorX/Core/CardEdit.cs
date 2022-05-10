@@ -54,24 +54,13 @@ namespace DataEditorX.Core
                 }
                 else if (c.omega[0] > 0)
                 {
-                    if (c.ot > 0x7 || (byte)(c.id / 100000000) == 0 || !(c.id >= 101108205
-                        && c.id < 110000000 || c.id >= 110000125 && c.id < 111004000
-                    || c.id >= 111310105 && c.id < 120000000 || c.id >= 121192255 && c.id < 130000000
-                    || c.id >= 130000110 && c.id < 131191200 || c.id >= 131191700 && c.id < 140000070
-                    || c.id >= 140000135 && c.id < 141171260 || c.id >= 141191370 && c.id < 150000000
-                    || c.id >= 154000000 && c.id < 160001000 || c.id >= 160428025 && c.id < 170000110
-                    || c.id >= 171000115 && c.id < 200000000 || c.id >= 200000010 && c.id < 300101000
-                    || c.id >= 303000065 && c.id < 316000120 || c.id >= 316000125 && c.id < 344000000
-                    || c.id >= 344000005 && c.id < 419712005 || c.id >= 420202205 && c.id < 450000000
-                    || c.id >= 450000415 && c.id < 500000005 || c.id >= 501000090 && c.id < 504700000
-                    || c.id >= 504700190 && c.id < 511000000 || c.id >= 511806005 && c.id < 513000000
-                    || c.id >= 513000190 && c.id < 700000000 || c.id >= 700000035 && c.id < 800000000
-                    || c.id >= 800000015 && c.id < 810000000))
+                    if (c.ot > 0x7)
                     {
                         MyMsg.Error(LMSG.AddFail);
                         return false;
                     }
-                    
+                    else if (c.id > 134217727)
+                        MyMsg.Warning("Strings will fail to show up for this passcode.");
                 }
                 Card[] cards = dataform.GetCardList(false);
                 foreach (Card ckey in cards)//卡片id存在

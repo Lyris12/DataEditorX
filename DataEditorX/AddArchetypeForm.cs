@@ -21,5 +21,17 @@ namespace DataEditorX
             code = 0x640;
             while (setcodes.TryGetValue(code, out _)) code++;
         }
+        private void AddArchetypeForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Btn_confirm_Click(sender, e);
+                Close();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                Close();
+            }
+        }
     }
 }

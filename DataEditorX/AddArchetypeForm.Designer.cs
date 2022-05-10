@@ -74,6 +74,7 @@
             this.Font = new System.Drawing.Font("SimSun", 9F);
             this.Name = "AddArchetypeForm";
             this.Text = "Name this Archetype:";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(AddArchetypeForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
