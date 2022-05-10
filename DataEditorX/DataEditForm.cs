@@ -1143,7 +1143,7 @@ namespace DataEditorX
             MyMsg.Show(
                 LanguageHelper.GetMsg(LMSG.About) + "\t" + Application.ProductName + "\n"
                 + LanguageHelper.GetMsg(LMSG.Version) + "\t" + Application.ProductVersion + "\n"
-                + LanguageHelper.GetMsg(LMSG.Author) + "\tNanahira & JoyJ");
+                + LanguageHelper.GetMsg(LMSG.Author) + "\tLyris");
         }
 
         void Menuitem_checkupdateClick(object sender, EventArgs e)
