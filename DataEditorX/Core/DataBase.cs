@@ -43,7 +43,7 @@ namespace DataEditorX.Core
             _defaultTableSQL = st.ToString();
             st.Remove(0, st.Length);
             StringBuilder ost = new StringBuilder();
-            ost.Append(@"CREATE TABLE texts(id integer primary key,name text,desc text");
+            ost.Append(@"CREATE TABLE IF NOT EXISTS texts(id integer primary key,name text,desc text");
             for (int i = 1; i <= 16; i++)
             {
                 ost.Append(",str");
@@ -51,12 +51,15 @@ namespace DataEditorX.Core
                 ost.Append(" text");
             }
             ost.Append(");");
-            ost.Append(@"CREATE TABLE datas(id integer primary key default 0,ot integer default 0,
-            alias integer default 0,setcode integer default 0,type integer default 0,atk integer default 0,
-            def integer default 0,level integer default 0,race integer default 0,attribute integer default 0,
-            category integer default 0,genre integer default 0, script blob,support integer default 0,
-            ocgdate integer default 253402207200,tcgdate integer default 253402207200); CREATE TABLE
-            setcodes(officialcode integer, betacode integer, name text unique, cardid integer default 0);");
+            ost.Append(@"CREATE TABLE IF NOT EXISTS datas(id integer primary key default 0,
+            ot integer default 0,alias integer default 0,setcode integer default 0,
+            type integer default 0,atk integer default 0,def integer default 0,level integer default 0,
+            race integer default 0,attribute integer default 0,category integer default 0,
+            genre integer default 0,script blob,support integer default 0,
+            ocgdate integer default 253402207200,tcgdate integer default 253402207200);
+            CREATE TABLE IF NOT EXISTS setcodes(officialcode integer,betacode integer,
+            name text unique,cardid integer default 0);
+            ");
             _defaultOTableSQL = ost.ToString();
             ost.Remove(0, ost.Length);
         }
@@ -73,10 +76,12 @@ namespace DataEditorX.Core
             {
                 File.Delete(Db);
             }
-
             try
             {
-                SqliteConnection con = new SqliteConnection(Db); con.Open(); con.Close();
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + Db)) {
+                    con.Open();
+                    con.Close();
+                }
                 if (Db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || Db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) Command(Db, _defaultOTableSQL);
                 else Command(Db, _defaultTableSQL);
             }
@@ -134,10 +139,7 @@ namespace DataEditorX.Core
                             trans.Rollback();//出错，回滚
                             result = -1;
                         }
-                        finally
-                        {
-                            trans.Commit();
-                        }
+                        trans.Commit();
                     }
                     con.Close();
                 }
@@ -171,7 +173,8 @@ namespace DataEditorX.Core
                 c.omega[2] = reader.GetInt64(reader.GetOrdinal("support"));
                 c.omega[3] = reader.GetInt64(reader.GetOrdinal("ocgdate"));
                 c.omega[4] = reader.GetInt64(reader.GetOrdinal("tcgdate"));
-                c.script = reader.IsDBNull(reader.GetOrdinal("script")) ? "" : reader.GetString(reader.GetOrdinal("script")); ;
+                c.script = reader.IsDBNull(reader.GetOrdinal("script")) ? ""
+                    : reader.GetString(reader.GetOrdinal("script"));
             }
             catch
             {
@@ -224,17 +227,16 @@ namespace DataEditorX.Core
             List<long> idlist = new List<long>();
             if (File.Exists(DB) && SQLs != null)
             {
-                using (SqliteConnection sqliteconn = new SqliteConnection(@"Data Source=" + DB))
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + DB))
                 {
-                    sqliteconn.Open();
-                    using (SqliteTransaction trans = sqliteconn.BeginTransaction())
+                    con.Open();
+                    using (SqliteTransaction trans = con.BeginTransaction())
                     {
-                        using (SqliteCommand sqlitecommand = sqliteconn.CreateCommand())
+	                    using (SqliteCommand sqlitecommand = con.CreateCommand())
                         {
                             foreach (string str in SQLs)
                             {
                                 int.TryParse(str, out int tmp);
-
                                 string SQLstr;
                                 if (string.IsNullOrEmpty(str))
                                 {
@@ -257,7 +259,7 @@ namespace DataEditorX.Core
                                     SQLstr = _defaultSQL + " and texts.name like '%" + str + "%'";
                                 }
                                 sqlitecommand.CommandText = SQLstr;
-                                using (SqliteDataReader reader = sqlitecommand.ExecuteReader(System.Data.CommandBehavior.KeyInfo))
+                                using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
                                 {
                                     while (reader.Read())
                                     {
@@ -274,7 +276,7 @@ namespace DataEditorX.Core
                         }
                         trans.Commit();
                     }
-                    sqliteconn.Close();
+                    con.Close();
                 }
             }
             if (list.Count == 0)
@@ -365,7 +367,6 @@ namespace DataEditorX.Core
                     con.Close();
                 }
             }
-
         }
         #endregion
 

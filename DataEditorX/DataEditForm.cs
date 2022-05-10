@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using Microsoft.Data.Sqlite;
 
 namespace DataEditorX
 {
@@ -88,9 +89,43 @@ namespace DataEditorX
 
         string datapath, confcover;
 
-        public DataEditForm(string datapath, string cdbfile)
+        public DataEditForm(string datapath, string cdbfile, DataConfig datacfg = null)
         {
             Initialize(datapath);
+            if (datacfg != null && cdbfile.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
+                || cdbfile.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase))
+            {
+                Dictionary<long, string> d = datacfg.dicSetnames;
+                if (!d.ContainsKey(0)) d.Add(0L, "Archetype");
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + cdbfile))
+                {
+
+                    con.Open();
+                    using (SqliteCommand sqlitecommand = con.CreateCommand())
+                    {
+                        sqlitecommand.CommandText = "select officialcode,betacode,name from setcodes;";
+                        using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
+                        {
+                            try
+                            {
+                                while (reader.Read())
+                                {
+                                    int c = reader.GetInt32(reader.GetOrdinal("officialcode"));
+                                    if (c == 0)
+                                        c = reader.GetInt32(reader.GetOrdinal("betacode"));
+                                    string n = reader.GetString(reader.GetOrdinal("name"));
+                                    if (c > 0 && d.ContainsKey(c))
+                                        d[c] = n;
+                                    else d.Add(c, n);
+                                }
+                            }
+                            catch { }
+                            reader.Close();
+                        }
+                    }
+                    con.Close();
+                }
+            }
             nowCdbFile = cdbfile;
         }
 

@@ -1,4 +1,4 @@
-﻿[DataEditorX]4.0.0.4[DataEditorX]
+﻿[DataEditorX]4.0.0.5[DataEditorX]
 [URL]https://github.com/Lyris12/DataEditorX/raw/master/win32/win32.zip [URL]
 
 ★运行环境(Environment)

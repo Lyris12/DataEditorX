@@ -11,7 +11,6 @@ using DataEditorX.Core;
 using DataEditorX.Language;
 using System;
 using System.Collections.Generic;
-using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -222,45 +221,7 @@ namespace DataEditorX
             }
             else
             {
-                def = new DataEditForm(datapath, file);
-                if (file.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
-                    || file.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase))
-                {
-                    Dictionary<long, string> d = datacfg.dicSetnames;
-                    if(!d.ContainsKey(0)) d.Add(0L, "Archetype");
-                    using (SqliteConnection sqliteconn = new SqliteConnection(@"Data Source=" + file))
-                    {
-                        sqliteconn.Open();
-                        using (SqliteTransaction trans = sqliteconn.BeginTransaction())
-                        {
-                            using (SqliteCommand sqlitecommand = sqliteconn.CreateCommand())
-                            {
-                                sqlitecommand.CommandText = "select officialcode,betacode,name from setcodes;";
-                                try
-                                {
-                                    using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
-                                    {
-                                        while (reader.Read())
-                                        {
-                                            int c = reader.GetInt32(reader.GetOrdinal("officialcode"));
-                                            if (c == 0)
-                                                c = reader.GetInt32(reader.GetOrdinal("betacode"));
-                                            string n = reader.GetString(reader.GetOrdinal("name"));
-                                            if (c > 0 && d.ContainsKey(c))
-                                                d[c] = n;
-                                            else d.Add(c, n);
-                                        }
-                                        reader.Close();
-                                    }
-                                }
-                                catch { }
-                            }
-                            trans.Commit();
-                        }
-                        sqliteconn.Close();
-                    }
-                    def.InitControl(datacfg);
-                }
+                def = new DataEditForm(datapath, file, datacfg);
             }
             //设置语言
             LanguageHelper.SetFormLabel(def);
