@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("DataEditorX")]
-[assembly: AssemblyDescription("E-mail:nanahira@momobako.com")]
+[assembly: AssemblyDescription("E-mail:lyris89@live.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DataEditorX")]
@@ -27,4 +27,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.2")]
+[assembly: AssemblyVersion("4.0.0.3")]
