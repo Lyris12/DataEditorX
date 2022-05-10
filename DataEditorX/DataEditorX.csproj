@@ -332,6 +332,6 @@
     <PostBuildEvent>rm $(OutDir)win32.zip
 7z a $(OutDir)win32.zip "$(OutDir)*"</PostBuildEvent>
     <PostBuildEvent>if exist "win32.zip" del "win32.zip"
-7z a -x!"*.dll" -x!"*.pdb" -x!"*.xml" "win32.zip" "*" &amp;&amp; 7z a "win32.zip" "FastColoredTextBox.dll" "WeifenLuo.WinFormsUI.Docking.dll" "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" "Microsoft.Data.SQLite.dll" "Neo.Lua.dll"</PostBuildEvent>
+7z a -x!"*.dll" -x!"*.pdb" -x!"*.xml" "win32.zip" "*" &amp;&amp; 7z a "win32.zip" "FastColoredTextBox.dll" "WeifenLuo.WinFormsUI.Docking.dll" "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" "Microsoft.Data.SQLite.dll" "Neo.Lua.dll" "SQLitePCLRaw.core.dll" "System.Memory.dll" "SQLitePCLRaw.provider.e_sqlite3.dll" "SQLitePCLRaw.batteries_v2.dll" "e_sqlite3.dll" "System.Runtime.CompilerServices.Unsafe.dll"</PostBuildEvent>
   </PropertyGroup>
 </Project>
