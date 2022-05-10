@@ -11,7 +11,7 @@ using DataEditorX.Core;
 using DataEditorX.Language;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -209,7 +209,7 @@ namespace DataEditorX
             //初始化函数提示
             cf.InitTooltip(codecfg);
             //打开文件
-            cf.Open(file);
+            cf.Open(file, dockPanel.ActiveContent is DataEditForm df ? Path.GetFileNameWithoutExtension(df.GetOpenFile()) : "cards");
             cf.Show(dockPanel, DockState.Document);
         }
         //打开数据库
@@ -228,17 +228,17 @@ namespace DataEditorX
                 {
                     Dictionary<long, string> d = datacfg.dicSetnames;
                     if(!d.ContainsKey(0)) d.Add(0L, "Archetype");
-                    using (SQLiteConnection sqliteconn = new SQLiteConnection(@"Data Source=" + file))
+                    using (SqliteConnection sqliteconn = new SqliteConnection(@"Data Source=" + file))
                     {
                         sqliteconn.Open();
-                        using (SQLiteTransaction trans = sqliteconn.BeginTransaction())
+                        using (SqliteTransaction trans = sqliteconn.BeginTransaction())
                         {
-                            using (SQLiteCommand sqlitecommand = new SQLiteCommand(sqliteconn))
+                            using (SqliteCommand sqlitecommand = sqliteconn.CreateCommand())
                             {
                                 sqlitecommand.CommandText = "select officialcode,betacode,name from setcodes;";
                                 try
                                 {
-                                    using (SQLiteDataReader reader = sqlitecommand.ExecuteReader())
+                                    using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
                                     {
                                         while (reader.Read())
                                         {
@@ -322,7 +322,7 @@ namespace DataEditorX
                 {
                     if (string.IsNullOrEmpty(edform.GetOpenFile()) && edform.CanOpen(file))
                     {
-                        edform.Open(file);
+                        edform.Open(file, Path.GetFileNameWithoutExtension(openfile));
                         edform.SetActived();
                         return true;
                     }

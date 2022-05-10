@@ -236,16 +236,18 @@ namespace DataEditorX.Core
             }
             else if (omega[0] > 0 && other.omega[0] > 0)
             {
-                for (byte i = 1; i < 5; i++)
-                {
-                    if (omega[i] != other.omega[i])
+                if (script != other.script)
+                    equalBool = false;
+                else
+                    for (byte i = 1; i < 5; i++)
                     {
-                        equalBool = false;
-                        break;
+                        if (omega[i] != other.omega[i])
+                        {
+                            equalBool = false;
+                            break;
+                        }
                     }
-                }
             }
-
             return equalBool;
         }
         /// <summary>

@@ -298,7 +298,7 @@ namespace DataEditorX.Core
             string lua;
             if (c.id > 0)
             {
-                lua = dataform.GetPath().GetScript(id);
+                lua = c.omega[0] > 0 ? MyPath.Combine(dataform.GetPath().gamepath, "..", "Scripts", "c" + id + ".lua") : dataform.GetPath().GetScript(id);
             }
             else if (addrequire.Length > 0)
             {
@@ -311,7 +311,7 @@ namespace DataEditorX.Core
             if (!File.Exists(lua))
             {
                 MyPath.CreateDirByFile(lua);
-                if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script))
+                if (c.omega[0] > 0)
                 {
                     using (FileStream fs = new FileStream(lua,
                         FileMode.OpenOrCreate, FileAccess.Write))

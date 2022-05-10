@@ -184,7 +184,7 @@ namespace DataEditorX
         {
             return savefile(shift);
         }
-        public bool Open(string file)
+        public bool Open(string file, string dbname = "cards")
         {
             if (!string.IsNullOrEmpty(file))
             {
@@ -202,6 +202,14 @@ namespace DataEditorX
                 }
                 string cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "../cards.cdb");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "..", dbname + ".cdb");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                      Path.GetDirectoryName(file), "../Databases/Database.bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "../Databases", dbname + ".bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "../Databases", dbname + ".db");
                 SetCardDB(cdb);//后台加载卡片数据
                 fctb.OpenFile(nowFile, new UTF8Encoding(false));
                 oldtext = fctb.Text;
@@ -379,9 +387,9 @@ namespace DataEditorX
                 if (tl > 0)
                 {
                     //获取卡片信息
-                    if (cardlist.ContainsKey(tl) && File.Exists(nowcdb) &&
-                        (nowcdb.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
-                        || nowcdb.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)))
+                    if (File.Exists(nowcdb) && (nowcdb.EndsWith(".db",
+                        StringComparison.OrdinalIgnoreCase) || nowcdb.EndsWith(".bytes",
+                        StringComparison.OrdinalIgnoreCase)))
                     {
                         DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
                     }

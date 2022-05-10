@@ -7,7 +7,7 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Text;
 
@@ -76,7 +76,7 @@ namespace DataEditorX.Core
 
             try
             {
-                SQLiteConnection.CreateFile(Db);
+                SqliteConnection con = new SqliteConnection(Db); con.Open(); con.Close();
                 if (Db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || Db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) Command(Db, _defaultOTableSQL);
                 else Command(Db, _defaultTableSQL);
             }
@@ -113,14 +113,14 @@ namespace DataEditorX.Core
             int result = 0;
             if (File.Exists(DB) && SQLs != null)
             {
-                using (SQLiteConnection con = new SQLiteConnection(@"Data Source=" + DB))
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + DB))
                 {
                     con.Open();
-                    using (SQLiteTransaction trans = con.BeginTransaction())
+                    using (SqliteTransaction trans = con.BeginTransaction())
                     {
                         try
                         {
-                            using (SQLiteCommand cmd = new SQLiteCommand(con))
+                            using (SqliteCommand cmd = con.CreateCommand())
                             {
                                 foreach (string SQLstr in SQLs)
                                 {
@@ -147,19 +147,21 @@ namespace DataEditorX.Core
         #endregion
 
         #region 根据SQL读取
-        static Card ReadCard(SQLiteDataReader reader, bool reNewLine)
+        static Card ReadCard(SqliteDataReader reader, bool reNewLine)
         {
-            Card c = new Card(0);
-            c.id = reader.GetInt64(reader.GetOrdinal("id"));
-            c.ot = reader.GetInt32(reader.GetOrdinal("ot"));
-            c.alias = reader.GetInt64(reader.GetOrdinal("alias"));
-            c.setcode = reader.GetInt64(reader.GetOrdinal("setcode"));
-            c.type = reader.GetInt64(reader.GetOrdinal("type"));
-            c.atk = reader.GetInt32(reader.GetOrdinal("atk"));
-            c.def = reader.GetInt32(reader.GetOrdinal("def"));
-            c.level = reader.GetInt64(reader.GetOrdinal("level"));
-            c.race = reader.GetInt64(reader.GetOrdinal("race"));
-            c.attribute = reader.GetInt32(reader.GetOrdinal("attribute"));
+            Card c = new Card(0)
+            {
+                id = reader.GetInt64(reader.GetOrdinal("id")),
+                ot = reader.GetInt32(reader.GetOrdinal("ot")),
+                alias = reader.GetInt64(reader.GetOrdinal("alias")),
+                setcode = reader.GetInt64(reader.GetOrdinal("setcode")),
+                type = reader.GetInt64(reader.GetOrdinal("type")),
+                atk = reader.GetInt32(reader.GetOrdinal("atk")),
+                def = reader.GetInt32(reader.GetOrdinal("def")),
+                level = reader.GetInt64(reader.GetOrdinal("level")),
+                race = reader.GetInt64(reader.GetOrdinal("race")),
+                attribute = reader.GetInt32(reader.GetOrdinal("attribute"))
+            };
             try
             {
                 c.category = reader.GetInt64(reader.GetOrdinal("genre"));
@@ -169,7 +171,7 @@ namespace DataEditorX.Core
                 c.omega[2] = reader.GetInt64(reader.GetOrdinal("support"));
                 c.omega[3] = reader.GetInt64(reader.GetOrdinal("ocgdate"));
                 c.omega[4] = reader.GetInt64(reader.GetOrdinal("tcgdate"));
-                c.script = reader.GetBlob(reader.GetOrdinal("script"), true).ToString();
+                c.script = reader.IsDBNull(reader.GetOrdinal("script")) ? "" : reader.GetString(reader.GetOrdinal("script")); ;
             }
             catch
             {
@@ -222,12 +224,12 @@ namespace DataEditorX.Core
             List<long> idlist = new List<long>();
             if (File.Exists(DB) && SQLs != null)
             {
-                using (SQLiteConnection sqliteconn = new SQLiteConnection(@"Data Source=" + DB))
+                using (SqliteConnection sqliteconn = new SqliteConnection(@"Data Source=" + DB))
                 {
                     sqliteconn.Open();
-                    using (SQLiteTransaction trans = sqliteconn.BeginTransaction())
+                    using (SqliteTransaction trans = sqliteconn.BeginTransaction())
                     {
-                        using (SQLiteCommand sqlitecommand = new SQLiteCommand(sqliteconn))
+                        using (SqliteCommand sqlitecommand = sqliteconn.CreateCommand())
                         {
                             foreach (string str in SQLs)
                             {
@@ -254,9 +256,8 @@ namespace DataEditorX.Core
                                 {
                                     SQLstr = _defaultSQL + " and texts.name like '%" + str + "%'";
                                 }
-
                                 sqlitecommand.CommandText = SQLstr;
-                                using (SQLiteDataReader reader = sqlitecommand.ExecuteReader())
+                                using (SqliteDataReader reader = sqlitecommand.ExecuteReader(System.Data.CommandBehavior.KeyInfo))
                                 {
                                     while (reader.Read())
                                     {
@@ -298,12 +299,12 @@ namespace DataEditorX.Core
             int result = 0;
             if (File.Exists(DB) && cards != null)
             {
-                using (SQLiteConnection con = new SQLiteConnection(@"Data Source=" + DB))
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + DB))
                 {
                     con.Open();
-                    using (SQLiteTransaction trans = con.BeginTransaction())
+                    using (SqliteTransaction trans = con.BeginTransaction())
                     {
-                        using (SQLiteCommand cmd = new SQLiteCommand(con))
+                        using (SqliteCommand cmd = con.CreateCommand())
                         {
                             foreach (Card c in cards)
                             {
@@ -326,12 +327,12 @@ namespace DataEditorX.Core
             int result = 0;
             if (File.Exists(DB) && cards != null)
             {
-                using (SQLiteConnection con = new SQLiteConnection(@"Data Source=" + DB))
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + DB))
                 {
                     con.Open();
-                    using (SQLiteTransaction trans = con.BeginTransaction())
+                    using (SqliteTransaction trans = con.BeginTransaction())
                     {
-                        using (SQLiteCommand cmd = new SQLiteCommand(con))
+                        using (SqliteCommand cmd = con.CreateCommand())
                         {
                             foreach (Card c in cards)
                             {
@@ -353,10 +354,10 @@ namespace DataEditorX.Core
         {
             if (File.Exists(db))
             {
-                using (SQLiteConnection con = new SQLiteConnection(@"Data Source=" + db))
+                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + db))
                 {
                     con.Open();
-                    using (SQLiteCommand cmd = new SQLiteCommand(con))
+                    using (SqliteCommand cmd = con.CreateCommand())
                     {
                         cmd.CommandText = "vacuum";
                         cmd.ExecuteNonQuery();
@@ -651,7 +652,7 @@ namespace DataEditorX.Core
                 {
                     st.Append(",");
                     if (string.IsNullOrEmpty(c.script)) st.Append("null");
-                    else st.Append(c.script.ToCharArray());
+                    else st.Append("'" + c.script.Replace("'", "''") + "'");
                     st.Append(","); st.Append("0x" + c.omega[2].ToString("x"));
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
@@ -670,7 +671,7 @@ namespace DataEditorX.Core
                 {
                     st.Append(",");
                     if (string.IsNullOrEmpty(c.script)) st.Append("null");
-                    else st.Append(c.script.ToCharArray());
+                    else st.Append("'" + c.script.Replace("'", "''") + "'");
                     st.Append(","); st.Append(c.omega[2].ToString());
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
@@ -790,7 +791,7 @@ namespace DataEditorX.Core
             if (c.omega[0] > 0)
             {
                 st.Append(c.omega[1].ToString());
-                st.Append(",support="); st.Append(c.omega[2].ToString());
+                st.Append(",script="); st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + st.Append(c.script.Replace("'", "''")) + "'");
                 st.Append(",ocgdate="); st.Append(((DateTime.Parse(c.GetDate()).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
                 st.Append(",tcgdate="); st.Append(((DateTime.Parse(c.GetDate(1)).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
                 st.Append(",genre=");
@@ -876,38 +877,6 @@ namespace DataEditorX.Core
                 }
                 sw.Close();
             }
-        }
-
-        public static CardPack FindPack(string db, long id)
-        {
-            CardPack cardpack = null;
-            if (File.Exists(db) && id >= 0)
-            {
-                using (SQLiteConnection sqliteconn = new SQLiteConnection(@"Data Source=" + db))
-                {
-                    sqliteconn.Open();
-                    using (SQLiteCommand sqlitecommand = new SQLiteCommand(sqliteconn))
-                    {
-                        sqlitecommand.CommandText = "select id,pack_id,pack,rarity,date from pack where id=" + id + " order by date desc";
-                        using (SQLiteDataReader reader = sqlitecommand.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                cardpack = new CardPack(id)
-                                {
-                                    pack_id = reader.GetString(1),
-                                    pack_name = reader.GetString(2),
-                                    rarity = reader.GetString(3),
-                                    date = reader.GetString(4)
-                                };
-                            }
-                            reader.Close();
-                        }
-                    }
-                    sqliteconn.Close();
-                }
-            }
-            return cardpack;
         }
     }
 }

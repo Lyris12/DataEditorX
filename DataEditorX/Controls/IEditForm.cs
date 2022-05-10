@@ -7,7 +7,7 @@
         //创建文件
         bool Create(string file);
         //打开文件
-        bool Open(string file);
+        bool Open(string file, string name);
         //是否能打开某个文件
         bool CanOpen(string file);
         //保存

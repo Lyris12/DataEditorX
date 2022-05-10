@@ -17,7 +17,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using System.Data.SQLite;
 
 namespace DataEditorX
 {
@@ -737,6 +736,7 @@ namespace DataEditorX
 
             c.omega = new long[5];
             if (GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) {
+                c.script = oldCard.script;
                 c.omega[0] = 1L;
                 c.omega[1] = GetCheck(pl_flags);
                 c.SetSupport(tb_support.Text);
@@ -868,7 +868,7 @@ namespace DataEditorX
             }
         }
         //打开数据库
-        public bool Open(string file)
+        public bool Open(string file, string name = "")
         {
             SetCDB(file);
             if (!File.Exists(file))
@@ -940,7 +940,6 @@ namespace DataEditorX
                 tb_pagenum.Text = pageNum.ToString();
                 cardlist.Clear();
                 lv_cardlist.Items.Clear();
-                //SetCard(new Card(0));
             }
         }
         //搜索卡片
@@ -964,7 +963,7 @@ namespace DataEditorX
             else
             {
                 srcCard = c;
-                string sql = c.omega != null && c.omega[0] > 0 ? DataBase.OmegaGetSelectSQL(c) : DataBase.GetSelectSQL(c);
+                string sql = c.omega != null && c.omega[0] > 0 || nowCdbFile.EndsWith(".db") || nowCdbFile.EndsWith(".bytes") ? DataBase.OmegaGetSelectSQL(c) : DataBase.GetSelectSQL(c);
                 SetCards(DataBase.Read(nowCdbFile, true, sql), isfresh);
             }
             if (lv_cardlist.Items.Count > 0)
