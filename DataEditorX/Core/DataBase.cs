@@ -651,8 +651,7 @@ namespace DataEditorX.Core
                 if (c.omega[0] > 0)
                 {
                     st.Append(",");
-                    if (string.IsNullOrEmpty(c.script)) st.Append("null");
-                    else st.Append("'" + c.script.Replace("'", "''") + "'");
+                    st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
                     st.Append(","); st.Append("0x" + c.omega[2].ToString("x"));
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
@@ -670,8 +669,7 @@ namespace DataEditorX.Core
                 if (c.omega[0] > 0)
                 {
                     st.Append(",");
-                    if (string.IsNullOrEmpty(c.script)) st.Append("null");
-                    else st.Append("'" + c.script.Replace("'", "''") + "'");
+                    st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
                     st.Append(","); st.Append(c.omega[2].ToString());
                     st.Append(","); st.Append(c.omega[3].ToString());
                     st.Append(","); st.Append(c.omega[4].ToString());
