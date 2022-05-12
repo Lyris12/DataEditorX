@@ -311,7 +311,7 @@ namespace DataEditorX.Core
             if (!File.Exists(lua))
             {
                 MyPath.CreateDirByFile(lua);
-                if (c.omega[0] > 0)
+                if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script))
                 {
                     using (FileStream fs = new FileStream(lua,
                         FileMode.OpenOrCreate, FileAccess.Write))
