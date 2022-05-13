@@ -6,7 +6,6 @@
  * 
  */
 using System.Text;
-using System.Windows.Forms;
 
 namespace System.IO
 {
@@ -25,7 +24,7 @@ namespace System.IO
             string path = Application.StartupPath;
             if (dir.StartsWith("."))
             {
-                dir = Combine(path, dir.Substring(2));
+                dir = Combine(path, dir[2..]);
             }
             return dir;
         }
@@ -42,7 +41,7 @@ namespace System.IO
             }
             else
             {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new();
                 string spliter = Path.DirectorySeparatorChar.ToString();
                 string firstPath = paths[0];
                 if (firstPath.StartsWith("HTTP", StringComparison.OrdinalIgnoreCase))
@@ -53,26 +52,26 @@ namespace System.IO
                 {
                     firstPath += spliter;
                 }
-                builder.Append(firstPath);
+                _ = builder.Append(firstPath);
                 for (int i = 1; i < paths.Length; i++)
                 {
                     string nextPath = paths[i];
                     if (nextPath.StartsWith("/") || nextPath.StartsWith("\\"))
                     {
-                        nextPath = nextPath.Substring(1);
+                        nextPath = nextPath[1..];
                     }
                     if (i != paths.Length - 1)//not the last one
                     {
                         if (nextPath.EndsWith("/") || nextPath.EndsWith("\\"))
                         {
-                            nextPath = nextPath.Substring(0, nextPath.Length - 1) + spliter;
+                            nextPath = nextPath[..^1] + spliter;
                         }
                         else
                         {
                             nextPath += spliter;
                         }
                     }
-                    builder.Append(nextPath);
+                    _ = builder.Append(nextPath);
                 }
                 return builder.ToString();
             }
@@ -137,7 +136,7 @@ namespace System.IO
         {
             if (!Directory.Exists(dir))
             {
-                Directory.CreateDirectory(dir);
+                _ = Directory.CreateDirectory(dir);
             }
         }
         public static void CreateDirByFile(string file)
@@ -145,7 +144,7 @@ namespace System.IO
             string dir = Path.GetDirectoryName(file);
             if (!Directory.Exists(dir))
             {
-                Directory.CreateDirectory(dir);
+                _ = Directory.CreateDirectory(dir);
             }
         }
     }

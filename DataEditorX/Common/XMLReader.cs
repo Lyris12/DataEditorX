@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using System.Xml;
+﻿using System.Xml;
 
 namespace DataEditorX.Common
 {
@@ -13,8 +12,8 @@ namespace DataEditorX.Common
         /// <param name="appValue"></param>
         public static void Save(string appKey, string appValue)
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(Application.ExecutablePath + ".config");
+            XmlDocument xDoc = new();
+            xDoc.Load(XMLConfigFile);
 
             XmlNode xNode = xDoc.SelectSingleNode("//appSettings");
 
@@ -28,9 +27,19 @@ namespace DataEditorX.Common
                 XmlElement xNewElem = xDoc.CreateElement("add");
                 xNewElem.SetAttribute("key", appKey);
                 xNewElem.SetAttribute("value", appValue);
-                xNode.AppendChild(xNewElem);
+                _ = xNode.AppendChild(xNewElem);
             }
-            xDoc.Save(Application.ExecutablePath + ".config");
+            xDoc.Save(XMLConfigFile);
+        }
+        static string XMLConfigFile 
+        { 
+            get
+            {
+                string path = Application.ExecutablePath + ".config";
+                if (!File.Exists(path))
+                    path = path.Replace(".exe", ".dll");
+                return path;
+            } 
         }
         /// <summary>
         /// 获取值
@@ -39,8 +48,8 @@ namespace DataEditorX.Common
         /// <returns></returns>
         public static string GetAppConfig(string appKey)
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(Application.ExecutablePath + ".config");
+            XmlDocument xDoc = new();
+            xDoc.Load(XMLConfigFile);
 
             XmlNode xNode = xDoc.SelectSingleNode("//appSettings");
 

@@ -1,337 +1,123 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <ProjectGuid>{3FA42393-3D90-4DE1-93FC-33FCB3045845}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>DataEditorX</RootNamespace>
-    <AssemblyName>DataEditorX</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <StartupObject>DataEditorX.Program</StartupObject>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
+    <Title></Title>
+    <Version>4.0.1</Version>
+    <AssemblyVersion>4.0.1</AssemblyVersion>
+    <FileVersion>4.0.1</FileVersion>
+    <PackageId />
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <NoWin32Manifest>False</NoWin32Manifest>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <BaseOutputPath>..\bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <BaseAddress>4194304</BaseAddress>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <FileAlignment>4096</FileAlignment>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DebugSymbols>True</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>..\win32\</OutputPath>
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-    <Optimize>True</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <Prefer32Bit>false</Prefer32Bit>
-    <OutputPath>..\win32\</OutputPath>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
+    <Content Include="icon.ico" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="CodeEditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CodeEditForm.Designer.cs">
-      <DependentUpon>CodeEditForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Common\CheckUpdate.cs" />
-    <Compile Include="Common\ConfHelper.cs" />
-    <Compile Include="Common\MySortList.cs" />
-    <Compile Include="Common\MyUtils.cs" />
-    <Compile Include="Common\StrUtil.cs" />
-    <Compile Include="Common\XMLReader.cs" />
-    <Compile Include="Config\YgoPath.cs" />
-    <Compile Include="Controls\DFlowLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\DListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\DListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\FastColoredTextBoxEx.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Common\MyPath.cs" />
-    <Compile Include="Controls\History.cs" />
-    <Compile Include="Core\CommandManager.cs" />
-    <Compile Include="Core\IDataForm.cs" />
-    <Compile Include="Controls\IEditForm.cs" />
-    <Compile Include="Controls\IMainForm.cs" />
-    <Compile Include="Controls\MySyntaxHighlighter.cs" />
-    <Compile Include="Common\MyBitmap.cs" />
-    <Compile Include="Common\User32.cs" />
-    <Compile Include="Common\ZipStorer.cs" />
-    <Compile Include="Common\Area.cs" />
-    <Compile Include="Config\DEXConfig.cs" />
-    <Compile Include="Core\Card.cs" />
-    <Compile Include="Core\Info\CardAttribute.cs" />
-    <Compile Include="Core\CardEdit.cs" />
-    <Compile Include="Core\Info\CardLink.cs" />
-    <Compile Include="Core\Info\CardRace.cs" />
-    <Compile Include="Core\Info\CardRule.cs" />
-    <Compile Include="Core\Info\CardType.cs" />
-    <Compile Include="Config\CodeConfig.cs" />
-    <Compile Include="Core\DataBase.cs" />
-    <Compile Include="Config\DataConfig.cs" />
-    <Compile Include="Config\DataManager.cs" />
-    <Compile Include="Config\ImageSet.cs" />
-    <Compile Include="Core\LuaFunction.cs" />
-    <Compile Include="Core\Mse\CardPack.cs" />
-    <Compile Include="Core\Mse\MSECons.cs" />
-    <Compile Include="Core\Mse\MseMaker.cs" />
-    <Compile Include="Core\Mse\MSEConfig.cs" />
-    <Compile Include="Core\MyTask.cs" />
-    <Compile Include="Core\TaskHelper.cs" />
-    <Compile Include="Core\TCGEditor\CardSet.cs" />
-    <Compile Include="Core\YGOUtil.cs" />
-    <Compile Include="CountLimitForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CountLimitForm.Designer.cs">
-      <DependentUpon>CountLimitForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataEditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DataEditForm.Designer.cs">
-      <DependentUpon>DataEditForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EffectCreatorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EffectCreatorForm.Designer.cs">
-      <DependentUpon>EffectCreatorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FindReplaceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FindReplaceForm.Designer.cs">
-      <DependentUpon>FindReplaceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddArchetypeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddArchetypeForm.Designer.cs">
-      <DependentUpon>AddArchetypeForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PositionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PositionForm.Designer.cs">
-      <DependentUpon>PositionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ResetForm.Designer.cs">
-      <DependentUpon>ResetForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Language\LanguageHelper.cs" />
-    <Compile Include="Language\LMsg.cs" />
-    <Compile Include="Language\MyMsg.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="DockPanelSuite" Version="3.1.0" />
+    <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.1.0" />
+    <PackageReference Include="FCTB" Version="2.16.24" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0-preview.4.22229.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.0-preview.4.22229.2" />
+    <PackageReference Include="NeoLua" Version="1.3.14" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="changed.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\effect_creator_settings.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\mse_Chinese-Traditional.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="data\avalon.xshd">
+    <None Update="changed.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="readme_english.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="data\constant.lua">
+    <None Update="data\avalon.xshd">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="data\cardinfo_chinese.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="data\strings.conf">
+    <None Update="data\cardinfo_english.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="data\language_english.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\mse_English.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\cardinfo_english.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data\mse_Japanese.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="data\single.lua">
+    <None Update="data\constant.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Magic Set Editor 2\download.bat">
+    <None Update="data\cover.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Magic Set Editor 2\update\readme.txt">
+    <None Update="data\effect_creator_settings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Magic Set Editor 2\update\update.exe">
+    <None Update="data\language_chinese.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Magic Set Editor 2\update\update.exe.config">
+    <None Update="data\language_english.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="readme.txt">
+    <None Update="data\mse_Chinese-Simplified.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\mse_Chinese-Traditional.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\mse_English.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\mse_Japanese.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\single.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\strings.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\_functions.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="data\_function_english.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Magic Set Editor 2\download.bat">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Magic Set Editor 2\update\readme.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Magic Set Editor 2\update\update.exe">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Magic Set Editor 2\update\update.exe.config">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="readme_english.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CodeEditForm.resx">
-      <DependentUpon>CodeEditForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\FastColoredTextBoxEx.resx">
-      <DependentUpon>FastColoredTextBoxEx.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CountLimitForm.resx">
-      <DependentUpon>CountLimitForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataEditForm.resx">
-      <DependentUpon>DataEditForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EffectCreatorForm.resx">
-      <DependentUpon>EffectCreatorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FindReplaceForm.resx">
-      <DependentUpon>FindReplaceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddArchetypeForm.resx">
-      <DependentUpon>AddArchetypeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PositionForm.resx">
-      <DependentUpon>PositionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ResetForm.resx">
-      <DependentUpon>ResetForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="data\_functions.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="data\cardinfo_chinese.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="data\cover.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="data\language_chinese.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="data\mse_Chinese-Simplified.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="DockPanelSuite.ThemeVS2015">
-      <Version>3.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="FCTB">
-      <Version>2.16.24</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CSharp">
-      <Version>4.7.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Data.Sqlite">
-      <Version>6.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>6.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="NeoLua">
-      <Version>1.3.14</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
-    </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd ..\win32\&#xD;&#xA;if exist &quot;win32.zip&quot; del &quot;win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; &quot;win32.zip&quot; &quot;*&quot;" />
   </Target>
-  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.1\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.1\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
-  <PropertyGroup>
-    <PostBuildEvent>rm $(OutDir)win32.zip
-7z a $(OutDir)win32.zip "$(OutDir)*"</PostBuildEvent>
-    <PostBuildEvent>if exist "win32.zip" del "win32.zip"
-7z a -x!"*.dll" -x!"*.pdb" -x!"*.xml" "win32.zip" "*" &amp;&amp; 7z a "win32.zip" "FastColoredTextBox.dll" "WeifenLuo.WinFormsUI.Docking.dll" "WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll" "Neo.Lua.dll" "Microsoft.Data.SQLite.dll" "SQLitePCLRaw.core.dll" "System.Memory.dll" "SQLitePCLRaw.provider.e_sqlite3.dll" "SQLitePCLRaw.batteries_v2.dll" "e_sqlite3.dll" "System.Runtime.CompilerServices.Unsafe.dll"</PostBuildEvent>
-  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if exist &quot;..\obj\&quot; del /Q &quot;..\obj\&quot;" />
+  </Target>
+
 </Project>

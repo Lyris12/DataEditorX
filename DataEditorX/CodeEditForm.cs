@@ -11,14 +11,9 @@ using DataEditorX.Core;
 using DataEditorX.Language;
 using FastColoredTextBoxNS;
 using Neo.IronLua;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+using Newtonsoft.Json;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
-using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
@@ -30,7 +25,7 @@ namespace DataEditorX
     {
         #region Style
         SortedDictionary<long, string> cardlist;
-        readonly MarkerStyle sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(40, Color.White)));
+        readonly MarkerStyle sameWordsStyle = new(new SolidBrush(Color.FromArgb(40, Color.White)));
         #endregion
 
         #region init 函数提示菜单
@@ -80,7 +75,7 @@ namespace DataEditorX
                 tabisspaces = false;
             }
 
-            Font ft = new Font(fctb.Font.Name, fctb.Font.Size / 1.2f, FontStyle.Regular);
+            Font ft = new(fctb.Font.Name, fctb.Font.Size / 1.2f, FontStyle.Regular);
             popupMenu = new AutocompleteMenu(fctb)
             {
                 MinFragmentLength = 2
@@ -190,15 +185,15 @@ namespace DataEditorX
             {
                 if (!File.Exists(file))
                 {
-                    FileStream fs = new FileStream(file, FileMode.Create);
+                    FileStream fs = new(file, FileMode.Create);
                     fs.Close();
                 }
                 nowFile = file;
-                FileInfo fi = new FileInfo(file);
+                FileInfo fi = new(file);
                 if (fi.Name.ToUpper().EndsWith(".LUA"))
                 {
                     (fctb.SyntaxHighlighter as MySyntaxHighlighter).cCode
-                        = fi.Name.Substring(0, fi.Name.Length - 4);
+                        = fi.Name[..^4];
                 }
                 string cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "../cards.cdb");
@@ -303,7 +298,7 @@ namespace DataEditorX
                 string k = v;
                 if (t > 0)
                 {
-                    k = v.Substring(t + 1);
+                    k = v[(t + 1)..];
                 }
 
                 if (word == k)
@@ -325,7 +320,7 @@ namespace DataEditorX
                 if (!name.StartsWith("0x") && name.Length <= 9)
                 {
                     name = name.Replace("c", "");
-                    long.TryParse(name, out tl);
+                    _ = long.TryParse(name, out tl);
                 }
 
                 if (tl > 0)
@@ -361,29 +356,27 @@ namespace DataEditorX
 
             if (saveas)
             {
-                using (SaveFileDialog sfdlg = new SaveFileDialog())
+                using SaveFileDialog sfdlg = new();
+                try
                 {
-                    try
-                    {
-                        sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
-                    }
-                    catch { }
-                    if (sfdlg.ShowDialog() == DialogResult.OK)
-                    {
-                        nowFile = sfdlg.FileName;
-                        SetTitle();
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                }
+                catch { }
+                if (sfdlg.ShowDialog() == DialogResult.OK)
+                {
+                    nowFile = sfdlg.FileName;
+                    SetTitle();
+                }
+                else
+                {
+                    return false;
                 }
             }
             oldtext = fctb.Text;
             File.WriteAllText(nowFile, alltext, new UTF8Encoding(false));
             try
             {
-                long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
+                _ = long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
                 if (tl > 0)
                 {
                     //获取卡片信息
@@ -391,7 +384,7 @@ namespace DataEditorX
                         StringComparison.OrdinalIgnoreCase) || nowcdb.EndsWith(".bytes",
                         StringComparison.OrdinalIgnoreCase)))
                     {
-                        DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
+                        _ = DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
                     }
                 }
             }
@@ -445,18 +438,16 @@ namespace DataEditorX
 
         void Menuitem_openClick(object sender, EventArgs e)
         {
-            using (OpenFileDialog sfdlg = new OpenFileDialog())
+            using OpenFileDialog sfdlg = new();
+            try
             {
-                try
-                {
-                    sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
-                }
-                catch { }
-                if (sfdlg.ShowDialog() == DialogResult.OK)
-                {
-                    nowFile = sfdlg.FileName;
-                    fctb.OpenFile(nowFile, new UTF8Encoding(false));
-                }
+                sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+            }
+            catch { }
+            if (sfdlg.ShowDialog() == DialogResult.OK)
+            {
+                nowFile = sfdlg.FileName;
+                fctb.OpenFile(nowFile, new UTF8Encoding(false));
             }
         }
 
@@ -469,7 +460,7 @@ namespace DataEditorX
             if (e.KeyCode == Keys.Enter)
             {
                 string key = tb_input.Text;
-                List<AutocompleteItem> list = new List<AutocompleteItem>();
+                List<AutocompleteItem> list = new();
                 foreach (AutocompleteItem item in items)
                 {
                     if (item.ToolTipText.Contains(key))
@@ -492,7 +483,7 @@ namespace DataEditorX
                 {
                     if (MyMsg.Question(LMSG.IfSaveScript))
                     {
-                        Save(false);
+                        _ = Save(false);
                     }
                 }
             }
@@ -500,7 +491,7 @@ namespace DataEditorX
             {
                 if (MyMsg.Question(LMSG.IfSaveScript))
                 {
-                    Save(true);
+                    _ = Save(true);
                 }
             }
         }
@@ -516,9 +507,9 @@ namespace DataEditorX
 
             foreach (string cdb in cdbs)
             {
-                ToolStripMenuItem tsmi = new ToolStripMenuItem(cdb);
+                ToolStripMenuItem tsmi = new(cdb);
                 tsmi.Click += MenuItem_Click;
-                menuitem_setcard.DropDownItems.Add(tsmi);
+                _ = menuitem_setcard.DropDownItems.Add(tsmi);
             }
         }
         void MenuItem_Click(object sender, EventArgs e)
@@ -611,25 +602,25 @@ namespace DataEditorX
         private void menuitem_testlua_Click(object sender, EventArgs e)
         {
             if (nowFile == null) return;
-            FileInfo fi = new FileInfo(nowFile);
+            FileInfo fi = new(nowFile);
             string fn = fi.Name;
             if (!fn.ToUpper().EndsWith(".LUA"))
             {
                 return;
             }
-            string cCode = fn.Substring(0, fn.Length - 4);
+            string cCode = fn[..^4];
             bool error = false;
             try
             {
                 Directory.SetCurrentDirectory(fi.DirectoryName);
-                Lua lua = new Lua();
+                Lua lua = new();
                 var env = lua.CreateEnvironment();
                 string pre = "Duel={} Effect={} Card={} aux={} Auxiliary={} " + cCode + "={} Duel.LoadScript=function(str) end ";
-                env.DoChunk(pre + fctb.Text, "test.lua");
+                _ = env.DoChunk(pre + fctb.Text, "test.lua");
             }
             catch (LuaException ex)
             {
-                MessageBox.Show($"LINE{ex.Line} - {ex.Message}");
+                _ = MessageBox.Show($"LINE{ex.Line} - {ex.Message}");
                 error = true;
             }
             if (!error)
@@ -640,7 +631,7 @@ namespace DataEditorX
 
         private void effectCreatorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EffectCreatorForm form = new EffectCreatorForm();
+            EffectCreatorForm form = new();
             form.Show();
         }
 
@@ -656,7 +647,7 @@ namespace DataEditorX
             {
                 return;
             }
-            List<string> files = new List<string>();
+            List<string> files = new();
             foreach (string file in drops)
             {
                 if (Directory.Exists(file))
@@ -681,7 +672,7 @@ namespace DataEditorX
         private void menuitem_fixCardCode_Click(object sender, EventArgs e)
         {
             string text = fctb.Text;
-            Regex regex = new Regex(@"(c[0-9]{4,9})");
+            Regex regex = new(@"(c[0-9]{4,9})");
             var matches = regex.Matches(text);
             string cName;
             if (nowFile != null && regex.IsMatch(nowFile))
@@ -693,33 +684,33 @@ namespace DataEditorX
                 MyMsg.Show(LMSG.InvalidFileName);
                 return;
             }
-            HashSet<string> hs = new HashSet<string>();
-            foreach (Match match in matches)
+            HashSet<string> hs = new();
+            foreach (Match match in matches.Cast<Match>())
             {
-                hs.Add(match.Groups[1].Value);
+                _ = hs.Add(match.Groups[1].Value);
             }
             foreach (string str in hs)
             {
                 text = text.Replace(str, cName);
-                text = text.Replace(str.Substring(1), cName.Substring(1));
+                text = text.Replace(str[1..], cName[1..]);
             }
             fctb.Text = text;
         }
         private void menuitem_tooltipFont_Click(object sender, EventArgs e)
         {
-            FontDialog fd = new FontDialog();
+            FontDialog fd = new();
             string fontJson = DEXConfig.ReadString(DEXConfig.TOOLTIP_FONT);
-            Font f = new Font("微软雅黑", 10);
-            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Font? f = null;
             try
             {
-                f = jss.Deserialize<Font>(fontJson);
+                f = JsonConvert.DeserializeObject<Font>(fontJson) ?? new Font("微软雅黑", 10);
             }
             catch { }
+            if (f == null) return;
             fd.Font = f;
             if (fd.ShowDialog() == DialogResult.OK)
             {
-                Common.XMLReader.Save(DEXConfig.TOOLTIP_FONT, jss.Serialize(fd.Font));
+                Common.XMLReader.Save(DEXConfig.TOOLTIP_FONT, JsonConvert.SerializeObject(fd.Font));
                 fctb.lbTooltip.Font = fd.Font;
             }
         }

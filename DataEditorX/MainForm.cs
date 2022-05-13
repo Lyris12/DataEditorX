@@ -9,11 +9,6 @@ using DataEditorX.Config;
 using DataEditorX.Controls;
 using DataEditorX.Core;
 using DataEditorX.Language;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
@@ -94,7 +89,7 @@ namespace DataEditorX
                     if (l.StartsWith("!setname"))
                     {
                         string[] sn = l.Split(new char[] { ' ' }, 3);
-                        long.TryParse(sn[1], System.Globalization.NumberStyles.HexNumber, null,
+                        _ = long.TryParse(sn[1], System.Globalization.NumberStyles.HexNumber, null,
                             out long sc);
                         if (!d.ContainsKey(sc)) d.Add(sc, sn[2]);
                     }
@@ -128,7 +123,7 @@ namespace DataEditorX
 
             //设置所有窗口的语言
             DockContentCollection contents = dockPanel.Contents;
-            foreach (DockContent dc in contents)
+            foreach (DockContent dc in contents.Cast<DockContent>())
             {
                 if (dc is Form)
                 {
@@ -164,12 +159,12 @@ namespace DataEditorX
         //添加cdb历史
         public void AddCdbMenu(ToolStripItem item)
         {
-            menuitem_history.DropDownItems.Add(item);
+            _ = menuitem_history.DropDownItems.Add(item);
         }
         //添加lua历史
         public void AddLuaMenu(ToolStripItem item)
         {
-            menuitem_shistory.DropDownItems.Add(item);
+            _ = menuitem_shistory.DropDownItems.Add(item);
         }
         #endregion
 
@@ -200,7 +195,7 @@ namespace DataEditorX
         //打开脚本
         void OpenScript(string file)
         {
-            CodeEditForm cf = new CodeEditForm();
+            CodeEditForm cf = new();
             //设置界面语言
             LanguageHelper.SetFormLabel(cf);
             //设置cdb列表
@@ -208,7 +203,7 @@ namespace DataEditorX
             //初始化函数提示
             cf.InitTooltip(codecfg);
             //打开文件
-            cf.Open(file, dockPanel.ActiveContent is DataEditForm df ? Path.GetFileNameWithoutExtension(df.GetOpenFile()) : "cards");
+            _ = cf.Open(file, dockPanel.ActiveContent is DataEditForm df ? Path.GetFileNameWithoutExtension(df.GetOpenFile()) : "cards");
             cf.Show(dockPanel, DockState.Document);
         }
         //打开数据库
@@ -263,7 +258,7 @@ namespace DataEditorX
         {
             DockContentCollection contents = dockPanel.Contents;
             //遍历所有标签
-            foreach (DockContent dc in contents)
+            foreach (DockContent dc in contents.Cast<DockContent>())
             {
                 IEditForm edform = (IEditForm)dc;
                 if (edform == null)
@@ -283,7 +278,7 @@ namespace DataEditorX
                 {
                     if (string.IsNullOrEmpty(edform.GetOpenFile()) && edform.CanOpen(file))
                     {
-                        edform.Open(file, Path.GetFileNameWithoutExtension(openfile));
+                        _ = edform.Open(file, Path.GetFileNameWithoutExtension(openfile));
                         edform.SetActived();
                         return true;
                     }
@@ -360,31 +355,29 @@ namespace DataEditorX
         //打开文件
         void Menuitem_openClick(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.OpenFile);
+            if (GetActive() != null || dockPanel.Contents.Count == 0)//判断当前窗口是不是DataEditor
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.OpenFile);
-                if (GetActive() != null || dockPanel.Contents.Count == 0)//判断当前窗口是不是DataEditor
+                try
                 {
-                    try
-                    {
-                        dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
-                    }
-                    catch { }
+                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
                 }
-                else
+                catch { }
+            }
+            else
+            {
+                try
                 {
-                    try
-                    {
-                        dlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
-                    }
-                    catch { }
+                    dlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
                 }
+                catch { }
+            }
 
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    string file = dlg.FileName;
-                    Open(file);
-                }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string file = dlg.FileName;
+                Open(file);
             }
         }
 
@@ -396,53 +389,51 @@ namespace DataEditorX
         //新建文件
         void Menuitem_newClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.NewFile);
+            if (GetActive() != null)//判断当前窗口是不是DataEditor
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.NewFile);
-                if (GetActive() != null)//判断当前窗口是不是DataEditor
+                try
                 {
-                    try
+                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+                }
+                catch { }
+            }
+            else
+            {
+                try
+                {
+                    dlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                }
+                catch { }
+            }
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string file = dlg.FileName;
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+                //是否是数据库
+                if (YGOUtil.IsDataBase(file))
+                {
+                    if (DataBase.Create(file))//是否创建成功
                     {
-                        dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+                        if (MyMsg.Question(LMSG.IfOpenDataBase))//是否打开新建的数据库
+                        {
+                            Open(file);
+                        }
                     }
-                    catch { }
                 }
                 else
                 {
                     try
                     {
-                        dlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
+                        File.Create(file).Dispose();
                     }
                     catch { }
-                }
-
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    string file = dlg.FileName;
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
-                    //是否是数据库
-                    if (YGOUtil.IsDataBase(file))
-                    {
-                        if (DataBase.Create(file))//是否创建成功
-                        {
-                            if (MyMsg.Question(LMSG.IfOpenDataBase))//是否打开新建的数据库
-                            {
-                                Open(file);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            File.Create(file).Dispose();
-                        }
-                        catch { }
-                        Open(file);
-                    }
+                    Open(file);
                 }
             }
         }
@@ -506,7 +497,7 @@ namespace DataEditorX
             int t = tmp.LastIndexOf(" (");
             if (t > 0)
             {
-                tmp = tmp.Substring(0, t);
+                tmp = tmp[..t];
             }
 
             tmp = tmp + " (" + c.ToString() + ")";
@@ -622,7 +613,7 @@ namespace DataEditorX
         private void MainForm_DragDrop(object sender, DragEventArgs e)
         {
             string[] drops = (string[])e.Data.GetData(DataFormats.FileDrop);
-            List<string> files = new List<string>();
+            List<string> files = new();
             if (drops == null)
             {
                 string file = (string)e.Data.GetData(DataFormats.Text);
@@ -660,7 +651,7 @@ namespace DataEditorX
         private void addArchetypeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dictionary<long, string> d = datacfg.dicSetnames;
-            AddArchetypeForm form = new AddArchetypeForm(d);
+            AddArchetypeForm form = new(d);
             if (form.ShowDialog() == DialogResult.OK)
             {
                 int setcode = form.code;
@@ -676,7 +667,7 @@ namespace DataEditorX
             //检查更新
             if (DEXConfig.ReadBoolean(DEXConfig.TAG_AUTO_CHECK_UPDATE))
             {
-                Thread th = new Thread(CheckUpdate)
+                Thread th = new(CheckUpdate)
                 {
                     IsBackground = true//如果exe结束，则线程终止
                 };

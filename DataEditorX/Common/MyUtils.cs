@@ -6,7 +6,6 @@
  * 
  * 要改变这种模板请点击 工具|选项|代码编写|编辑标准头文件
  */
-using System.IO;
 using System.Text;
 
 namespace DataEditorX.Common
@@ -25,15 +24,15 @@ namespace DataEditorX.Common
         {
             try
             {
-                FileStream file = new FileStream(fileName, FileMode.Open);
+                FileStream file = new(fileName, FileMode.Open);
                 System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
                 byte[] retVal = md5.ComputeHash(file);
                 file.Close();
 
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 for (int i = 0; i < retVal.Length; i++)
                 {
-                    sb.Append(retVal[i].ToString("x2"));
+                    _ = sb.Append(retVal[i].ToString("x2"));
                 }
                 return sb.ToString();
             }

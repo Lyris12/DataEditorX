@@ -5,9 +5,6 @@
  * 时间: 7:19
  * 
  */
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace FastColoredTextBoxNS
 {

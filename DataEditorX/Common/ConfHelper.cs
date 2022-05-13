@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 
 namespace DataEditorX.Common
@@ -20,7 +19,7 @@ namespace DataEditorX.Common
             int t = line.IndexOf('=');
             if (t > 0)
             {
-                return line.Substring(t + 1).Trim();
+                return line[(t + 1)..].Trim();
             }
 
             return "";
@@ -35,7 +34,7 @@ namespace DataEditorX.Common
             int i = word.IndexOf(SEP_LINE);
             if (i > 0)
             {
-                return word.Substring(0, i);
+                return word[..i];
             }
 
             return word;
@@ -50,7 +49,7 @@ namespace DataEditorX.Common
             int i = word.IndexOf(SEP_LINE);
             if (i > 0)
             {
-                return word.Substring(i + SEP_LINE.Length);
+                return word[(i + SEP_LINE.Length)..];
             }
 
             return "";
@@ -71,11 +70,11 @@ namespace DataEditorX.Common
         /// <returns></returns>
         public static string GetRegex(string word)
         {
-            StringBuilder sb = new StringBuilder(word);
-            sb.Replace("\\r", "\r");
-            sb.Replace("\\n", "\n");
-            sb.Replace("\\t", "\t");
-            sb.Replace("[:space:]", " ");
+            StringBuilder sb = new(word);
+            _ = sb.Replace("\\r", "\r");
+            _ = sb.Replace("\\n", "\n");
+            _ = sb.Replace("\\t", "\t");
+            _ = sb.Replace("[:space:]", " ");
             return sb.ToString();
         }
         /// <summary>
@@ -124,8 +123,8 @@ namespace DataEditorX.Common
             if (j > 0)
             {
                 string strkey = line.Substring(i + 2, j - i - 1);
-                string strval = line.Substring(j + 1);
-                long.TryParse(strkey, NumberStyles.HexNumber, null, out long key);
+                string strval = line[(j + 1)..];
+                _ = long.TryParse(strkey, NumberStyles.HexNumber, null, out long key);
                 if (!dic.ContainsKey(key))
                 {
                     dic.Add(key, strval.Trim());

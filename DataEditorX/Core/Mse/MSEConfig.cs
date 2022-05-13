@@ -7,8 +7,6 @@
  */
 using DataEditorX.Common;
 using DataEditorX.Config;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace DataEditorX.Core.Mse
@@ -149,7 +147,7 @@ namespace DataEditorX.Core.Mse
                     int i = 0;
                     foreach (string str in cs)
                     {
-                        long.TryParse(str, out long l);
+                        _ = long.TryParse(str, out long l);
                         noStartCards[i++] = l;
                     }
                 }

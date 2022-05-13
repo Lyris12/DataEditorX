@@ -5,7 +5,6 @@
  * 时间: 7:40
  * 
  */
-using System.Windows.Forms;
 
 namespace DataEditorX.Language
 {
@@ -24,17 +23,17 @@ namespace DataEditorX.Language
         }
         public static void Show(string strMsg)
         {
-            MessageBox.Show(strMsg, _info,
+            _ = MessageBox.Show(strMsg, _info,
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         public static void Warning(string strWarn)
         {
-            MessageBox.Show(strWarn, _warning,
+            _ = MessageBox.Show(strWarn, _warning,
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         public static void Error(string strError)
         {
-            MessageBox.Show(strError, _error,
+            _ = MessageBox.Show(strError, _error,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         public static bool Question(string strQues)
@@ -52,17 +51,17 @@ namespace DataEditorX.Language
         }
         public static void Show(LMSG msg)
         {
-            MessageBox.Show(LanguageHelper.GetMsg(msg), _info,
+            _ = MessageBox.Show(LanguageHelper.GetMsg(msg), _info,
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         public static void Warning(LMSG msg)
         {
-            MessageBox.Show(LanguageHelper.GetMsg(msg), _warning,
+            _ = MessageBox.Show(LanguageHelper.GetMsg(msg), _warning,
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         public static void Error(LMSG msg)
         {
-            MessageBox.Show(LanguageHelper.GetMsg(msg), _error,
+            _ = MessageBox.Show(LanguageHelper.GetMsg(msg), _error,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         public static bool Question(LMSG msg)

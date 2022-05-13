@@ -10,6 +10,7 @@ using DataEditorX.Core;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
 {
@@ -42,7 +43,6 @@ namespace DataEditorX
 		private void InitializeComponent()
 		{
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.theme = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.menuitem_file = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_open = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +76,7 @@ namespace DataEditorX
             // dockPanel
             // 
             this.dockPanel.AllowDrop = true;
+            this.dockPanel.Theme = new VS2015LightTheme();
             this.dockPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockPanel.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
@@ -86,7 +87,6 @@ namespace DataEditorX
             this.dockPanel.ShowAutoHideContentOnHover = false;
             this.dockPanel.Size = new System.Drawing.Size(992, 725);
             this.dockPanel.TabIndex = 0;
-            this.dockPanel.Theme = this.theme;
             this.dockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dockPanel_DragDrop);
             this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dockPanel_DragEnter);
             // 
@@ -349,10 +349,9 @@ namespace DataEditorX
 		private System.Windows.Forms.ToolStripMenuItem menuitem_windows;
 		private System.Windows.Forms.ToolStripMenuItem menuitem_file;
 		private System.Windows.Forms.MenuStrip mainMenu;
-		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
+		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel { get; set; }
         private System.Windows.Forms.ToolStripMenuItem menuitem_shistory;
         private System.ComponentModel.BackgroundWorker bgWorker1;
-        private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme theme;
         private System.Windows.Forms.ToolStripMenuItem menuitem_save;
         private System.Windows.Forms.ToolStripMenuItem menuitem_saveas;
         private System.Windows.Forms.ToolStripMenuItem addArchetypeToolStripMenuItem;

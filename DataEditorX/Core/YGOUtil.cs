@@ -1,9 +1,6 @@
 ﻿using DataEditorX.Config;
 using DataEditorX.Core.Info;
 using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace DataEditorX.Core
@@ -157,7 +154,7 @@ namespace DataEditorX.Core
             }
             if (str.Length > 0)
             {
-                str = str.Substring(0, str.Length - 1);
+                str = str[..^1];
             }
             else
             {
@@ -193,27 +190,25 @@ namespace DataEditorX.Core
         public static string[] ReadYDK(string ydkfile)
         {
             string str;
-            List<string> IDs = new List<string>();
+            List<string> IDs = new();
             if (File.Exists(ydkfile))
             {
-                using (FileStream f = new FileStream(ydkfile, FileMode.Open, FileAccess.Read))
+                using FileStream f = new(ydkfile, FileMode.Open, FileAccess.Read);
+                StreamReader sr = new(f, Encoding.Default);
+                str = sr.ReadLine();
+                while (str != null)
                 {
-                    StreamReader sr = new StreamReader(f, Encoding.Default);
-                    str = sr.ReadLine();
-                    while (str != null)
+                    if (!str.StartsWith("!") && !str.StartsWith("#") && str.Length > 0)
                     {
-                        if (!str.StartsWith("!") && !str.StartsWith("#") && str.Length > 0)
+                        if (IDs.IndexOf(str) < 0)
                         {
-                            if (IDs.IndexOf(str) < 0)
-                            {
-                                IDs.Add(str);
-                            }
+                            IDs.Add(str);
                         }
-                        str = sr.ReadLine();
                     }
-                    sr.Close();
-                    f.Close();
+                    str = sr.ReadLine();
                 }
+                sr.Close();
+                f.Close();
             }
             if (IDs.Count == 0)
             {
@@ -227,7 +222,7 @@ namespace DataEditorX.Core
         #region 图像
         public static string[] ReadImage(string path)
         {
-            List<string> list = new List<string>();
+            List<string> list = new();
             string[] files = Directory.GetFiles(path, "*.*");
             int n = files.Length;
             for (int i = 0; i < n; i++)

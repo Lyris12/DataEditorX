@@ -15,7 +15,7 @@ namespace DataEditorX.Common
             char[] ch = str.ToCharArray();
             _ = ch.Length;
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             int i = 0;
             foreach (char c in ch)
@@ -32,23 +32,23 @@ namespace DataEditorX.Common
 
                 if (c == '\n' || c == '\r')
                 {
-                    sb.Append(re);
+                    _ = sb.Append(re);
                     i = 0;
                 }
                 else if (c == re)
                 {
-                    sb.Append(c);
+                    _ = sb.Append(c);
                     i = 0;
                 }
                 else if (i >= lineNum)
                 {
-                    sb.Append(c);
-                    sb.Append(re);
+                    _ = sb.Append(c);
+                    _ = sb.Append(re);
                     i = 0;
                 }
                 else
                 {
-                    sb.Append(c);
+                    _ = sb.Append(c);
                 }
             }
             return sb.ToString();

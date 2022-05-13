@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace DataEditorX
+﻿namespace DataEditorX
 {
     public partial class FindReplaceForm : Form
     {

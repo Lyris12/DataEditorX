@@ -10,12 +10,8 @@ using DataEditorX.Config;
 using DataEditorX.Core.Info;
 using DataEditorX.Core.Mse;
 using DataEditorX.Language;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
 using System.IO.Compression;
-using System.Windows.Forms;
 
 namespace DataEditorX.Core
 {
@@ -121,8 +117,8 @@ namespace DataEditorX.Core
                 return;
             }
 
-            Bitmap bmp = new Bitmap(img);
-            MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
+            Bitmap bmp = new(img);
+            _ = MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
                                 saveimg1, imgSet.quilty);
             //MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.w, imgSet.h),
             //					saveimg2, imgSet.quilty);
@@ -175,7 +171,7 @@ namespace DataEditorX.Core
                 MyMsg.Show(LMSG.DownloadFail);
             }
         }
-        public void OnCheckUpdate(bool showNew)
+        public static void OnCheckUpdate(bool showNew)
         {
             CheckVersion(showNew);
         }
@@ -199,7 +195,7 @@ namespace DataEditorX.Core
                 string savejpg = MyPath.Combine(mseHelper.ImagePath, c.id + ".jpg");
                 if (File.Exists(jpg) && (isreplace || !File.Exists(savejpg)))
                 {
-                    Bitmap bp = new Bitmap(jpg);
+                    Bitmap bp = new(jpg);
                     Bitmap bmp;
                     if (c.IsType(CardType.TYPE_XYZ))//超量
                     {
@@ -214,7 +210,7 @@ namespace DataEditorX.Core
                         bmp = MyBitmap.Cut(bp, imgSet.normalArea);
                     }
                     bp.Dispose();
-                    MyBitmap.SaveAsJPEG(bmp, savejpg, imgSet.quilty);
+                    _ = MyBitmap.SaveAsJPEG(bmp, savejpg, imgSet.quilty);
                     //bmp.Save(savejpg, ImageFormat.Png);
                 }
             }
@@ -248,12 +244,12 @@ namespace DataEditorX.Core
                 {
                     if (File.Exists(f))
                     {
-                        Bitmap bmp = new Bitmap(f);
+                        Bitmap bmp = new(f);
                         //大图，如果替换，或者不存在
                         if (isreplace || !File.Exists(jpg_b))
                         {
 
-                            MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
+                            _ = MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
                                                 jpg_b, imgSet.quilty);
                         }
                         //小图，如果替换，或者不存在
@@ -293,7 +289,7 @@ namespace DataEditorX.Core
             //不分开，或者卡片数小于单个存档的最大值
             if (mseHelper.MaxNum == 0 || c < mseHelper.MaxNum)
             {
-                SaveMSE(1, file, cards, pack_db, rarity, isUpdate);
+                SaveMSE(1, file, cards, isUpdate);
             }
             else
             {
@@ -303,7 +299,7 @@ namespace DataEditorX.Core
                     nums++;
                 }
 
-                List<Card> clist = new List<Card>();
+                List<Card> clist = new();
                 for (int i = 0; i < nums; i++)//分别生成存档
                 {
                     clist.Clear();
@@ -316,16 +312,16 @@ namespace DataEditorX.Core
                         }
                     }
                     int t = file.LastIndexOf(".mse-set");
-                    string fname = (t > 0) ? file.Substring(0, t) : file;
+                    string fname = (t > 0) ? file[..t] : file;
                     fname += string.Format("_{0}.mse-set", i + 1);
-                    SaveMSE(i + 1, fname, clist.ToArray(), pack_db, rarity, isUpdate);
+                    SaveMSE(i + 1, fname, clist.ToArray(), isUpdate);
                 }
             }
         }
-        public void SaveMSE(int num, string file, Card[] cards, string pack_db, bool rarity, bool isUpdate)
+        public void SaveMSE(int num, string file, Card[] cards, bool isUpdate)
         {
             string setFile = file + ".txt";
-            Dictionary<Card, string> images = mseHelper.WriteSet(setFile, cards, pack_db, rarity);
+            Dictionary<Card, string> images = mseHelper.WriteSet(setFile, cards);
             if (isUpdate)//仅更新文字
             {
                 return;
@@ -366,7 +362,7 @@ namespace DataEditorX.Core
                 {
                     worker.ReportProgress(i / count, string.Format("{0}/{1}", i, count));
                     string savefilename = MyPath.Combine(mseHelper.ImagePath, file.FilenameInZip);
-                    zips.ExtractFile(file, savefilename);
+                    _ = zips.ExtractFile(file, savefilename);
                 }
             }
             string setfile = MyPath.Combine(mseHelper.ImagePath, "set");
@@ -385,7 +381,7 @@ namespace DataEditorX.Core
             }
 
             int count = cards.Length;
-            YgoPath ygopath = new YgoPath(path);
+            YgoPath ygopath = new(path);
             string name = Path.GetFileNameWithoutExtension(zipname);
             //数据库
             string cdbfile = zipname + ".cdb";
@@ -401,8 +397,8 @@ namespace DataEditorX.Core
             }
 
             File.Delete(cdbfile);
-            DataBase.Create(cdbfile);
-            DataBase.CopyDB(cdbfile, false, cardlist);
+            _ = DataBase.Create(cdbfile);
+            _ = DataBase.CopyDB(cdbfile, false, cardlist);
             if (File.Exists(zipname))
             {
                 File.Delete(zipname);
@@ -463,7 +459,7 @@ namespace DataEditorX.Core
                     showNew = false;
                     if (mArgs != null && mArgs.Length >= 1)
                     {
-                        showNew = (mArgs[0] == bool.TrueString) ? true : false;
+                        showNew = mArgs[0] == bool.TrueString;
                     }
                     OnCheckUpdate(showNew);
                     break;

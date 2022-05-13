@@ -5,8 +5,6 @@
  * 时间: 23:14
  * 
  */
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace FastColoredTextBoxNS
 {
@@ -16,14 +14,14 @@ namespace FastColoredTextBoxNS
     public class MySyntaxHighlighter : SyntaxHighlighter
     {
         public string cCode = "";
-        readonly TextStyle mNumberStyle = new TextStyle(Brushes.Orange, null, FontStyle.Regular);
-        readonly TextStyle mStrStyle = new TextStyle(Brushes.Gold, null, FontStyle.Regular);
-        readonly TextStyle conStyle = new TextStyle(Brushes.YellowGreen, null, FontStyle.Regular);
-        readonly TextStyle mKeywordStyle = new TextStyle(Brushes.DeepSkyBlue, null, FontStyle.Regular);
-        readonly TextStyle mGrayStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
-        readonly TextStyle mFunStyle = new TextStyle(Brushes.MediumAquamarine, null, FontStyle.Regular);
-        readonly TextStyle mErrorStyle = new TextStyle(Brushes.Red, null, FontStyle.Bold);
-        readonly TextStyle mErrorStyle2 = new TextStyle(Brushes.Red, null, FontStyle.Bold);
+        readonly TextStyle mNumberStyle = new(Brushes.Orange, null, FontStyle.Regular);
+        readonly TextStyle mStrStyle = new(Brushes.Gold, null, FontStyle.Regular);
+        readonly TextStyle conStyle = new(Brushes.YellowGreen, null, FontStyle.Regular);
+        readonly TextStyle mKeywordStyle = new(Brushes.DeepSkyBlue, null, FontStyle.Regular);
+        readonly TextStyle mGrayStyle = new(Brushes.Gray, null, FontStyle.Regular);
+        readonly TextStyle mFunStyle = new(Brushes.MediumAquamarine, null, FontStyle.Regular);
+        readonly TextStyle mErrorStyle = new(Brushes.Red, null, FontStyle.Bold);
+        readonly TextStyle mErrorStyle2 = new(Brushes.Red, null, FontStyle.Bold);
 
         public MySyntaxHighlighter(FastColoredTextBox currentTb) : base(currentTb)
         {
@@ -86,7 +84,7 @@ namespace FastColoredTextBoxNS
             //string highlighting
             range.SetStyle(mStrStyle, LuaStringRegex);
             //errors highlighting
-            List<string> errorRegexes = new List<string>();
+            List<string> errorRegexes = new();
             InitErrorRegexes(ref errorRegexes);
             foreach (string regex in errorRegexes)
             {
@@ -99,7 +97,7 @@ namespace FastColoredTextBoxNS
             range.SetFoldingMarkers(@"--\[\[", @"\]\]"); //allow to collapse comment block
         }
 
-        private void InitErrorRegexes(ref List<string> errorRegexes)
+        private static void InitErrorRegexes(ref List<string> errorRegexes)
         {
             errorRegexes.Add(@"\b(Duel\.[A-Za-z_0-9]+)\b");
             errorRegexes.Add(@"\b(Card\.[A-Za-z_0-9]+)\b");

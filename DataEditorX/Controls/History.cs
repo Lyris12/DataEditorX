@@ -1,10 +1,6 @@
 ﻿using DataEditorX.Config;
 using DataEditorX.Core;
 using DataEditorX.Language;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Forms;
 
 namespace DataEditorX.Controls
 {
@@ -76,7 +72,7 @@ namespace DataEditorX.Controls
         }
         public void AddHistory(string file)
         {
-            List<string> tmplist = new List<string>
+            List<string> tmplist = new()
             {
                 //添加到开始
                 file
@@ -122,24 +118,24 @@ namespace DataEditorX.Controls
             mainForm.CdbMenuClear();
             foreach (string str in cdbhistory)
             {
-                ToolStripMenuItem tsmi = new ToolStripMenuItem(str);
+                ToolStripMenuItem tsmi = new(str);
                 tsmi.Click += MenuHistoryItem_Click;
                 mainForm.AddCdbMenu(tsmi);
             }
             mainForm.AddCdbMenu(new ToolStripSeparator());
-            ToolStripMenuItem tsmiclear = new ToolStripMenuItem(LanguageHelper.GetMsg(LMSG.ClearHistory));
+            ToolStripMenuItem tsmiclear = new(LanguageHelper.GetMsg(LMSG.ClearHistory));
             tsmiclear.Click += MenuHistoryClear_Click;
             mainForm.AddCdbMenu(tsmiclear);
             //lua历史
             mainForm.LuaMenuClear();
             foreach (string str in luahistory)
             {
-                ToolStripMenuItem tsmi = new ToolStripMenuItem(str);
+                ToolStripMenuItem tsmi = new(str);
                 tsmi.Click += MenuHistoryItem_Click;
                 mainForm.AddLuaMenu(tsmi);
             }
             mainForm.AddLuaMenu(new ToolStripSeparator());
-            ToolStripMenuItem tsmiclear2 = new ToolStripMenuItem(LanguageHelper.GetMsg(LMSG.ClearHistory));
+            ToolStripMenuItem tsmiclear2 = new(LanguageHelper.GetMsg(LMSG.ClearHistory));
             tsmiclear2.Click += MenuHistoryClear2_Click;
             mainForm.AddLuaMenu(tsmiclear2);
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿#pragma warning disable
 namespace DataEditorX
 {
     class MyComparer<K> : IComparer<K>

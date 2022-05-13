@@ -1,7 +1,5 @@
 ﻿using DataEditorX.Config;
 using DataEditorX.Language;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace DataEditorX.Core
@@ -85,7 +83,7 @@ namespace DataEditorX.Core
             }
             public void Undo()
             {
-                DataBase.Command(dataform.GetOpenFile(), undoSQL);
+                _ = DataBase.Command(dataform.GetOpenFile(), undoSQL);
             }
 
             public object Clone()
@@ -194,7 +192,7 @@ namespace DataEditorX.Core
 
             public void Undo()
             {
-                DataBase.Command(dataform.GetOpenFile(), undoSQL);
+                _ = DataBase.Command(dataform.GetOpenFile(), undoSQL);
                 if (modifiled)
                 {
                     if (delold)
@@ -247,7 +245,7 @@ namespace DataEditorX.Core
                     return false;
                 }
 
-                List<string> sql = new List<string>();
+                List<string> sql = new();
                 foreach (Card c in cards)
                 {
                     sql.Add(DataBase.GetDeleteSQL(c));//删除
@@ -274,7 +272,7 @@ namespace DataEditorX.Core
             }
             public void Undo()
             {
-                DataBase.Command(dataform.GetOpenFile(), undoSQL);
+                _ = DataBase.Command(dataform.GetOpenFile(), undoSQL);
             }
 
             public object Clone()
@@ -313,42 +311,38 @@ namespace DataEditorX.Core
                 MyPath.CreateDirByFile(lua);
                 if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script))
                 {
-                    using (FileStream fs = new FileStream(lua,
-                        FileMode.OpenOrCreate, FileAccess.Write))
-                    {
-                        StreamWriter sw = new StreamWriter(fs, new UTF8Encoding(false));
-                        sw.Write(c.script);
-                        sw.Close();
-                        fs.Close();
-                    }
+                    using FileStream fs = new(lua,
+                        FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sw = new(fs, new UTF8Encoding(false));
+                    sw.Write(c.script);
+                    sw.Close();
+                    fs.Close();
                 }
                 else if (MyMsg.Question(LMSG.IfCreateScript))//是否创建脚本
                 {
-                    using (FileStream fs = new FileStream(lua,
-                        FileMode.OpenOrCreate, FileAccess.Write))
+                    using FileStream fs = new(lua,
+                        FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sw = new(fs, new UTF8Encoding(false));
+                    if (string.IsNullOrEmpty(addrequire))
                     {
-                        StreamWriter sw = new StreamWriter(fs, new UTF8Encoding(false));
-                        if (string.IsNullOrEmpty(addrequire))
-                        {
-                            // OCG script
-                            sw.WriteLine("--" + c.name);
-                            sw.WriteLine("function c" + id.ToString() + ".initial_effect(c)");
-                            sw.WriteLine("\t");
-                            sw.WriteLine("end");
-                        }
-                        else
-                        {
-                            // DIY script
-                            sw.WriteLine("--" + c.name);
-                            sw.WriteLine("local s,id=GetID()");
-                            sw.WriteLine("Duel.LoadScript(\"" + addrequire + ".lua\")");
-                            sw.WriteLine("function s.initial_effect(c)");
-                            sw.WriteLine("\t");
-                            sw.WriteLine("end");
-                        }
-                        sw.Close();
-                        fs.Close();
+                        // OCG script
+                        sw.WriteLine("--" + c.name);
+                        sw.WriteLine("function c" + id.ToString() + ".initial_effect(c)");
+                        sw.WriteLine("\t");
+                        sw.WriteLine("end");
                     }
+                    else
+                    {
+                        // DIY script
+                        sw.WriteLine("--" + c.name);
+                        sw.WriteLine("local s,id=GetID()");
+                        sw.WriteLine("Duel.LoadScript(\"" + addrequire + ".lua\")");
+                        sw.WriteLine("function s.initial_effect(c)");
+                        sw.WriteLine("\t");
+                        sw.WriteLine("end");
+                    }
+                    sw.Close();
+                    fs.Close();
                 }
             }
             if (File.Exists(lua))//如果存在，则打开文件
@@ -359,7 +353,7 @@ namespace DataEditorX.Core
                 }
                 else
                 {
-                    System.Diagnostics.Process.Start(lua);
+                    _ = System.Diagnostics.Process.Start(lua);
                 }
 
                 return true;
@@ -422,7 +416,7 @@ namespace DataEditorX.Core
                         }
                     }
                 }
-                DataBase.CopyDB(dataform.GetOpenFile(), !replace, cards);
+                _ = DataBase.CopyDB(dataform.GetOpenFile(), !replace, cards);
                 copied = true;
                 newCards = cards;
                 this.replace = replace;
@@ -431,13 +425,13 @@ namespace DataEditorX.Core
             }
             public void Undo()
             {
-                DataBase.DeleteDB(dataform.GetOpenFile(), newCards);
-                DataBase.CopyDB(dataform.GetOpenFile(), !replace, oldCards);
+                _ = DataBase.DeleteDB(dataform.GetOpenFile(), newCards);
+                _ = DataBase.CopyDB(dataform.GetOpenFile(), !replace, oldCards);
             }
 
             public object Clone()
             {
-                CopyCommand replica = new CopyCommand(cardedit)
+                CopyCommand replica = new(cardedit)
                 {
                     copied = copied,
                     newCards = (Card[])newCards.Clone(),

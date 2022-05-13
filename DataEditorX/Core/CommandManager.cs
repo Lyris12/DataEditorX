@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DataEditorX.Core
+﻿namespace DataEditorX.Core
 {
     public delegate void StatusBool(bool val);
     public interface ICommand : ICloneable
@@ -22,8 +19,8 @@ namespace DataEditorX.Core
     }
     public class CommandManager : ICommandManager
     {
-        private readonly Stack<ICommand> undoStack = new Stack<ICommand>();
-        private readonly Stack<ICommand> reverseStack = new Stack<ICommand>();
+        private readonly Stack<ICommand> undoStack = new();
+        private readonly Stack<ICommand> reverseStack = new();
 
         public event StatusBool UndoStateChanged;
 
@@ -88,7 +85,7 @@ namespace DataEditorX.Core
                 return;
             }
 
-            command.Execute();
+            _ = command.Execute();
             undoStack.Push((ICommand)command.Clone());
 
             UndoStateChanged(undoStack.Count > 0);

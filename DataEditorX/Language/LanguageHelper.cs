@@ -5,12 +5,8 @@
  * 时间: 9:52
  * 
  */
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
-using System.Windows.Forms;
 
 namespace DataEditorX.Language
 {
@@ -19,11 +15,11 @@ namespace DataEditorX.Language
     /// </summary>
     public class LanguageHelper
     {
-        static readonly Dictionary<string, string> _gWordsList = new Dictionary<string, string>();
-        static readonly SortedList<LMSG, string> _gMsgList = new SortedList<LMSG, string>();
+        static readonly Dictionary<string, string> _gWordsList = new();
+        static readonly SortedList<LMSG, string> _gMsgList = new();
         const char SEP_CONTROL = '.';
         const char SEP_LINE = '\t';
-        readonly Dictionary<string, string> mWordslist = new Dictionary<string, string>();
+        readonly Dictionary<string, string> mWordslist = new();
 
         #region 获取消息文字
         public static string GetMsg(LMSG lMsg)
@@ -254,9 +250,9 @@ namespace DataEditorX.Language
         #region 保存语言文件
         public bool SaveLanguage(string conf)
         {
-            using (FileStream fs = new FileStream(conf, FileMode.Create, FileAccess.Write))
+            using (FileStream fs = new(conf, FileMode.Create, FileAccess.Write))
             {
-                StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+                StreamWriter sw = new(fs, Encoding.UTF8);
                 foreach (string k in mWordslist.Keys)
                 {
                     sw.WriteLine(k + SEP_LINE + mWordslist[k]);
@@ -291,44 +287,42 @@ namespace DataEditorX.Language
 
             _gWordsList.Clear();
             _gMsgList.Clear();
-            using (FileStream fs = new FileStream(f, FileMode.Open, FileAccess.Read))
+            using FileStream fs = new(f, FileMode.Open, FileAccess.Read);
+            StreamReader sr = new(fs, Encoding.UTF8);
+            string line;
+            LMSG ltemp;
+            while ((line = sr.ReadLine()) != null)
             {
-                StreamReader sr = new StreamReader(fs, Encoding.UTF8);
-                string line;
-                LMSG ltemp;
-                while ((line = sr.ReadLine()) != null)
+                if (line.Length == 0)
                 {
-                    if (line.Length == 0)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    string[] words = line.Split(SEP_LINE);
-                    if (words.Length < 2)
-                    {
-                        continue;
-                    }
+                string[] words = line.Split(SEP_LINE);
+                if (words.Length < 2)
+                {
+                    continue;
+                }
 
-                    if (line.StartsWith("0x"))//加载消息文字
+                if (line.StartsWith("0x"))//加载消息文字
+                {
+                    _ = uint.TryParse(words[0].Replace("0x", ""), NumberStyles.HexNumber, null, out uint utemp);
+                    ltemp = (LMSG)utemp;
+                    if (_gMsgList.IndexOfKey(ltemp) < 0)//记得替换换行符
                     {
-                        uint.TryParse(words[0].Replace("0x", ""), NumberStyles.HexNumber, null, out uint utemp);
-                        ltemp = (LMSG)utemp;
-                        if (_gMsgList.IndexOfKey(ltemp) < 0)//记得替换换行符
-                        {
-                            _gMsgList.Add(ltemp, words[1].Replace("\\n", "\n"));
-                        }
-                    }
-                    else if (!line.StartsWith("#"))//加载界面语言
-                    {
-                        if (!_gWordsList.ContainsKey(words[0]))
-                        {
-                            _gWordsList.Add(words[0], words[1]);
-                        }
+                        _gMsgList.Add(ltemp, words[1].Replace("\\n", "\n"));
                     }
                 }
-                sr.Close();
-                fs.Close();
+                else if (!line.StartsWith("#"))//加载界面语言
+                {
+                    if (!_gWordsList.ContainsKey(words[0]))
+                    {
+                        _gWordsList.Add(words[0], words[1]);
+                    }
+                }
             }
+            sr.Close();
+            fs.Close();
 
         }
         #endregion

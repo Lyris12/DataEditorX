@@ -1,8 +1,6 @@
 ﻿
 
 using Newtonsoft.Json;
-using System;
-using System.IO;
 
 namespace DataEditorX
 {
@@ -66,7 +64,7 @@ namespace DataEditorX
                     index++;
                 }
             }
-            Console.ReadKey();
+            _ = Console.ReadKey();
         }
     }
 }

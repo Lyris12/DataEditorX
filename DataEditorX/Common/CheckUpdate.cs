@@ -5,7 +5,6 @@
  * 时间: 9:58
  * 
  */
-using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,8 +42,8 @@ namespace DataEditorX.Common
             string html = GetHtmlContentByUrl(VERURL);
             if (!string.IsNullOrEmpty(html))
             {
-                Regex ver = new Regex(@"\[DataEditorX\]([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\[DataEditorX\]");
-                Regex url = new Regex(@"\[URL\]([^\[]+?)\[URL\]");
+                Regex ver = new(@"\[DataEditorX\]([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\[DataEditorX\]");
+                Regex url = new(@"\[URL\]([^\[]+?)\[URL\]");
                 if (ver.IsMatch(html) && url.IsMatch(html))
                 {
                     Match mVer = ver.Match(html);
@@ -112,7 +111,7 @@ namespace DataEditorX.Common
                     using (Stream stream = httpWebResponse.GetResponseStream())
                     {
                         using (StreamReader streamReader =
-                               new StreamReader(stream, Encoding.UTF8))
+                               new(stream, Encoding.UTF8))
                         {
                             htmlContent = streamReader.ReadToEnd();
                             streamReader.Close();

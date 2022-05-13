@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Text;
 
 namespace DataEditorX
 {
@@ -37,7 +32,7 @@ namespace DataEditorX
                 return Value;
             }
         }
-        readonly Dictionary<string, List<EffectCreatorItem>> itemDic = new Dictionary<string, List<EffectCreatorItem>>();
+        readonly Dictionary<string, List<EffectCreatorItem>> itemDic = new();
         private void EffectCreatorForm_Load(object sender, EventArgs e)
         {
             string config = $"data{Path.DirectorySeparatorChar}effect_creator_settings.txt";
@@ -46,15 +41,15 @@ namespace DataEditorX
                 return;
             }
             char[] sepChars = new char[] { ' ', '\t', '　' };
-            FileStream fs = new FileStream(config, FileMode.Open);
-            StreamReader sr = new StreamReader(fs);
+            FileStream fs = new(config, FileMode.Open);
+            StreamReader sr = new(fs);
             string nowType = "";
             for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
             {
                 line = line.Trim();
                 if (line.StartsWith("!"))
                 {
-                    nowType = line.Substring(1);
+                    nowType = line[1..];
                     if (!itemDic.ContainsKey(nowType))
                     {
                         itemDic.Add(nowType, new List<EffectCreatorItem>());
@@ -85,17 +80,17 @@ namespace DataEditorX
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(ProcessDescription());
-            sb.Append(ProcessSpecialOptions());
-            sb.Append(ProcessEffectType());
-            sb.Append(ProcessEffectCategory());
-            sb.Append(ProcessEffectCountLimit());
-            sb.Append(ProcessEffectProperty());
-            sb.Append(ProcessEffectCode());
+            StringBuilder sb = new();
+            _ = sb.Append(ProcessDescription());
+            _ = sb.Append(ProcessSpecialOptions());
+            _ = sb.Append(ProcessEffectType());
+            _ = sb.Append(ProcessEffectCategory());
+            _ = sb.Append(ProcessEffectCountLimit());
+            _ = sb.Append(ProcessEffectProperty());
+            _ = sb.Append(ProcessEffectCode());
             txtOutput.Text = sb.ToString();
         }
-        private string LinkStrings(List<string> list)
+        private static string LinkStrings(List<string> list)
         {
             if (list.Count == 0)
             {
@@ -114,7 +109,7 @@ namespace DataEditorX
             {
                 return "";
             }
-            List<string> extraOptions = new List<string>();
+            List<string> extraOptions = new();
             if (countLimit.IsHasCode)
             {
                 extraOptions.Add(countLimit.Code.ToString());
@@ -222,7 +217,7 @@ namespace DataEditorX
             return $"e{numEffectNum.Value}:SetType({effectType})";
         }
 
-        private void AddEffectTypeByCheckRadio(RadioButton radio, ref string effectType)
+        private static void AddEffectTypeByCheckRadio(RadioButton radio, ref string effectType)
         {
             if (radio.Checked)
             {
@@ -230,29 +225,29 @@ namespace DataEditorX
                 {
                     effectType += "+";
                 }
-                effectType += $"EFFECT_TYPE_{radio.Name.Substring(15).ToUpper()}";
+                effectType += $"EFFECT_TYPE_{radio.Name[15..].ToUpper()}";
             }
         }
 
         private string ProcessSpecialOptions()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             if (checkEnableReviveLimit.Checked)
             {
-                sb.AppendLine("c:EnableReviveLimit()");
+                _ = sb.AppendLine("c:EnableReviveLimit()");
             }
             if (checkRegisterToPlayer.Checked)
             {
-                sb.AppendLine($"local e{numEffectNum.Value}=Effect.CreateEffect(c)");
+                _ = sb.AppendLine($"local e{numEffectNum.Value}=Effect.CreateEffect(c)");
             }
             else
             {
-                sb.AppendLine($"local e{numEffectNum.Value}=Effect.GlobalEffect()");
+                _ = sb.AppendLine($"local e{numEffectNum.Value}=Effect.GlobalEffect()");
             }
             return sb.ToString();
         }
 
-        private void SearchListBoxWithTextBox(ref CheckedListBox clb, TextBox tb)
+        private static void SearchListBoxWithTextBox(ref CheckedListBox clb, TextBox tb)
         {
             if (tb.Text == "")
             {
@@ -319,7 +314,7 @@ namespace DataEditorX
                 {
                     countLimit = new EffectCountLimit(numCardCode.Value);
                 }
-                CountLimitForm form = new CountLimitForm(countLimit);
+                CountLimitForm form = new(countLimit);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     countLimit = form.CountLimit;
@@ -335,7 +330,7 @@ namespace DataEditorX
                 {
                     countLimit = new EffectCountLimit(numCardCode.Value);
                 }
-                CountLimitForm form = new CountLimitForm(countLimit);
+                CountLimitForm form = new(countLimit);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     countLimit = form.CountLimit;

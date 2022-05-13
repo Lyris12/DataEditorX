@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace DataEditorX
+﻿namespace DataEditorX
 {
     public class DFlowLayoutPanel : FlowLayoutPanel
     {

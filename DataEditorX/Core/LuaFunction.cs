@@ -5,9 +5,6 @@
  * 时间: 8:12
  * 
  */
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -33,7 +30,7 @@ namespace DataEditorX
         static string _oldfun;
         static string _logtxt;
         static string _funclisttxt;
-        static readonly SortedList<string, string> _funclist = new SortedList<string, string>();
+        static readonly SortedList<string, string> _funclist = new();
         //读取旧函数
         public static void Read(string funtxt)
         {
@@ -123,11 +120,11 @@ namespace DataEditorX
                 }
             }
             string texts = File.ReadAllText(file);
-            Regex libRex = new Regex(@"\sluaL_Reg\s([a-z]*?)lib\[\]([\s\S]*?)^\}"
+            Regex libRex = new(@"\sluaL_Reg\s([a-z]*?)lib\[\]([\s\S]*?)^\}"
                                    , RegexOptions.Multiline);
             MatchCollection libsMatch = libRex.Matches(texts);
             Log("log:count " + libsMatch.Count.ToString());
-            foreach (Match m in libsMatch)//获取lib函数库
+            foreach (Match m in libsMatch.Cast<Match>())//获取lib函数库
             {
                 if (m.Groups.Count > 2)
                 {
@@ -149,17 +146,15 @@ namespace DataEditorX
                 return;
             }
 
-            using (FileStream fs = new FileStream(_oldfun + "_sort.txt",
+            using FileStream fs = new(_oldfun + "_sort.txt",
                                                FileMode.Create,
-                                               FileAccess.Write))
+                                               FileAccess.Write);
+            StreamWriter sw = new(fs, Encoding.UTF8);
+            foreach (string k in _funclist.Keys)
             {
-                StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
-                foreach (string k in _funclist.Keys)
-                {
-                    sw.WriteLine("●" + _funclist[k]);
-                }
-                sw.Close();
+                sw.WriteLine("●" + _funclist[k]);
             }
+            sw.Close();
 
         }
         #endregion
@@ -167,16 +162,16 @@ namespace DataEditorX
         #region find function name
         static string ToTitle(string str)
         {
-            return str.Substring(0, 1).ToUpper() + str.Substring(1);
+            return str[..1].ToUpper() + str[1..];
         }
         //获取函数库的lua函数名,和对应的c++函数
         static Dictionary<string, string> GetFunctionNames(string texts, string name)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            Regex funcRex = new Regex("\"(\\S*?)\",\\s*?(\\S*?::\\S*?)\\s");
+            Dictionary<string, string> dic = new();
+            Regex funcRex = new("\"(\\S*?)\",\\s*?(\\S*?::\\S*?)\\s");
             MatchCollection funcsMatch = funcRex.Matches(texts);
             Log("log: functions count " + name + ":" + funcsMatch.Count.ToString());
-            foreach (Match m in funcsMatch)
+            foreach (Match m in funcsMatch.Cast<Match>())
             {
                 if (m.Groups.Count > 2)
                 {
@@ -196,7 +191,7 @@ namespace DataEditorX
         //查找c++代码
         static string FindCode(string texts, string name)
         {
-            Regex reg = new Regex(@"int32\s+?" + name
+            Regex reg = new(@"int32\s+?" + name
                                 + @"[\s\S]+?\{([\s\S]*?^)\}",
                                 RegexOptions.Multiline);
             Match mc = reg.Match(texts);
@@ -219,37 +214,37 @@ namespace DataEditorX
         static string FindReturn(string texts)
         {
             string restr = "";
-            if (texts.IndexOf("lua_pushboolean") >= 0)
+            if (texts.Contains("lua_pushboolean", StringComparison.CurrentCulture))
             {
                 return "bool ";
             }
             else
             {
-                if (texts.IndexOf("interpreter::card2value") >= 0)
+                if (texts.Contains("interpreter::card2value", StringComparison.CurrentCulture))
                 {
                     restr += "Card ";
                 }
 
-                if (texts.IndexOf("interpreter::group2value") >= 0)
+                if (texts.Contains("interpreter::group2value", StringComparison.CurrentCulture))
                 {
                     restr += "Group ";
                 }
 
-                if (texts.IndexOf("interpreter::effect2value") >= 0)
+                if (texts.Contains("interpreter::effect2value", StringComparison.CurrentCulture))
                 {
                     restr += "Effect ";
                 }
-                else if (texts.IndexOf("interpreter::function2value") >= 0)
+                else if (texts.Contains("interpreter::function2value", StringComparison.CurrentCulture))
                 {
                     restr += "function ";
                 }
 
-                if (texts.IndexOf("lua_pushinteger") >= 0)
+                if (texts.Contains("lua_pushinteger", StringComparison.CurrentCulture))
                 {
                     restr += "int ";
                 }
 
-                if (texts.IndexOf("lua_pushstring") >= 0)
+                if (texts.Contains("lua_pushstring", StringComparison.CurrentCulture))
                 {
                     restr += "string ";
                 }
@@ -261,7 +256,7 @@ namespace DataEditorX
 
             if (restr.IndexOf(" ") != restr.Length - 1)
             {
-                restr = restr.Replace(" ", "|").Substring(0, restr.Length - 1) + " ";
+                restr = restr.Replace(" ", "|")[..(restr.Length - 1)] + " ";
             }
             return restr;
         }
@@ -271,17 +266,17 @@ namespace DataEditorX
         //查找参数
         static string getUserType(string str)
         {
-            if (str.IndexOf("card") >= 0)
+            if (str.Contains("card", StringComparison.CurrentCulture))
             {
                 return "Card";
             }
 
-            if (str.IndexOf("effect") >= 0)
+            if (str.Contains("effect", StringComparison.CurrentCulture))
             {
                 return "Effect";
             }
 
-            if (str.IndexOf("group") >= 0)
+            if (str.Contains("group", StringComparison.CurrentCulture))
             {
                 return "Group";
             }
@@ -292,9 +287,9 @@ namespace DataEditorX
         static void AddArgs(string texts, string regx, string arg, SortedList<int, string> dic)
         {
             //function
-            Regex reg = new Regex(regx);
+            Regex reg = new(regx);
             MatchCollection mcs = reg.Matches(texts);
-            foreach (Match m in mcs)
+            foreach (Match m in mcs.Cast<Match>())
             {
                 if (m.Groups.Count > 1)
                 {
@@ -313,11 +308,11 @@ namespace DataEditorX
         }
         static string FindArgs(string texts)
         {
-            SortedList<int, string> dic = new SortedList<int, string>();
+            SortedList<int, string> dic = new();
             //card effect ggroup
-            Regex reg = new Regex(@"\((\S+?)\)\s+?lua_touserdata\(L,\s+(\d+)\)");
+            Regex reg = new(@"\((\S+?)\)\s+?lua_touserdata\(L,\s+(\d+)\)");
             MatchCollection mcs = reg.Matches(texts);
-            foreach (Match m in mcs)
+            foreach (Match m in mcs.Cast<Match>())
             {
                 if (m.Groups.Count > 2)
                 {
@@ -352,7 +347,7 @@ namespace DataEditorX
             }
             if (args.Length > 1)
             {
-                args = args.Substring(0, args.Length - 2);
+                args = args[..^2];
             }
 
             args += ")";
@@ -392,28 +387,26 @@ namespace DataEditorX
             }
             Log("log: find functions " + name + ":" + fun.Count.ToString());
 
-            using (FileStream fs = new FileStream(file + ".txt",
+            using FileStream fs = new(file + ".txt",
                                                FileMode.Create,
-                                               FileAccess.Write))
+                                               FileAccess.Write);
+            StreamWriter sw = new(fs, Encoding.UTF8);
+            sw.WriteLine("========== " + name + " ==========");
+            File.AppendAllText(_funclisttxt, "========== " + name + " ==========" + Environment.NewLine);
+            foreach (string k in fun.Keys)
             {
-                StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
-                sw.WriteLine("========== " + name + " ==========");
-                File.AppendAllText(_funclisttxt, "========== " + name + " ==========" + Environment.NewLine);
-                foreach (string k in fun.Keys)
-                {
-                    string v = fun[k];
-                    string code = FindCode(cpps, v);
-                    string txt = "●" + FindReturn(code) + k + FindArgs(code)
-                        + Environment.NewLine
-                        + FindOldDesc(k)
-                        + Environment.NewLine
-                        + code;
-                    sw.WriteLine(txt);
+                string v = fun[k];
+                string code = FindCode(cpps, v);
+                string txt = "●" + FindReturn(code) + k + FindArgs(code)
+                    + Environment.NewLine
+                    + FindOldDesc(k)
+                    + Environment.NewLine
+                    + code;
+                sw.WriteLine(txt);
 
-                    File.AppendAllText(_funclisttxt, txt + Environment.NewLine);
-                }
-                sw.Close();
+                File.AppendAllText(_funclisttxt, txt + Environment.NewLine);
             }
+            sw.Close();
         }
         #endregion
     }

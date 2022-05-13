@@ -9,14 +9,8 @@ using DataEditorX.Common;
 using DataEditorX.Core.Info;
 using DataEditorX.Language;
 using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace DataEditorX.Core.Mse
 {
@@ -95,7 +89,7 @@ namespace DataEditorX.Core.Mse
 
         #region 数据处理
         //合并
-        public string GetLine(string key, string word)
+        public static string GetLine(string key, string word)
         {
             return "	" + key + ": " + word;
         }
@@ -248,7 +242,7 @@ namespace DataEditorX.Core.Mse
             string desc = cdesc;
             desc = desc.Replace("\r\n", "\n");
             desc = desc.Replace("\r", "\n");
-            Regex regex = new Regex(regx, RegexOptions.Multiline);
+            Regex regex = new(regx, RegexOptions.Multiline);
             Match mc = regex.Match(desc);
             if (mc.Success)
             {
@@ -259,13 +253,13 @@ namespace DataEditorX.Core.Mse
             return "";
         }
 
-        public string ReText(string text)
+        public static string ReText(string text)
         {
-            StringBuilder sb = new StringBuilder(text);
-            sb.Replace("\r\n", "\n");
-            sb.Replace("\r", "");
-            sb.Replace("\n\n", "\n");
-            sb.Replace("\n", "\n\t\t");
+            StringBuilder sb = new(text);
+            _ = sb.Replace("\r\n", "\n");
+            _ = sb.Replace("\r", "");
+            _ = sb.Replace("\n\n", "\n");
+            _ = sb.Replace("\n", "\n\t\t");
             return sb.ToString().Trim('\n');
         }
         //获取星星
@@ -375,15 +369,14 @@ namespace DataEditorX.Core.Mse
 
         #region 写存档
         //写存档
-        public Dictionary<Card, string> WriteSet(string file, Card[] cards, string cardpack_db, bool rarity = true)
+        public Dictionary<Card, string> WriteSet(string file, Card[] cards)
         {
-            //			MessageBox.Show(""+cfg.replaces.Keys[0]+"/"+cfg.replaces[cfg.replaces.Keys[0]]);
-            Dictionary<Card, string> list = new Dictionary<Card, string>();
+            Dictionary<Card, string> list = new();
             string pic = cfg.imagepath;
-            using (FileStream fs = new FileStream(file,
+            using (FileStream fs = new(file,
                                                   FileMode.Create, FileAccess.Write))
             {
-                StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+                StreamWriter sw = new(fs, Encoding.UTF8);
                 sw.WriteLine(cfg.head);
                 foreach (Card c in cards)
                 {
@@ -395,11 +388,11 @@ namespace DataEditorX.Core.Mse
                     }
                     if (c.IsType(CardType.TYPE_SPELL) || c.IsType(CardType.TYPE_TRAP))
                     {
-                        sw.WriteLine(getSpellTrap(c, jpg, c.IsType(CardType.TYPE_SPELL)));
+                        sw.WriteLine(GetSpellTrap(c, jpg, c.IsType(CardType.TYPE_SPELL)));
                     }
                     else
                     {
-                        sw.WriteLine(getMonster(c, jpg));
+                        sw.WriteLine(GetMonster(c, jpg));
                     }
                 }
                 sw.WriteLine(cfg.end);
@@ -408,7 +401,7 @@ namespace DataEditorX.Core.Mse
 
             return list;
         }
-        int getLinkNumber(long link)
+        static int GetLinkNumber(long link)
         {
             string str = Convert.ToString(link, 2);
             char[] cs = str.ToCharArray();
@@ -423,15 +416,15 @@ namespace DataEditorX.Core.Mse
             return i;
         }
         //怪兽，pendulum怪兽
-        string getMonster(Card c, string img, CardPack cardpack = null, bool rarity = true)
+        string GetMonster(Card c, string img, CardPack cardpack = null, bool rarity = true)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             string[] types = GetTypes(c);
             string race = GetRace(c.race);
-            sb.AppendLine(TAG_CARD + ":");
-            sb.AppendLine(GetLine(TAG_CARDTYPE, types[0]));
-            sb.AppendLine(GetLine(TAG_NAME, ReItalic(c.name)));
-            sb.AppendLine(GetLine(TAG_ATTRIBUTE, GetAttribute(c.attribute)));
+            _ = sb.AppendLine(TAG_CARD + ":");
+            _ = sb.AppendLine(GetLine(TAG_CARDTYPE, types[0]));
+            _ = sb.AppendLine(GetLine(TAG_NAME, ReItalic(c.name)));
+            _ = sb.AppendLine(GetLine(TAG_ATTRIBUTE, GetAttribute(c.attribute)));
             bool noStar = false;
             if (cfg.noStartCards != null)
             {
@@ -446,59 +439,59 @@ namespace DataEditorX.Core.Mse
             }
             if (!noStar)
             {
-                sb.AppendLine(GetLine(TAG_LEVEL, GetStar(c.level)));
+                _ = sb.AppendLine(GetLine(TAG_LEVEL, GetStar(c.level)));
             }
-            sb.AppendLine(GetLine(TAG_IMAGE, img));
-            sb.AppendLine(GetLine(TAG_TYPE1, CN2TW(race)));
-            sb.AppendLine(GetLine(TAG_TYPE2, CN2TW(types[1])));
-            sb.AppendLine(GetLine(TAG_TYPE3, CN2TW(types[2])));
-            sb.AppendLine(GetLine(TAG_TYPE4, CN2TW(types[3])));
-            sb.AppendLine(GetLine(TAG_TYPE5, CN2TW(types[4])));
+            _ = sb.AppendLine(GetLine(TAG_IMAGE, img));
+            _ = sb.AppendLine(GetLine(TAG_TYPE1, CN2TW(race)));
+            _ = sb.AppendLine(GetLine(TAG_TYPE2, CN2TW(types[1])));
+            _ = sb.AppendLine(GetLine(TAG_TYPE3, CN2TW(types[2])));
+            _ = sb.AppendLine(GetLine(TAG_TYPE4, CN2TW(types[3])));
+            _ = sb.AppendLine(GetLine(TAG_TYPE5, CN2TW(types[4])));
             if (cardpack != null)
             {
-                sb.AppendLine(GetLine(TAG_NUMBER, cardpack.pack_id));
+                _ = sb.AppendLine(GetLine(TAG_NUMBER, cardpack.pack_id));
                 if (rarity)
                 {
-                    sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
+                    _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
             if (c.IsType(CardType.TYPE_LINK))
             {
                 if (CardLink.IsLink(c.def, CardLink.DownLeft))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_DL, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_DL, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Down))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_Down, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_Down, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.DownRight))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_DR, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_DR, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.UpLeft))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_UL, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_UL, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Up))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_Up, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_Up, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.UpRight))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_UR, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_UR, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Left))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_Left, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_Left, "yes"));
                 }
                 if (CardLink.IsLink(c.def, CardLink.Right))
                 {
-                    sb.AppendLine(GetLine(TAG_Link_Marker_Right, "yes"));
+                    _ = sb.AppendLine(GetLine(TAG_Link_Marker_Right, "yes"));
                 }
-                sb.AppendLine(GetLine(TAG_Link_Number, "" + getLinkNumber(c.def)));
-                sb.AppendLine("	" + TAG_TEXT + ":");
-                sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+                _ = sb.AppendLine(GetLine(TAG_Link_Number, "" + GetLinkNumber(c.def)));
+                _ = sb.AppendLine("	" + TAG_TEXT + ":");
+                _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
             }
             else
             {
@@ -510,48 +503,48 @@ namespace DataEditorX.Core.Mse
                         text = c.desc;
                     }
 
-                    sb.AppendLine("	" + TAG_TEXT + ":");
+                    _ = sb.AppendLine("	" + TAG_TEXT + ":");
                     //sb.AppendLine(cfg.regx_monster + ":" + cfg.regx_pendulum);
-                    sb.AppendLine("		" + ReText(ReItalic(text)));
-                    sb.AppendLine(GetLine(TAG_PENDULUM, "medium"));
-                    sb.AppendLine(GetLine(TAG_PSCALE1, ((c.level >> 0x18) & 0xff).ToString()));
-                    sb.AppendLine(GetLine(TAG_PSCALE2, ((c.level >> 0x10) & 0xff).ToString()));
-                    sb.AppendLine("	" + TAG_PEND_TEXT + ":");
-                    sb.AppendLine("		" + ReText(ReItalic(GetDesc(c.desc, cfg.regx_pendulum))));
+                    _ = sb.AppendLine("		" + ReText(ReItalic(text)));
+                    _ = sb.AppendLine(GetLine(TAG_PENDULUM, "medium"));
+                    _ = sb.AppendLine(GetLine(TAG_PSCALE1, ((c.level >> 0x18) & 0xff).ToString()));
+                    _ = sb.AppendLine(GetLine(TAG_PSCALE2, ((c.level >> 0x10) & 0xff).ToString()));
+                    _ = sb.AppendLine("	" + TAG_PEND_TEXT + ":");
+                    _ = sb.AppendLine("		" + ReText(ReItalic(GetDesc(c.desc, cfg.regx_pendulum))));
                 }
                 else//一般怪兽
                 {
-                    sb.AppendLine("	" + TAG_TEXT + ":");
-                    sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+                    _ = sb.AppendLine("	" + TAG_TEXT + ":");
+                    _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
                 }
-                sb.AppendLine(GetLine(TAG_DEF, (c.def < 0) ? UNKNOWN_ATKDEF : c.def.ToString()));
+                _ = sb.AppendLine(GetLine(TAG_DEF, (c.def < 0) ? UNKNOWN_ATKDEF : c.def.ToString()));
             }
-            sb.AppendLine(GetLine(TAG_ATK, (c.atk < 0) ? UNKNOWN_ATKDEF : c.atk.ToString()));
+            _ = sb.AppendLine(GetLine(TAG_ATK, (c.atk < 0) ? UNKNOWN_ATKDEF : c.atk.ToString()));
 
-            sb.AppendLine(GetLine(TAG_CODE, c.IdString));
+            _ = sb.AppendLine(GetLine(TAG_CODE, c.IdString));
             return sb.ToString();
         }
         //魔法陷阱
-        string getSpellTrap(Card c, string img, bool isSpell, CardPack cardpack = null, bool rarity = true)
+        string GetSpellTrap(Card c, string img, bool isSpell, CardPack cardpack = null, bool rarity = true)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(TAG_CARD + ":");
-            sb.AppendLine(GetLine(TAG_CARDTYPE, isSpell ? "spell card" : "trap card"));
-            sb.AppendLine(GetLine(TAG_NAME, ReItalic(c.name)));
-            sb.AppendLine(GetLine(TAG_ATTRIBUTE, isSpell ? "spell" : "trap"));
-            sb.AppendLine(GetLine(TAG_LEVEL, GetSpellTrapSymbol(c, isSpell)));
-            sb.AppendLine(GetLine(TAG_IMAGE, img));
+            StringBuilder sb = new();
+            _ = sb.AppendLine(TAG_CARD + ":");
+            _ = sb.AppendLine(GetLine(TAG_CARDTYPE, isSpell ? "spell card" : "trap card"));
+            _ = sb.AppendLine(GetLine(TAG_NAME, ReItalic(c.name)));
+            _ = sb.AppendLine(GetLine(TAG_ATTRIBUTE, isSpell ? "spell" : "trap"));
+            _ = sb.AppendLine(GetLine(TAG_LEVEL, GetSpellTrapSymbol(c, isSpell)));
+            _ = sb.AppendLine(GetLine(TAG_IMAGE, img));
             if (cardpack != null)
             {
-                sb.AppendLine(GetLine(TAG_NUMBER, cardpack.pack_id));
+                _ = sb.AppendLine(GetLine(TAG_NUMBER, cardpack.pack_id));
                 if (rarity)
                 {
-                    sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
+                    _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
-            sb.AppendLine("	" + TAG_TEXT + ":");
-            sb.AppendLine("		" + ReText(ReItalic(c.desc)));
-            sb.AppendLine(GetLine(TAG_CODE, c.IdString));
+            _ = sb.AppendLine("	" + TAG_TEXT + ":");
+            _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+            _ = sb.AppendLine(GetLine(TAG_CODE, c.IdString));
             return sb.ToString();
         }
         #endregion
@@ -616,7 +609,7 @@ namespace DataEditorX.Core.Mse
         }
         static string GetValue(string content, string tag)
         {
-            Regex regx = new Regex(@"^[\t]+?" + tag + @":([\s\S]*?)$", RegexOptions.Multiline);
+            Regex regx = new(@"^[\t]+?" + tag + @":([\s\S]*?)$", RegexOptions.Multiline);
             Match m = regx.Match(content);
             if (m.Success)
             {
@@ -632,7 +625,7 @@ namespace DataEditorX.Core.Mse
         {
             //TODO
             content = content.Replace("\t\t", "");
-            Regex regx = new Regex(@"^[\t]+?" + tag + @":([\S\s]*?)^\t[\S\s]+?:", RegexOptions.Multiline);
+            Regex regx = new(@"^[\t]+?" + tag + @":([\S\s]*?)^\t[\S\s]+?:", RegexOptions.Multiline);
             Match m = regx.Match(content);
             if (m.Success)
             {
@@ -644,7 +637,8 @@ namespace DataEditorX.Core.Mse
             }
             return "";
         }
-        long GetSpellTrapType(string level)
+
+        static long GetSpellTrapType(string level)
         {
             long type = 0;
             //魔法陷阱
@@ -681,7 +675,7 @@ namespace DataEditorX.Core.Mse
             return type;
         }
 
-        long GetMonsterType(string cardtype)
+        static long GetMonsterType(string cardtype)
         {
             long type;
             if (cardtype.Equals(MseCardType.CARD_SPELL))
@@ -695,34 +689,17 @@ namespace DataEditorX.Core.Mse
             else
             {
                 type = (long)CardType.TYPE_MONSTER;
-                switch (cardtype)
+                type |= cardtype switch
                 {
-                    case MseCardType.CARD_NORMAL:
-                        type |= (long)CardType.TYPE_NORMAL;
-                        break;
-                    case MseCardType.CARD_EFFECT:
-                        type |= (long)CardType.TYPE_EFFECT;
-                        break;
-                    case MseCardType.CARD_XYZ:
-                        type |= (long)CardType.TYPE_XYZ;
-                        break;
-                    case MseCardType.CARD_RITUAL:
-                        type |= (long)CardType.TYPE_RITUAL;
-                        break;
-                    case MseCardType.CARD_FUSION:
-                        type |= (long)CardType.TYPE_FUSION;
-                        break;
-                    case MseCardType.CARD_TOKEN:
-                    case MseCardType.CARD_TOKEN2:
-                        type |= (long)CardType.TYPE_TOKEN;
-                        break;
-                    case MseCardType.CARD_SYNCHRO:
-                        type |= (long)CardType.TYPE_SYNCHRO;
-                        break;
-                    default:
-                        type |= (long)CardType.TYPE_NORMAL;
-                        break;
-                }
+                    MseCardType.CARD_NORMAL => (long)CardType.TYPE_NORMAL,
+                    MseCardType.CARD_EFFECT => (long)CardType.TYPE_EFFECT,
+                    MseCardType.CARD_XYZ => (long)CardType.TYPE_XYZ,
+                    MseCardType.CARD_RITUAL => (long)CardType.TYPE_RITUAL,
+                    MseCardType.CARD_FUSION => (long)CardType.TYPE_FUSION,
+                    MseCardType.CARD_TOKEN or MseCardType.CARD_TOKEN2 => (long)CardType.TYPE_TOKEN,
+                    MseCardType.CARD_SYNCHRO => (long)CardType.TYPE_SYNCHRO,
+                    _ => (long)CardType.TYPE_NORMAL,
+                };
             }
             return type;
         }
@@ -753,7 +730,7 @@ namespace DataEditorX.Core.Mse
         public Card ReadCard(string content, out string img)
         {
             string tmp;
-            Card c = new Card
+            Card c = new()
             {
                 ot = (int)CardRule.OCGTCG,
                 //卡名
@@ -779,7 +756,7 @@ namespace DataEditorX.Core.Mse
             //属性
             c.attribute = GetAttributeInt(GetValue(content, TAG_ATTRIBUTE));
             //密码
-            long.TryParse(GetValue(content, TAG_CODE), out c.id);
+            _ = long.TryParse(GetValue(content, TAG_CODE), out c.id);
             //ATK
             tmp = GetValue(content, TAG_ATK);
             if (tmp == UNKNOWN_ATKDEF)
@@ -788,7 +765,7 @@ namespace DataEditorX.Core.Mse
             }
             else
             {
-                int.TryParse(tmp, out c.atk);
+                _ = int.TryParse(tmp, out c.atk);
             }
             //DEF
             tmp = GetValue(content, TAG_DEF);
@@ -798,7 +775,7 @@ namespace DataEditorX.Core.Mse
             }
             else
             {
-                int.TryParse(tmp, out c.def);
+                _ = int.TryParse(tmp, out c.def);
             }
             //图片
             img = GetValue(content, TAG_IMAGE);
@@ -816,16 +793,16 @@ namespace DataEditorX.Core.Mse
                 c.desc = GetMultiValue(content, TAG_TEXT);
             }
             //摇摆刻度
-            int.TryParse(GetValue(content, TAG_PSCALE1), out int itmp);
+            _ = int.TryParse(GetValue(content, TAG_PSCALE1), out int itmp);
             c.level += (itmp << 0x18);
-            int.TryParse(GetValue(content, TAG_PSCALE2), out itmp);
+            _ = int.TryParse(GetValue(content, TAG_PSCALE2), out itmp);
             c.level += (itmp << 0x10);
             return c;
         }
         //读取所有卡片
         public Card[] ReadCards(string set, bool repalceOld)
         {
-            List<Card> cards = new List<Card>();
+            List<Card> cards = new();
             if (!File.Exists(set))
             {
                 return null;
@@ -833,12 +810,12 @@ namespace DataEditorX.Core.Mse
 
             string allcontent = File.ReadAllText(set, Encoding.UTF8);
 
-            Regex regx = new Regex(@"^card:[\S\s]+?gamecode:[\S\s]+?$",
+            Regex regx = new(@"^card:[\S\s]+?gamecode:[\S\s]+?$",
                                    RegexOptions.Multiline);
             MatchCollection matchs = regx.Matches(allcontent);
             int i = 0;
 
-            foreach (Match match in matchs)
+            foreach (Match match in matchs.Cast<Match>())
             {
                 string content = match.Groups[0].Value;
                 i++;
@@ -931,7 +908,7 @@ namespace DataEditorX.Core.Mse
                     bmp = MyBitmap.Zoom(bmp, cfg.width, cfg.height);
                 }
                 //保存文件
-                MyBitmap.SaveAsJPEG(bmp, file, 100);
+                _ = MyBitmap.SaveAsJPEG(bmp, file, 100);
             }
             return file;
         }
@@ -940,12 +917,12 @@ namespace DataEditorX.Core.Mse
         #region export
         static System.Diagnostics.Process _mseProcess;
         static EventHandler _exitHandler;
-        private static void exportSetThread(object obj)
+        private static void ExportSetThread(object obj)
         {
             string[] args = (string[])obj;
             if (args == null || args.Length < 3)
             {
-                MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImagesErr));
+                _ = MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImagesErr));
                 return;
             }
             string mse_path = args[0];
@@ -953,7 +930,7 @@ namespace DataEditorX.Core.Mse
             string path = args[2];
             if (string.IsNullOrEmpty(mse_path) || string.IsNullOrEmpty(setfile))
             {
-                MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImagesErr));
+                _ = MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImagesErr));
                 return;
             }
             else
@@ -967,13 +944,13 @@ namespace DataEditorX.Core.Mse
                 MyPath.CreateDir(path);
                 try
                 {
-                    _mseProcess.Start();
+                    _ = _mseProcess.Start();
                     //等待结束，需要把当前方法放到线程里面
                     _mseProcess.WaitForExit();
                     _mseProcess.Exited += new EventHandler(_exitHandler);
                     _mseProcess.Close();
                     _mseProcess = null;
-                    MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImages));
+                    _ = MessageBox.Show(LanguageHelper.GetMsg(LMSG.exportMseImages));
                 }
                 catch
                 {
@@ -1001,8 +978,8 @@ namespace DataEditorX.Core.Mse
             {
                 return;
             }
-            ParameterizedThreadStart ParStart = new ParameterizedThreadStart(exportSetThread);
-            Thread myThread = new Thread(ParStart)
+            ParameterizedThreadStart ParStart = new(ExportSetThread);
+            Thread myThread = new(ParStart)
             {
                 IsBackground = true
             };
@@ -1016,20 +993,20 @@ namespace DataEditorX.Core.Mse
             List<string> table = GetMPText(desc);
             if (table == null && table.Count != 2)
             {
-                MessageBox.Show("desc is null", "info");
+                _ = MessageBox.Show("desc is null", "info");
             }
             else
             {
-                MessageBox.Show(ReItalic(table[0]), "Monster Effect");
-                MessageBox.Show(ReItalic(table[1]), "Pendulum Effect");
+                _ = MessageBox.Show(ReItalic(table[0]), "Monster Effect");
+                _ = MessageBox.Show(ReItalic(table[1]), "Pendulum Effect");
             }
         }
 
-        public List<string> GetMPText(string desc)
+        public static List<string> GetMPText(string desc)
         {
             if (string.IsNullOrEmpty(desc))
             {
-                MessageBox.Show("desc is null", "info");
+                _ = MessageBox.Show("desc is null", "info");
                 return null;
             }
             else
@@ -1051,7 +1028,7 @@ namespace DataEditorX.Core.Mse
                     text = desc;
                 }
 
-                List<string> val = new List<string>
+                List<string> val = new()
                 {
                     text,
                     ptext
@@ -1059,21 +1036,7 @@ namespace DataEditorX.Core.Mse
                 return val;
             }
         }
-
-        public string ConvertPTextOld(string text, string ptext, bool normal, int pscale_l, int pscale_r)
-        {
-            string str = normal ? "【怪兽描述】" : "【怪兽效果】";
-            if (string.IsNullOrEmpty(ptext))
-            {
-                return string.Format("←{0} 【灵摆】 {1}→\r\n{2}\r\n{3}", pscale_l, pscale_r, str, text);
-            }
-            else
-            {
-                return string.Format("←{0} 【灵摆】 {1}→\r\n{2}\r\n{3}\r\n{4}", pscale_l, pscale_r, ptext, str, text);
-            }
-        }
-
-        public string ConvertPTextNew(string text, string ptext)
+        public static string ConvertPTextNew(string text, string ptext)
         {
             if (string.IsNullOrEmpty(ptext))
             {
@@ -1085,7 +1048,7 @@ namespace DataEditorX.Core.Mse
             }
         }
 
-        public string ReplaceText(string text, string name)
+        public static string ReplaceText(string text, string name)
         {
             // pendulum format
             if (Regex.IsMatch(text, @"【灵摆】"))

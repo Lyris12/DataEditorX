@@ -7,11 +7,7 @@
  */
 using DataEditorX.Config;
 using DataEditorX.Language;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
-using System.Windows.Forms;
 
 
 namespace DataEditorX
@@ -26,7 +22,7 @@ namespace DataEditorX
             {
                 //保存语言
                 SaveLanguage();
-                MessageBox.Show("Save Language OK.");
+                _ = MessageBox.Show("Save Language OK.");
                 Environment.Exit(1);
             }
             if (DEXConfig.OpenOnExistForm(arg))//在已经存在的窗口打开文件
@@ -37,7 +33,7 @@ namespace DataEditorX
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                MainForm mainForm = new MainForm();
+                MainForm mainForm = new();
                 //设置将要打开的文件
                 mainForm.SetOpenFile(arg);
                 //数据目录
@@ -54,12 +50,12 @@ namespace DataEditorX
                     string cardinfo = DEXConfig.GetCardInfoFile(MyPath.Combine(Application.StartupPath,
                         DEXConfig.TAG_DATA));
                     if (File.Exists(cardinfo))
-                        using (FileStream cStream = new FileStream(cardinfo, FileMode.Open, FileAccess.ReadWrite))
+                        using (FileStream cStream = new(cardinfo, FileMode.Open, FileAccess.ReadWrite))
                         {
                             try
                             {
                                 byte[] content = Encoding.UTF8.GetBytes($"\n0x{setcode:x}\t{dic[setcode]}\n#end");
-                                cStream.Seek(-5, SeekOrigin.End);
+                                _ = cStream.Seek(-5, SeekOrigin.End);
                                 cStream.Write(content, 0, content.Length);
                             }
                             catch { }
@@ -71,19 +67,17 @@ namespace DataEditorX
                     string file = MyPath.Combine(Application.StartupPath, DEXConfig.TAG_DATA, DEXConfig.FILE_STRINGS);
                     if (!string.IsNullOrEmpty(file) && File.Exists(file))
                     {
-                        using (FileStream sStream = new FileStream(file, FileMode.Open, FileAccess.Write))
+                        using FileStream sStream = new(file, FileMode.Open, FileAccess.Write);
+                        try
                         {
-                            try
-                            {
-                                byte[] content = Encoding.UTF8.GetBytes($"!setname 0x{setcode:x} {dic[setcode]}\n");
-                                sStream.Seek(0, SeekOrigin.End);
-                                sStream.Write(content, 0, content.Length);
-                            }
-                            catch { }
-                            finally
-                            {
-                                sStream.Close();
-                            }
+                            byte[] content = Encoding.UTF8.GetBytes($"!setname 0x{setcode:x} {dic[setcode]}\n");
+                            _ = sStream.Seek(0, SeekOrigin.End);
+                            sStream.Write(content, 0, content.Length);
+                        }
+                        catch { }
+                        finally
+                        {
+                            sStream.Close();
                         }
                     }
                 }
@@ -94,19 +88,19 @@ namespace DataEditorX
             string datapath = MyPath.Combine(Application.StartupPath, DEXConfig.TAG_DATA);
             string conflang = DEXConfig.GetLanguageFile(datapath);
             LanguageHelper.LoadFormLabels(conflang);
-            LanguageHelper langhelper = new LanguageHelper();
-            MainForm form1 = new MainForm();
+            LanguageHelper langhelper = new();
+            MainForm form1 = new();
             LanguageHelper.SetFormLabel(form1);
             langhelper.GetFormLabel(form1);
-            DataEditForm form2 = new DataEditForm();
+            DataEditForm form2 = new();
             LanguageHelper.SetFormLabel(form2);
             langhelper.GetFormLabel(form2);
-            CodeEditForm form3 = new CodeEditForm();
+            CodeEditForm form3 = new();
             LanguageHelper.SetFormLabel(form3);
             langhelper.GetFormLabel(form3);
             // LANG.GetFormLabel(this);
             //获取窗体文字
-            langhelper.SaveLanguage(conflang + ".bak");
+            _ = langhelper.SaveLanguage(conflang + ".bak");
         }
 
     }

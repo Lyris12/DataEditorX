@@ -5,10 +5,7 @@
  * 时间: 18:08
  * 
  */
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -38,7 +35,7 @@ namespace DataEditorX.Config
         }
         public static string SubString(string content, string tag)
         {
-            Regex reg = new Regex(string.Format(@"{0}{1}\n([\S\s]*?)\n{2}", TAG_START, tag, TAG_END), RegexOptions.Multiline);
+            Regex reg = new(string.Format(@"{0}{1}\n([\S\s]*?)\n{2}", TAG_START, tag, TAG_END), RegexOptions.Multiline);
             Match mac = reg.Match(reReturn(content));
             if (mac.Success)//把相应的内容提取出来
             {
@@ -88,7 +85,7 @@ namespace DataEditorX.Config
         /// <returns></returns>
         public static Dictionary<long, string> Read(string[] lines)
         {
-            Dictionary<long, string> tempDic = new Dictionary<long, string>();
+            Dictionary<long, string> tempDic = new();
             long lkey;
             foreach (string line in lines)
             {
@@ -105,11 +102,11 @@ namespace DataEditorX.Config
 
                 if (words[0].StartsWith("0x"))
                 {
-                    long.TryParse(words[0].Replace("0x", ""), NumberStyles.HexNumber, null, out lkey);
+                    _ = long.TryParse(words[0].Replace("0x", ""), NumberStyles.HexNumber, null, out lkey);
                 }
                 else
                 {
-                    long.TryParse(words[0], out lkey);
+                    _ = long.TryParse(words[0], out lkey);
                 }
                 // N/A 的数据不显示
                 if (!tempDic.ContainsKey(lkey) && words[1] != "N/A")
@@ -125,7 +122,7 @@ namespace DataEditorX.Config
         #region 查找
         public static List<long> GetKeys(Dictionary<long, string> dic)
         {
-            List<long> list = new List<long>();
+            List<long> list = new();
             foreach (long l in dic.Keys)
             {
                 list.Add(l);
@@ -134,7 +131,7 @@ namespace DataEditorX.Config
         }
         public static string[] GetValues(Dictionary<long, string> dic)
         {
-            List<string> list = new List<string>();
+            List<string> list = new();
             foreach (long l in dic.Keys)
             {
                 list.Add(dic[l]);

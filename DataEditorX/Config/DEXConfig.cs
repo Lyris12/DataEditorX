@@ -1,10 +1,7 @@
 ﻿using DataEditorX.Common;
-using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace DataEditorX.Config
 {
@@ -242,7 +239,7 @@ namespace DataEditorX.Config
             {
                 for (int i = 0; i < ws.Length; i++)
                 {
-                    int.TryParse(ws[i], out ints[i]);
+                    _ = int.TryParse(ws[i], out ints[i]);
                 }
             }
             return ints;
@@ -255,7 +252,7 @@ namespace DataEditorX.Config
         public static Area ReadArea(string key)
         {
             int[] ints = ReadIntegers(key, 4);
-            Area a = new Area();
+            Area a = new();
             if (ints != null)
             {
                 a.left = ints[0];
@@ -343,7 +340,7 @@ namespace DataEditorX.Config
                 string tmpfile = Path.Combine(Application.StartupPath, FILE_TEMP);
                 File.WriteAllText(tmpfile, file);
                 //发送消息
-                User32.SendMessage(instance.MainWindowHandle, WM_OPEN, 0, 0);
+                _ = User32.SendMessage(instance.MainWindowHandle, WM_OPEN, 0, 0);
                 return true;
             }
         }
@@ -353,7 +350,7 @@ namespace DataEditorX.Config
             string tmpfile = Path.Combine(Application.StartupPath, FILE_TEMP);
             File.WriteAllText(tmpfile, file);
             //发送消息
-            User32.SendMessage(Process.GetCurrentProcess().MainWindowHandle, WM_OPEN, 0, 0);
+            _ = User32.SendMessage(Process.GetCurrentProcess().MainWindowHandle, WM_OPEN, 0, 0);
         }
         public static Process RunningInstance(string filename)
         {

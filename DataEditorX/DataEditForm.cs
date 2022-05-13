@@ -10,12 +10,7 @@ using DataEditorX.Config;
 using DataEditorX.Core;
 using DataEditorX.Core.Mse;
 using DataEditorX.Language;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using Microsoft.Data.Sqlite;
 
@@ -55,9 +50,9 @@ namespace DataEditorX
         //目录
         YgoPath ygopath;
         /// <summary>当前卡片</summary>
-        Card oldCard = new Card(0);
+        Card oldCard = new(0);
         /// <summary>搜索条件</summary>
-        Card srcCard = new Card(0);
+        Card srcCard = new(0);
         //卡片编辑
         CardEdit cardedit;
         string[] strs = null;
@@ -78,11 +73,11 @@ namespace DataEditorX
         /// <summary>
         /// 搜索结果
         /// </summary>
-        readonly List<Card> cardlist = new List<Card>();
+        readonly List<Card> cardlist = new();
 
         //setcode正在输入
         readonly bool[] setcodeIsedit = new bool[5];
-        readonly CommandManager cmdManager = new CommandManager();
+        readonly CommandManager cmdManager = new();
 
         Image cover;
         MSEConfig msecfg;
@@ -97,34 +92,27 @@ namespace DataEditorX
             {
                 Dictionary<long, string> d = datacfg.dicSetnames;
                 if (!d.ContainsKey(0)) d.Add(0L, "Archetype");
-                using (SqliteConnection con = new SqliteConnection(@"Data Source=" + cdbfile))
+                using SqliteConnection con = new(@"Data Source=" + cdbfile);
+                con.Open();
+                using SqliteCommand cmd = con.CreateCommand();
+                cmd.CommandText = "select officialcode,betacode,name from setcodes;";
+                using SqliteDataReader reader = cmd.ExecuteReader();
+                try
                 {
-
-                    con.Open();
-                    using (SqliteCommand sqlitecommand = con.CreateCommand())
+                    while (reader.Read())
                     {
-                        sqlitecommand.CommandText = "select officialcode,betacode,name from setcodes;";
-                        using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
-                        {
-                            try
-                            {
-                                while (reader.Read())
-                                {
-                                    int c = reader.GetInt32(reader.GetOrdinal("officialcode"));
-                                    if (c == 0)
-                                        c = reader.GetInt32(reader.GetOrdinal("betacode"));
-                                    string n = reader.GetString(reader.GetOrdinal("name"));
-                                    if (c > 0 && d.ContainsKey(c))
-                                        d[c] = n;
-                                    else d.Add(c, n);
-                                }
-                            }
-                            catch { }
-                            reader.Close();
-                        }
+                        int c = reader.GetInt32(reader.GetOrdinal("officialcode"));
+                        if (c == 0)
+                            c = reader.GetInt32(reader.GetOrdinal("betacode"));
+                        string n = reader.GetString(reader.GetOrdinal("name"));
+                        if (c > 0 && d.ContainsKey(c))
+                            d[c] = n;
+                        else d.Add(c, n);
                     }
-                    con.Close();
                 }
+                catch { }
+                con.Close();
+                SqliteConnection.ClearAllPools();
             }
             nowCdbFile = cdbfile;
         }
@@ -188,7 +176,7 @@ namespace DataEditorX
         public bool Save(bool shift)
         {
             if (shift)
-                using (SaveFileDialog dlg = new SaveFileDialog())
+                using (SaveFileDialog dlg = new())
                 {
                     dlg.Title = LanguageHelper.GetMsg(LMSG.NewFile);
                     try
@@ -242,7 +230,7 @@ namespace DataEditorX
             menuitem_addrequire.Checked = (Addrequire.Length > 0);
             if (nowCdbFile != null && File.Exists(nowCdbFile))
             {
-                Open(nowCdbFile);
+                _ = Open(nowCdbFile);
             }
             //获取MSE配菜单
             AddMenuItemFormMSE();
@@ -271,7 +259,7 @@ namespace DataEditorX
                 foreach (long setcode in d.Keys)
                 {
                     if (o.ContainsKey(setcode)) continue;
-                    DataBase.Command(nowCdbFile, new string[] { $"insert or ignore into setcodes values({setcode},{setcode},'{d[setcode].Replace("'", "''")}',0);" });
+                    _ = DataBase.Command(nowCdbFile, new string[] { $"insert or ignore into setcodes values({setcode},{setcode},'{d[setcode].Replace("'", "''")}',0);" });
                 }
             }
         }
@@ -307,13 +295,14 @@ namespace DataEditorX
             ResumeLayout(false);
             //this.PerformLayout();
         }
+
         //移除Tag
-        string RemoveTag(string text)
+        static string RemoveTag(string text)
         {
             int t = text.LastIndexOf(" (");
             if (t > 0)
             {
-                return text.Substring(0, t);
+                return text[..t];
             }
             return text;
         }
@@ -403,11 +392,12 @@ namespace DataEditorX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "启动错误");
+                _ = MessageBox.Show(ex.ToString(), "启动错误");
             }
         }
+
         //初始化FlowLayoutPanel
-        void InitCheckPanel(FlowLayoutPanel fpanel, Dictionary<long, string> dic)
+        static void InitCheckPanel(FlowLayoutPanel fpanel, Dictionary<long, string> dic)
         {
             fpanel.SuspendLayout();
             fpanel.Controls.Clear();
@@ -416,7 +406,7 @@ namespace DataEditorX
                 string value = dic[key];
                 if (value != null && value.StartsWith("NULL"))
                 {
-                    Label lab = new Label();
+                    Label lab = new();
                     string[] sizes = value.Split(',');
                     if (sizes.Length >= 3)
                     {
@@ -428,7 +418,7 @@ namespace DataEditorX
                 }
                 else
                 {
-                    CheckBox _cbox = new CheckBox
+                    CheckBox _cbox = new()
                     {
                         //_cbox.Name = fpanel.Name + key.ToString("x");
                         Tag = key,//绑定值
@@ -469,11 +459,11 @@ namespace DataEditorX
             bool addTest = lv_cardlist.Items.Count == 0;
             if (addTest)
             {
-                ListViewItem item = new ListViewItem
+                ListViewItem item = new()
                 {
                     Text = "Test"
                 };
-                lv_cardlist.Items.Add(item);
+                _ = lv_cardlist.Items.Add(item);
             }
             int headH = lv_cardlist.Items[0].GetBounds(ItemBoundsPortion.ItemOnly).Y;
             int itemH = lv_cardlist.Items[0].GetBounds(ItemBoundsPortion.ItemOnly).Height;
@@ -495,8 +485,9 @@ namespace DataEditorX
                 maxRow = 20;
             }
         }
+
         //设置checkbox
-        void SetCheck(FlowLayoutPanel fpl, long number)
+        static void SetCheck(FlowLayoutPanel fpl, long number)
         {
             long temp;
             //string strType = "";
@@ -526,7 +517,8 @@ namespace DataEditorX
             }
             //return strType;
         }
-        void SetEnabled(FlowLayoutPanel fpl, bool set)
+
+        static void SetEnabled(FlowLayoutPanel fpl, bool set)
         {
             foreach (Control c in fpl.Controls)
             {
@@ -536,8 +528,9 @@ namespace DataEditorX
                 }
             }
         }
+
         //设置combobox
-        void SetSelect(ComboBox cb, long k)
+        static void SetSelect(ComboBox cb, long k)
         {
             if (cb.Tag == null)
             {
@@ -551,8 +544,9 @@ namespace DataEditorX
                 cb.SelectedIndex = index;
             }
         }
+
         //得到所选值
-        long GetSelect(ComboBox cb)
+        static long GetSelect(ComboBox cb)
         {
             if (cb.Tag == null)
             {
@@ -569,8 +563,9 @@ namespace DataEditorX
                 return keys[index];
             }
         }
+
         //得到checkbox的总值
-        long GetCheck(FlowLayoutPanel fpl)
+        static long GetCheck(FlowLayoutPanel fpl)
         {
             long number = 0;
             long temp;
@@ -645,7 +640,7 @@ namespace DataEditorX
                         items[j].BackColor = Color.White;
                     }
 
-                    items[j].SubItems.Add(mcard.name);
+                    _ = items[j].SubItems.Add(mcard.name);
                 }
                 lv_cardlist.Items.AddRange(items);
             }
@@ -747,7 +742,7 @@ namespace DataEditorX
         #region 获取卡片
         public Card GetCard()
         {
-            Card c = new Card(0)
+            Card c = new(0)
             {
                 name = tb_cardname.Text,
                 desc = tb_cardtext.Text
@@ -779,9 +774,9 @@ namespace DataEditorX
                 c.SetDate(tb_tdate.Text, 1);
             } else for (byte i = 0; i < 5; i++) c.omega[i] = i < 3 ? 0L : 253402207200L;
 
-            int.TryParse(tb_pleft.Text, out int temp);
+            _ = int.TryParse(tb_pleft.Text, out int temp);
             c.level += (temp << 24);
-            int.TryParse(tb_pright.Text, out temp);
+            _ = int.TryParse(tb_pright.Text, out temp);
             c.level += (temp << 16);
             if (tb_atk.Text == "?" || tb_atk.Text == "？")
             {
@@ -793,7 +788,7 @@ namespace DataEditorX
             }
             else
             {
-                int.TryParse(tb_atk.Text, out c.atk);
+                _ = int.TryParse(tb_atk.Text, out c.atk);
             }
 
             if (c.IsType(Core.Info.CardType.TYPE_LINK))
@@ -812,11 +807,11 @@ namespace DataEditorX
                 }
                 else
                 {
-                    int.TryParse(tb_def.Text, out c.def);
+                    _ = int.TryParse(tb_def.Text, out c.def);
                 }
             }
-            long.TryParse(tb_cardcode.Text, out c.id);
-            long.TryParse(tb_cardalias.Text, out c.alias);
+            _ = long.TryParse(tb_cardcode.Text, out c.id);
+            _ = long.TryParse(tb_cardalias.Text, out c.alias);
 
             return c;
         }
@@ -880,7 +875,7 @@ namespace DataEditorX
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                int.TryParse(tb_page.Text, out int p);
+                _ = int.TryParse(tb_page.Text, out int p);
                 if (p > 0)
                 {
                     AddListView(p);
@@ -915,13 +910,13 @@ namespace DataEditorX
             tmpCodes.Clear();
             cardlist.Clear();
             //检查表是否存在
-            DataBase.CheckTable(file);
+            _ = DataBase.CheckTable(file);
             srcCard = new Card();
             SetCards(DataBase.Read(file, true, ""), false);
             return true;
         }
         //setcode的搜索
-        public bool CardFilter(Card c, Card sc)
+        public static bool CardFilter(Card c, Card sc)
         {
             bool res = true;
             if (sc.setcode != 0)
@@ -1004,7 +999,7 @@ namespace DataEditorX
             if (lv_cardlist.Items.Count > 0)
             {
                 lv_cardlist.SelectedIndices.Clear();
-                lv_cardlist.SelectedIndices.Add(0);
+                _ = lv_cardlist.SelectedIndices.Add(0);
             }
         }
         //更新临时卡片
@@ -1048,7 +1043,7 @@ namespace DataEditorX
         {
             if (cardedit != null)
             {
-                cardedit.OpenScript(menuitem_openfileinthis.Checked, Addrequire);
+                _ = cardedit.OpenScript(menuitem_openfileinthis.Checked, Addrequire);
             }
         }
         //删除
@@ -1085,8 +1080,8 @@ namespace DataEditorX
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                Card c = new Card(0);
-                long.TryParse(tb_cardcode.Text, out c.id);
+                Card c = new(0);
+                _ = long.TryParse(tb_cardcode.Text, out c.id);
                 if (c.id > 0)
                 {
                     tmpCodes.Clear();//清空临时的结果
@@ -1099,7 +1094,7 @@ namespace DataEditorX
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Card c = new Card(0)
+                Card c = new(0)
                 {
                     name = tb_cardname.Text
                 };
@@ -1215,11 +1210,11 @@ namespace DataEditorX
         }
         void Menuitem_cancelTaskClick(object sender, EventArgs e)
         {
-            CancelTask();
+            _ = CancelTask();
         }
         void Menuitem_githubClick(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(DEXConfig.ReadString(DEXConfig.TAG_SOURCE_URL));
+            _ = System.Diagnostics.Process.Start(DEXConfig.ReadString(DEXConfig.TAG_SOURCE_URL));
         }
         #endregion
 
@@ -1227,39 +1222,35 @@ namespace DataEditorX
         //打开文件
         void Menuitem_openClick(object sender, EventArgs e)
         {
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    Open(dlg.FileName);
-                }
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                _ = Open(dlg.FileName);
             }
         }
         //新建文件
         void Menuitem_newClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
-                try
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                if (DataBase.Create(dlg.FileName))
                 {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    if (DataBase.Create(dlg.FileName))
+                    if (MyMsg.Question(LMSG.IfOpenDataBase))
                     {
-                        if (MyMsg.Question(LMSG.IfOpenDataBase))
-                        {
-                            Open(dlg.FileName);
-                        }
+                        _ = Open(dlg.FileName);
                     }
                 }
             }
@@ -1272,22 +1263,20 @@ namespace DataEditorX
                 return;
             }
 
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectYdkPath);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectYdkPath);
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.ydkType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    tmpCodes.Clear();
-                    string[] ids = YGOUtil.ReadYDK(dlg.FileName);
-                    tmpCodes.AddRange(ids);
-                    SetCards(DataBase.Read(nowCdbFile, true,
-                                           ids), false);
-                }
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.ydkType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                tmpCodes.Clear();
+                string[] ids = YGOUtil.ReadYDK(dlg.FileName);
+                tmpCodes.AddRange(ids);
+                SetCards(DataBase.Read(nowCdbFile, true,
+                                       ids), false);
             }
         }
         //从图片文件夹读取
@@ -1298,17 +1287,15 @@ namespace DataEditorX
                 return;
             }
 
-            using (FolderBrowserDialog fdlg = new FolderBrowserDialog())
+            using FolderBrowserDialog fdlg = new();
+            fdlg.Description = LanguageHelper.GetMsg(LMSG.SelectImagePath);
+            if (fdlg.ShowDialog() == DialogResult.OK)
             {
-                fdlg.Description = LanguageHelper.GetMsg(LMSG.SelectImagePath);
-                if (fdlg.ShowDialog() == DialogResult.OK)
-                {
-                    tmpCodes.Clear();
-                    string[] ids = YGOUtil.ReadImage(fdlg.SelectedPath);
-                    tmpCodes.AddRange(ids);
-                    SetCards(DataBase.Read(nowCdbFile, true,
-                                           ids), false);
-                }
+                tmpCodes.Clear();
+                string[] ids = YGOUtil.ReadImage(fdlg.SelectedPath);
+                tmpCodes.AddRange(ids);
+                SetCards(DataBase.Read(nowCdbFile, true,
+                                       ids), false);
             }
         }
         //关闭
@@ -1363,7 +1350,7 @@ namespace DataEditorX
             int t = title.LastIndexOf(" (");
             if (t > 0)
             {
-                title = title.Substring(0, t);
+                title = title[..t];
                 SetTitle();
             }
             if (e.Error != null)
@@ -1422,7 +1409,7 @@ namespace DataEditorX
                 return null;
             }
 
-            List<Card> cards = new List<Card>();
+            List<Card> cards = new();
             if (onlyselect)
             {
                 foreach (ListViewItem lvitem in lv_cardlist.SelectedItems)
@@ -1479,8 +1466,9 @@ namespace DataEditorX
             cmdManager.ExcuteCommand(cardedit.copyCard, cards);
             Search(srcCard, true);
         }
+
         //卡片另存为
-        void CopyTo(Card[] cards)
+        static void CopyTo(Card[] cards)
         {
             if (cards == null || cards.Length == 0)
             {
@@ -1489,7 +1477,7 @@ namespace DataEditorX
             //select file
             bool replace = false;
             string filename = null;
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using (OpenFileDialog dlg = new())
             {
                 dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
                 try
@@ -1505,7 +1493,7 @@ namespace DataEditorX
             }
             if (!string.IsNullOrEmpty(filename))
             {
-                DataBase.CopyDB(filename, !replace, cards);
+                _ = DataBase.CopyDB(filename, !replace, cards);
                 MyMsg.Show(LMSG.CopyCardsToDBIsOK);
             }
 
@@ -1560,24 +1548,22 @@ namespace DataEditorX
                 return;
             }
             //select save mse-set
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    bool isUpdate = false;
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                bool isUpdate = false;
 #if DEBUG
-                    isUpdate = MyMsg.Question(LMSG.OnlySet);
+                isUpdate = MyMsg.Question(LMSG.OnlySet);
 #endif
-                    tasker.SetTask(MyTask.SaveAsMSE, cards,
-                                   dlg.FileName, isUpdate.ToString());
-                    Run(LanguageHelper.GetMsg(LMSG.SaveMse));
-                }
+                tasker.SetTask(MyTask.SaveAsMSE, cards,
+                               dlg.FileName, isUpdate.ToString());
+                Run(LanguageHelper.GetMsg(LMSG.SaveMse));
             }
         }
         #endregion
@@ -1591,19 +1577,17 @@ namespace DataEditorX
                 return;
             }
 
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectImage) + "-" + tb_cardname.Text;
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectImage) + "-" + tb_cardname.Text;
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.ImageType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    //dlg.FileName;
-                    ImportImage(dlg.FileName, tid);
-                }
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.ImageType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                //dlg.FileName;
+                ImportImage(dlg.FileName, tid);
             }
         }
         private void pl_image_DoubleClick(object sender, EventArgs e)
@@ -1649,7 +1633,7 @@ namespace DataEditorX
             {
                 if (!Directory.Exists(tasker.MSEImagePath))
                 {
-                    Directory.CreateDirectory(tasker.MSEImagePath);
+                    _ = Directory.CreateDirectory(tasker.MSEImagePath);
                 }
 
                 f = MyPath.Combine(tasker.MSEImagePath, tid + ".jpg");
@@ -1665,7 +1649,7 @@ namespace DataEditorX
         }
         public void SetImage(string id)
         {
-            long.TryParse(id, out long t);
+            _ = long.TryParse(id, out long t);
             SetImage(t);
         }
         public void SetImage(long id)
@@ -1700,16 +1684,14 @@ namespace DataEditorX
                 return;
             }
 
-            using (FolderBrowserDialog fdlg = new FolderBrowserDialog())
+            using FolderBrowserDialog fdlg = new();
+            fdlg.Description = LanguageHelper.GetMsg(LMSG.SelectImagePath);
+            if (fdlg.ShowDialog() == DialogResult.OK)
             {
-                fdlg.Description = LanguageHelper.GetMsg(LMSG.SelectImagePath);
-                if (fdlg.ShowDialog() == DialogResult.OK)
-                {
-                    bool isreplace = MyMsg.Question(LMSG.IfReplaceExistingImage);
-                    tasker.SetTask(MyTask.ConvertImages, null,
-                                   fdlg.SelectedPath, ygopath.gamepath, isreplace.ToString());
-                    Run(LanguageHelper.GetMsg(LMSG.ConvertImage));
-                }
+                bool isreplace = MyMsg.Question(LMSG.IfReplaceExistingImage);
+                tasker.SetTask(MyTask.ConvertImages, null,
+                               fdlg.SelectedPath, ygopath.gamepath, isreplace.ToString());
+                Run(LanguageHelper.GetMsg(LMSG.ConvertImage));
             }
         }
         #endregion
@@ -1727,24 +1709,22 @@ namespace DataEditorX
                 return;
             }
 
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.InitialDirectory = ygopath.gamepath;
+            try
             {
-                dlg.InitialDirectory = ygopath.gamepath;
-                try
-                {
-                    dlg.Filter = "Zip|(*.zip|All Files(*.*)|*.*";
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    tasker.SetTask(MyTask.ExportData,
-                                   GetCardList(false),
-                                   ygopath.gamepath,
-                                   dlg.FileName,
-                                   GetOpenFile(),
-                                   Addrequire);
-                    Run(LanguageHelper.GetMsg(LMSG.ExportData));
-                }
+                dlg.Filter = "Zip|(*.zip|All Files(*.*)|*.*";
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                tasker.SetTask(MyTask.ExportData,
+                               GetCardList(false),
+                               ygopath.gamepath,
+                               dlg.FileName,
+                               GetOpenFile(),
+                               Addrequire);
+                Run(LanguageHelper.GetMsg(LMSG.ExportData));
             }
 
         }
@@ -1754,7 +1734,7 @@ namespace DataEditorX
         /// <summary>
         /// 数据一致，返回true，不存在和数据不同，则返回false
         /// </summary>
-        bool CheckCard(Card[] cards, Card card, bool checkinfo)
+        static bool CheckCard(Card[] cards, Card card, bool checkinfo)
         {
             foreach (Card c in cards)
             {
@@ -1836,7 +1816,7 @@ namespace DataEditorX
                     continue;
                 }
                 //菜单文字是语言
-                ToolStripMenuItem tsmi = new ToolStripMenuItem(name)
+                ToolStripMenuItem tsmi = new(name)
                 {
                     ToolTipText = file//提示文字为真实路径
                 };
@@ -1846,7 +1826,7 @@ namespace DataEditorX
                     tsmi.Checked = true;//如果是当前，则打勾
                 }
 
-                menuitem_mseconfig.DropDownItems.Add(tsmi);
+                _ = menuitem_mseconfig.DropDownItems.Add(tsmi);
             }
         }
         void SetMseConfig_Click(object sender, EventArgs e)
@@ -1872,15 +1852,13 @@ namespace DataEditorX
         private void menuitem_findluafunc_Click(object sender, EventArgs e)
         {
             string funtxt = MyPath.Combine(datapath, DEXConfig.FILE_FUNCTION);
-            using (FolderBrowserDialog fd = new FolderBrowserDialog())
+            using FolderBrowserDialog fd = new();
+            fd.Description = "Folder Name: ocgcore";
+            if (fd.ShowDialog() == DialogResult.OK)
             {
-                fd.Description = "Folder Name: ocgcore";
-                if (fd.ShowDialog() == DialogResult.OK)
-                {
-                    LuaFunction.Read(funtxt);//先读取旧函数列表
-                    LuaFunction.Find(fd.SelectedPath);//查找新函数，并保存
-                    MessageBox.Show("OK");
-                }
+                LuaFunction.Read(funtxt);//先读取旧函数列表
+                _ = LuaFunction.Find(fd.SelectedPath);//查找新函数，并保存
+                _ = MessageBox.Show("OK");
             }
         }
 
@@ -1898,7 +1876,7 @@ namespace DataEditorX
                 }
 
                 setcodeIsedit[index] = true;
-                int.TryParse(tb.Text, NumberStyles.HexNumber, null, out int temp);
+                _ = int.TryParse(tb.Text, NumberStyles.HexNumber, null, out int temp);
                 //tb.Text = temp.ToString("x");
                 if (temp == 0 && (tb.Text != "0" || tb.Text.Length == 0))
                 {
@@ -1981,21 +1959,19 @@ namespace DataEditorX
                 return;
             }
             //select open mse-set
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    bool isUpdate = MyMsg.Question(LMSG.IfReplaceExistingImage);
-                    tasker.SetTask(MyTask.ReadMSE, null,
-                                   dlg.FileName, isUpdate.ToString());
-                    Run(LanguageHelper.GetMsg(LMSG.ReadMSE));
-                }
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                bool isUpdate = MyMsg.Question(LMSG.IfReplaceExistingImage);
+                tasker.SetTask(MyTask.ReadMSE, null,
+                               dlg.FileName, isUpdate.ToString());
+                Run(LanguageHelper.GetMsg(LMSG.ReadMSE));
             }
         }
         #endregion
@@ -2060,7 +2036,7 @@ namespace DataEditorX
                 }
 
                 TextInfo txinfo = new CultureInfo(CultureInfo.InstalledUICulture.Name).TextInfo;
-                ToolStripMenuItem tsmi = new ToolStripMenuItem(txinfo.ToTitleCase(name))
+                ToolStripMenuItem tsmi = new(txinfo.ToTitleCase(name))
                 {
                     ToolTipText = file
                 };
@@ -2070,7 +2046,7 @@ namespace DataEditorX
                     tsmi.Checked = true;
                 }
 
-                menuitem_language.DropDownItems.Add(tsmi);
+                _ = menuitem_language.DropDownItems.Add(tsmi);
             }
         }
         void SetLanguage_Click(object sender, EventArgs e)
@@ -2118,28 +2094,26 @@ namespace DataEditorX
                 }
             }
             //select open mse-set
-            using (OpenFileDialog dlg = new OpenFileDialog())
+            using OpenFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.selectMseset);
-                try
-                {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
-                }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    string mseset = dlg.FileName;
-                    string exportpath = MyPath.GetRealPath(DEXConfig.ReadString(DEXConfig.TAG_MSE_EXPORT));
-                    MseMaker.ExportSet(msepath, mseset, exportpath, delegate
-                    {
-                        menuitem_exportMSEimage.Checked = false;
-                    });
-                    menuitem_exportMSEimage.Checked = true;
-                }
-                else
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.MseType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string mseset = dlg.FileName;
+                string exportpath = MyPath.GetRealPath(DEXConfig.ReadString(DEXConfig.TAG_MSE_EXPORT));
+                MseMaker.ExportSet(msepath, mseset, exportpath, delegate
                 {
                     menuitem_exportMSEimage.Checked = false;
-                }
+                });
+                menuitem_exportMSEimage.Checked = true;
+            }
+            else
+            {
+                menuitem_exportMSEimage.Checked = false;
             }
         }
         void Menuitem_testPendulumTextClick(object sender, EventArgs e)
@@ -2152,24 +2126,20 @@ namespace DataEditorX
         }
         void Menuitem_export_select_sqlClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    DataBase.ExportSql(dlg.FileName, GetCardList(true));
-                    MyMsg.Show("OK");
-                }
+                DataBase.ExportSql(dlg.FileName, GetCardList(true));
+                MyMsg.Show("OK");
             }
         }
         void Menuitem_export_all_sqlClick(object sender, EventArgs e)
         {
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            if (dlg.ShowDialog() == DialogResult.OK)
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    DataBase.ExportSql(dlg.FileName, GetCardList(false));
-                    MyMsg.Show("OK");
-                }
+                DataBase.ExportSql(dlg.FileName, GetCardList(false));
+                MyMsg.Show("OK");
             }
         }
         void Menuitem_autoreturnClick(object sender, EventArgs e)
@@ -2179,37 +2149,35 @@ namespace DataEditorX
                 return;
             }
 
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
-                try
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Card[] cards = DataBase.Read(nowCdbFile, true, "");
+                int count = cards.Length;
+                if (cards == null || cards.Length == 0)
                 {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+                    return;
                 }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    Card[] cards = DataBase.Read(nowCdbFile, true, "");
-                    int count = cards.Length;
-                    if (cards == null || cards.Length == 0)
-                    {
-                        return;
-                    }
 
-                    if (DataBase.Create(dlg.FileName))
+                if (DataBase.Create(dlg.FileName))
+                {
+                    //
+                    int len = DEXConfig.ReadInteger(DEXConfig.TAG_AUTO_LEN, 30);
+                    for (int i = 0; i < count; i++)
                     {
-                        //
-                        int len = DEXConfig.ReadInteger(DEXConfig.TAG_AUTO_LEN, 30);
-                        for (int i = 0; i < count; i++)
+                        if (cards[i].desc != null)
                         {
-                            if (cards[i].desc != null)
-                            {
-                                cards[i].desc = StrUtil.AutoEnter(cards[i].desc, len, ' ');
-                            }
+                            cards[i].desc = StrUtil.AutoEnter(cards[i].desc, len, ' ');
                         }
-                        DataBase.CopyDB(dlg.FileName, false, cards);
-                        MyMsg.Show(LMSG.CopyCardsToDBIsOK);
                     }
+                    _ = DataBase.CopyDB(dlg.FileName, false, cards);
+                    MyMsg.Show(LMSG.CopyCardsToDBIsOK);
                 }
             }
         }
@@ -2221,37 +2189,35 @@ namespace DataEditorX
                 return;
             }
 
-            using (SaveFileDialog dlg = new SaveFileDialog())
+            using SaveFileDialog dlg = new();
+            dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
+            try
             {
-                dlg.Title = LanguageHelper.GetMsg(LMSG.SelectDataBasePath);
-                try
+                dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+            }
+            catch { }
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Card[] cards = DataBase.Read(nowCdbFile, true, "");
+                int count = cards.Length;
+                if (cards == null || cards.Length == 0)
                 {
-                    dlg.Filter = LanguageHelper.GetMsg(LMSG.CdbType);
+                    return;
                 }
-                catch { }
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    Card[] cards = DataBase.Read(nowCdbFile, true, "");
-                    int count = cards.Length;
-                    if (cards == null || cards.Length == 0)
-                    {
-                        return;
-                    }
 
-                    if (DataBase.Create(dlg.FileName))
+                if (DataBase.Create(dlg.FileName))
+                {
+                    //
+                    _ = DEXConfig.ReadInteger(DEXConfig.TAG_AUTO_LEN, 30);
+                    for (int i = 0; i < count; i++)
                     {
-                        //
-                        _ = DEXConfig.ReadInteger(DEXConfig.TAG_AUTO_LEN, 30);
-                        for (int i = 0; i < count; i++)
+                        if (cards[i].desc != null)
                         {
-                            if (cards[i].desc != null)
-                            {
-                                cards[i].desc = tasker.MseHelper.ReplaceText(cards[i].desc, cards[i].name);
-                            }
+                            cards[i].desc = MseMaker.ReplaceText(cards[i].desc, cards[i].name);
                         }
-                        DataBase.CopyDB(dlg.FileName, false, cards);
-                        MyMsg.Show(LMSG.CopyCardsToDBIsOK);
                     }
+                    _ = DataBase.CopyDB(dlg.FileName, false, cards);
+                    MyMsg.Show(LMSG.CopyCardsToDBIsOK);
                 }
             }
         }
@@ -2278,7 +2244,7 @@ namespace DataEditorX
         {
             if (e.Control && e.KeyCode == Keys.F)
             {
-                tb_cardname.Focus();
+                _ = tb_cardname.Focus();
                 tb_cardname.SelectAll();
             }
         }
@@ -2291,14 +2257,14 @@ namespace DataEditorX
             }
             else if (e.Modifiers == Keys.Control && e.KeyCode == Keys.F)
             {
-                tb_cardname.Focus();
+                _ = tb_cardname.Focus();
             }
         }
 
         private void OnDragDrop(object sender, DragEventArgs e)
         {
             string[] drops = (string[])e.Data.GetData(DataFormats.FileDrop);
-            List<string> files = new List<string>();
+            List<string> files = new();
             if (drops == null)
             {
                 string file = (string)e.Data.GetData(DataFormats.Text);

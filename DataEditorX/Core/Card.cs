@@ -4,7 +4,6 @@
  * ModiftyDate :2014-02-12
  */
 using DataEditorX.Core.Info;
-using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -124,7 +123,7 @@ namespace DataEditorX.Core
             {
                 foreach (string sc in setcodes)
                 {
-                    long.TryParse(sc, NumberStyles.HexNumber, null, out long temp);
+                    _ = long.TryParse(sc, NumberStyles.HexNumber, null, out long temp);
                     setcode += (temp << i);
                     i += 0x10;
                 }

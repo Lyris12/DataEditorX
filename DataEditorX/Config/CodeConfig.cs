@@ -1,7 +1,4 @@
 ﻿using FastColoredTextBoxNS;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace DataEditorX.Config
 {
@@ -148,9 +145,9 @@ namespace DataEditorX.Config
                 int t = line.IndexOf("=");
                 _ = line.IndexOf("--");
                 //常量 = 0x1 ---注释
-                string k = (t > 0) ? line.Substring(0, t).TrimEnd(new char[] { ' ', '\t' })
+                string k = (t > 0) ? line[..t].TrimEnd(new char[] { ' ', '\t' })
                     : line;
-                string desc = (t > 0) ? line.Substring(t + 1).Replace("--", "\n")
+                string desc = (t > 0) ? line[(t + 1)..].Replace("--", "\n")
     : line;
                 AddToolIipDic(k, desc);
             }
@@ -163,7 +160,7 @@ namespace DataEditorX.Config
             items.Clear();
             foreach (string k in tooltipDic.Keys)
             {
-                AutocompleteItem item = new AutocompleteItem(k)
+                AutocompleteItem item = new(k)
                 {
                     ToolTipTitle = k,
                     ToolTipText = tooltipDic[k]
@@ -177,7 +174,7 @@ namespace DataEditorX.Config
                     continue;
                 }
 
-                AutocompleteItem item = new AutocompleteItem(k)
+                AutocompleteItem item = new(k)
                 {
                     ToolTipTitle = k,
                     ToolTipText = longTooltipDic[k]
@@ -185,12 +182,13 @@ namespace DataEditorX.Config
                 items.Add(item);
             }
         }
-        string GetShortName(string name)
+
+        static string GetShortName(string name)
         {
             int t = name.IndexOf(".");
             if (t > 0)
             {
-                return name.Substring(t + 1);
+                return name[(t + 1)..];
             }
             else
             {

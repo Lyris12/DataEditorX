@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace DataEditorX.Config
+﻿namespace DataEditorX.Config
 {
     public class YgoPath
     {
