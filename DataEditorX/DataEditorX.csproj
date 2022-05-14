@@ -14,7 +14,7 @@
     <PackageId />
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <BaseOutputPath>..\bin\</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\obj\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>obj</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -117,7 +117,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd ..\win32\&#xD;&#xA;if exist &quot;win32.zip&quot; del &quot;win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; &quot;win32.zip&quot; &quot;*&quot;" />
+    <Exec Command="if exist &quot;win32.zip&quot; del &quot;win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; &quot;win32.zip&quot; &quot;*&quot;" />
   </Target>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

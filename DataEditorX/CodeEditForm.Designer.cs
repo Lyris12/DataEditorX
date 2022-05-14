@@ -49,7 +49,6 @@ namespace DataEditorX
             this.menuitem_about = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_testlua = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuitem_effectcreator = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_fixCardCode = new System.Windows.Forms.ToolStripMenuItem();
             this.tb_input = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -128,7 +127,7 @@ namespace DataEditorX
             this.menuitem_tooltipFont.Name = "menuitem_tooltipFont";
             this.menuitem_tooltipFont.Size = new System.Drawing.Size(184, 22);
             this.menuitem_tooltipFont.Text = "Set Tooltip Font";
-            this.menuitem_tooltipFont.Click += new System.EventHandler(this.menuitem_tooltipFont_Click);
+            this.menuitem_tooltipFont.Click += new System.EventHandler(this.Menuitem_tooltipFont_Click);
             // 
             // menuitem_help
             // 
@@ -149,7 +148,6 @@ namespace DataEditorX
             // 
             this.menuitem_tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuitem_testlua,
-            this.menuitem_effectcreator,
             this.menuitem_fixCardCode});
             this.menuitem_tools.Name = "menuitem_tools";
             this.menuitem_tools.Size = new System.Drawing.Size(60, 20);
@@ -161,23 +159,14 @@ namespace DataEditorX
             this.menuitem_testlua.ShortcutKeys = System.Windows.Forms.Keys.F5;
             this.menuitem_testlua.Size = new System.Drawing.Size(165, 22);
             this.menuitem_testlua.Text = "Syntax Check";
-            this.menuitem_testlua.Click += new System.EventHandler(this.menuitem_testlua_Click);
-            // 
-            // menuitem_effectcreator
-            // 
-            this.menuitem_effectcreator.Name = "menuitem_effectcreator";
-            this.menuitem_effectcreator.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.menuitem_effectcreator.Size = new System.Drawing.Size(165, 22);
-            this.menuitem_effectcreator.Text = "Effect Creator";
-            this.menuitem_effectcreator.Visible = false;
-            this.menuitem_effectcreator.Click += new System.EventHandler(this.effectCreatorToolStripMenuItem_Click);
+            this.menuitem_testlua.Click += new System.EventHandler(this.Menuitem_testlua_Click);
             // 
             // menuitem_fixCardCode
             // 
             this.menuitem_fixCardCode.Name = "menuitem_fixCardCode";
             this.menuitem_fixCardCode.Size = new System.Drawing.Size(165, 22);
             this.menuitem_fixCardCode.Text = "Fix card code";
-            this.menuitem_fixCardCode.Click += new System.EventHandler(this.menuitem_fixCardCode_Click);
+            this.menuitem_fixCardCode.Click += new System.EventHandler(this.Menuitem_fixCardCode_Click);
             // 
             // tb_input
             // 
@@ -192,7 +181,7 @@ namespace DataEditorX
             // 
             // backgroundWorker1
             // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
             // 
             // fctb
             // 
@@ -247,7 +236,7 @@ namespace DataEditorX
             this.fctb.Zoom = 100;
             this.fctb.ToolTipNeeded += new System.EventHandler<FastColoredTextBoxNS.ToolTipNeededEventArgs>(this.FctbToolTipNeeded);
             this.fctb.SelectionChangedDelayed += new System.EventHandler(this.FctbSelectionChangedDelayed);
-            this.fctb.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDtop);
+            this.fctb.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDrop);
             this.fctb.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnDragEnter);
             this.fctb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FctbMouseClick);
             // 
@@ -281,7 +270,7 @@ namespace DataEditorX
             this.Text = "CodeEditor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CodeEditFormFormClosing);
             this.Load += new System.EventHandler(this.CodeEditFormLoad);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDtop);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.OnDragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.OnDragEnter);
             this.Enter += new System.EventHandler(this.CodeEditFormEnter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tb_inputKeyDown);
@@ -308,7 +297,6 @@ namespace DataEditorX
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolStripMenuItem menuitem_tools;
         private System.Windows.Forms.ToolStripMenuItem menuitem_testlua;
-        private System.Windows.Forms.ToolStripMenuItem menuitem_effectcreator;
         private System.Windows.Forms.ToolStripMenuItem menuitem_fixCardCode;
         private System.Windows.Forms.ToolStripMenuItem menuitem_tooltipFont;
     }

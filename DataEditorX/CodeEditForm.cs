@@ -529,7 +529,7 @@ namespace DataEditorX
             }
         }
 
-        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             if (nowcdb != null && File.Exists(nowcdb))
             {
@@ -593,13 +593,12 @@ namespace DataEditorX
                 if (linenums.Count > 0)
                 {
                     fctb.Navigate(linenums[0]);
-                    //MessageBox.Show(linenums[0].ToString());
                 }
             }
         }
         #endregion
 
-        private void menuitem_testlua_Click(object sender, EventArgs e)
+        private void Menuitem_testlua_Click(object sender, EventArgs e)
         {
             if (nowFile == null) return;
             FileInfo fi = new(nowFile);
@@ -629,18 +628,12 @@ namespace DataEditorX
             }
         }
 
-        private void effectCreatorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EffectCreatorForm form = new();
-            form.Show();
-        }
-
         private void OnDragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
         }
 
-        private void OnDragDtop(object sender, DragEventArgs e)
+        private void OnDragDrop(object sender, DragEventArgs e)
         {
             string[] drops = (string[])e.Data.GetData(DataFormats.FileDrop);
             if (drops == null)
@@ -669,7 +662,7 @@ namespace DataEditorX
                 (DockPanel.Parent as MainForm).Open(file);
             }
         }
-        private void menuitem_fixCardCode_Click(object sender, EventArgs e)
+        private void Menuitem_fixCardCode_Click(object sender, EventArgs e)
         {
             string text = fctb.Text;
             Regex regex = new(@"(c[0-9]{4,9})");
@@ -696,7 +689,7 @@ namespace DataEditorX
             }
             fctb.Text = text;
         }
-        private void menuitem_tooltipFont_Click(object sender, EventArgs e)
+        private void Menuitem_tooltipFont_Click(object sender, EventArgs e)
         {
             FontDialog fd = new();
             string fontJson = DEXConfig.ReadString(DEXConfig.TOOLTIP_FONT);
