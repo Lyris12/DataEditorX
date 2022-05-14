@@ -117,7 +117,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if exist &quot;win32.zip&quot; del &quot;win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; &quot;win32.zip&quot; &quot;*&quot;" />
+    <Exec Command="if exist &quot;..\win32\win32.zip&quot; del &quot;..\win32\win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; -x!&quot;*.dll&quot; &quot;..\win32\win32.zip&quot; &quot;..\win32\*&quot;&#xD;&#xA;7z a &quot;..\win32\win32.zip&quot; &quot;..\win32\e_sqlite3.dll&quot;" />
   </Target>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
