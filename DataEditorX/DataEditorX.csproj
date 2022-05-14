@@ -26,6 +26,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="win32.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
 
