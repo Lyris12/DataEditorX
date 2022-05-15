@@ -77,8 +77,7 @@ namespace DataEditorX
             //文件路径
             conflang = DEXConfig.GetLanguageFile(datapath);
             //游戏数据,MSE数据
-            olddatacfg = new DataConfig(DEXConfig.GetCardInfoFile(datapath));
-            datacfg = new DataConfig(DEXConfig.GetCardInfoFile(datapath));
+            olddatacfg = datacfg = new DataConfig(DEXConfig.GetCardInfoFile(datapath));
             string confstring = MyPath.Combine(datapath, DEXConfig.FILE_STRINGS);
             if (File.Exists(confstring))
             {
@@ -125,7 +124,7 @@ namespace DataEditorX
             DockContentCollection contents = dockPanel.Contents;
             foreach (DockContent dc in contents.Cast<DockContent>())
             {
-                if (dc is Form)
+                if (dc is not null)
                 {
                     LanguageHelper.SetFormLabel(dc);
                 }
@@ -573,27 +572,26 @@ namespace DataEditorX
         #endregion
 
         #region 后台加载数据
-        private void bgWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BgWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             Init();
         }
 
-        private void bgWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void BgWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             //更新UI
             InitForm();
         }
         #endregion
 
-        private void dockPanel_DragEnter(object sender, DragEventArgs e)
+        private void DockPanel_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
         }
 
-        private void dockPanel_DragDrop(object sender, DragEventArgs e)
+        private void DockPanel_DragDrop(object sender, DragEventArgs e)
         {
-            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
-            if (files != null)
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files)
             {
                 foreach (string file in files)
                 {
@@ -648,7 +646,7 @@ namespace DataEditorX
         {
             e.Effect = DragDropEffects.All;
         }
-        private void addArchetypeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddArchetypeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dictionary<long, string> d = datacfg.dicSetnames;
             AddArchetypeForm form = new(d);

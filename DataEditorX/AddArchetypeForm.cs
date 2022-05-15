@@ -1,4 +1,7 @@
-﻿namespace DataEditorX
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+namespace DataEditorX
 {
     public partial class AddArchetypeForm : Form
     {

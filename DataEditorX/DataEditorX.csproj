@@ -3,31 +3,31 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>annotations</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
     <Title></Title>
-    <Version>4.0.1</Version>
-    <AssemblyVersion>4.0.1</AssemblyVersion>
-    <FileVersion>4.0.1</FileVersion>
+    <Version>4.0.1.1</Version>
+    <AssemblyVersion>4.0.1.1</AssemblyVersion>
+    <FileVersion>4.0.1.1</FileVersion>
     <PackageId />
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <BaseOutputPath>..\bin\</BaseOutputPath>
     <BaseIntermediateOutputPath>obj</BaseIntermediateOutputPath>
+    <StartupObject></StartupObject>
+    <ErrorReport>none</ErrorReport>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="win32.zip" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="icon.ico" />
@@ -45,9 +45,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="changed.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="data\avalon.xshd">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
@@ -109,16 +106,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="readme.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="readme_english.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if exist &quot;..\win32\win32.zip&quot; del &quot;..\win32\win32.zip&quot;&#xD;&#xA;7z a -x!&quot;*.pdb&quot; -x!&quot;*.zip&quot; -x!&quot;*.dll&quot; &quot;..\win32\win32.zip&quot; &quot;..\win32\*&quot;&#xD;&#xA;7z a &quot;..\win32\win32.zip&quot; &quot;..\win32\e_sqlite3.dll&quot;" />
-  </Target>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="if exist &quot;..\obj\&quot; del /Q &quot;..\obj\&quot;" />

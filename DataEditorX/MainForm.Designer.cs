@@ -87,8 +87,8 @@ namespace DataEditorX
             this.dockPanel.ShowAutoHideContentOnHover = false;
             this.dockPanel.Size = new System.Drawing.Size(992, 725);
             this.dockPanel.TabIndex = 0;
-            this.dockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.dockPanel_DragDrop);
-            this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.dockPanel_DragEnter);
+            this.dockPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.DockPanel_DragDrop);
+            this.dockPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.DockPanel_DragEnter);
             // 
             // mainMenu
             // 
@@ -294,15 +294,15 @@ namespace DataEditorX
             // 
             // bgWorker1
             // 
-            this.bgWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker1_DoWork);
-            this.bgWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker1_RunWorkerCompleted);
+            this.bgWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgWorker1_DoWork);
+            this.bgWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgWorker1_RunWorkerCompleted);
             // 
             // addArchetypeToolStripMenuItem
             // 
             this.addArchetypeToolStripMenuItem.Name = "addArchetypeToolStripMenuItem";
             this.addArchetypeToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
             this.addArchetypeToolStripMenuItem.Text = "Add Arche&type";
-            this.addArchetypeToolStripMenuItem.Click += new System.EventHandler(this.addArchetypeToolStripMenuItem_Click);
+            this.addArchetypeToolStripMenuItem.Click += new System.EventHandler(this.AddArchetypeToolStripMenuItem_Click);
             // 
             // MainForm
             // 

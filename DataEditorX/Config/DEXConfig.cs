@@ -14,7 +14,7 @@ namespace DataEditorX.Config
         public const string TAG_SAVE_LAGN = "-savelanguage";
         public const string TAG_SAVE_LAGN2 = "-sl";
         public const string TAG_MSE_PATH = "mse_path";
-        public const string TAG_MSE_EXPORT = "mse_exprotpath";
+        public const string TAG_MSE_EXPORT = "mse_exportpath";
         public const string TAG_AUTO_LEN = "autolength";
         /// <summary>
         /// 窗口消息 打开文件
