@@ -161,7 +161,7 @@
 0x100000	Slifer         
 0x200000	Maximum        
 0x400000	Simple Chinese 
-0x800000	Pendulum Effect
+0x800000	Blank Pendulum Effect
 ##setname
 -1	Custom
 0x0	Archetype

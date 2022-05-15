@@ -5,7 +5,10 @@
  * 时间: 17:01
  * 
  */
+using System;
+using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
+using System.IO;
 using System.Text;
 
 namespace DataEditorX.Core
@@ -29,7 +32,7 @@ namespace DataEditorX.Core
             for (int i = 1; i <= 16; i++)
             {
                 _ = st.Append(",str");
-                _ = st.Append(i.ToString());
+                _ = st.Append(i);
                 _ = st.Append(" text");
             }
             _ = st.Append(");");
@@ -44,7 +47,7 @@ namespace DataEditorX.Core
             for (int i = 1; i <= 16; i++)
             {
                 _ = ost.Append(",str");
-                _ = ost.Append(i.ToString());
+                _ = ost.Append(i);
                 _ = ost.Append(" text");
             }
             _ = ost.Append(");");
@@ -117,22 +120,24 @@ namespace DataEditorX.Core
             {
                 using SqliteConnection con = new(@"Data Source=" + DB);
                 con.Open();
-                using SqliteTransaction trans = con.BeginTransaction();
-                try
+                using (SqliteTransaction trans = con.BeginTransaction())
                 {
-                    foreach (string SQLstr in SQLs)
+                    try
                     {
-                        using SqliteCommand cmd = con.CreateCommand();
-                        cmd.CommandText = SQLstr;
-                        result += cmd.ExecuteNonQuery();
+                        foreach (string SQLstr in SQLs)
+                        {
+                            using SqliteCommand cmd = con.CreateCommand();
+                            cmd.CommandText = SQLstr;
+                            result += cmd.ExecuteNonQuery();
+                        }
                     }
+                    catch
+                    {
+                        trans.Rollback();//出错，回滚
+                        result = -1;
+                    }
+                    if (result != -1) trans.Commit();
                 }
-                catch
-                {
-                    trans.Rollback();//出错，回滚
-                    result = -1;
-                }
-                trans.Commit();
                 con.Close();
                 SqliteConnection.ClearAllPools();
             }
@@ -595,58 +600,58 @@ namespace DataEditorX.Core
                 _ = st.Append("INSERT or replace into datas values(");
             }
 
-            _ = st.Append(c.id.ToString()); _ = st.Append(",");
-            _ = st.Append(c.ot.ToString()); _ = st.Append(",");
-            _ = st.Append(c.alias.ToString()); _ = st.Append(",");
+            _ = st.Append(c.id); _ = st.Append(',');
+            _ = st.Append(c.ot); _ = st.Append(',');
+            _ = st.Append(c.alias); _ = st.Append(',');
             if (hex)
             {
-                _ = st.Append("0x" + c.setcode.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.type.ToString("x")); _ = st.Append(",");
+                _ = st.Append("0x" + c.setcode.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.type.ToString("x")); _ = st.Append(',');
             }
             else
             {
-                _ = st.Append(c.setcode.ToString()); _ = st.Append(",");
-                _ = st.Append(c.type.ToString()); _ = st.Append(",");
+                _ = st.Append(c.setcode); _ = st.Append(',');
+                _ = st.Append(c.type); _ = st.Append(',');
             }
-            _ = st.Append(c.atk.ToString()); ; _ = st.Append(",");
-            _ = st.Append(c.def.ToString()); _ = st.Append(",");
+            _ = st.Append(c.atk); ; _ = st.Append(',');
+            _ = st.Append(c.def); _ = st.Append(',');
             if (hex)
             {
-                _ = st.Append("0x" + c.level.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.race.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.attribute.ToString("x")); _ = st.Append(",");
+                _ = st.Append("0x" + c.level.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.race.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.attribute.ToString("x")); _ = st.Append(',');
                 if (c.omega[0] > 0) _ = st.Append("0x" + c.omega[1].ToString("x")); else _ = st.Append("0x0");
-                _ = st.Append(",");
+                _ = st.Append(',');
                 _ = st.Append("0x" + c.category.ToString("x"));
                 if (c.omega[0] > 0)
                 {
-                    _ = st.Append(",");
+                    _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(","); _ = st.Append("0x" + c.omega[2].ToString("x"));
-                    _ = st.Append(","); _ = st.Append(c.omega[3].ToString());
-                    _ = st.Append(","); _ = st.Append(c.omega[4].ToString());
+                    _ = st.Append(','); _ = st.Append("0x" + c.omega[2].ToString("x"));
+                    _ = st.Append(','); _ = st.Append(c.omega[3]);
+                    _ = st.Append(','); _ = st.Append(c.omega[4]);
                 }
                 else _ = st.Append(",null,0x0,253402207200,253402207200");
             }
             else
             {
-                _ = st.Append(c.level.ToString()); _ = st.Append(",");
-                _ = st.Append(c.race.ToString()); _ = st.Append(",");
-                _ = st.Append(c.attribute.ToString()); _ = st.Append(",");
-                if (c.omega[0] > 0) _ = st.Append(c.omega[1].ToString()); else _ = st.Append("0");
-                _ = st.Append(",");
-                _ = st.Append(c.category.ToString());
+                _ = st.Append(c.level); _ = st.Append(',');
+                _ = st.Append(c.race); _ = st.Append(',');
+                _ = st.Append(c.attribute); _ = st.Append(',');
+                if (c.omega[0] > 0) _ = st.Append(c.omega[1]); else _ = st.Append('0');
+                _ = st.Append(',');
+                _ = st.Append(c.category);
                 if (c.omega[0] > 0)
                 {
-                    _ = st.Append(",");
+                    _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(","); _ = st.Append(c.omega[2].ToString());
-                    _ = st.Append(","); _ = st.Append(c.omega[3].ToString());
-                    _ = st.Append(","); _ = st.Append(c.omega[4].ToString());
+                    _ = st.Append(','); _ = st.Append(c.omega[2]);
+                    _ = st.Append(','); _ = st.Append(c.omega[3]);
+                    _ = st.Append(','); _ = st.Append(c.omega[4]);
                 }
                 else _ = st.Append(",null,0,253402207200,253402207200");
             }
-            _ = st.Append(")");
+            _ = st.Append(')');
             if (ignore)
             {
                 _ = st.Append(";\nINSERT or ignore into texts values(");
@@ -656,7 +661,7 @@ namespace DataEditorX.Core
                 _ = st.Append(";\nINSERT or replace into texts values(");
             }
 
-            _ = st.Append(c.id.ToString()); _ = st.Append(",'");
+            _ = st.Append(c.id); _ = st.Append(",'");
             _ = st.Append(c.name.Replace("'", "''")); _ = st.Append("','");
             _ = st.Append(c.desc.Replace("'", "''"));
             for (int i = 0; i < 0x10; i++)
@@ -685,36 +690,36 @@ namespace DataEditorX.Core
                 _ = st.Append("INSERT or replace into datas values(");
             }
 
-            _ = st.Append(c.id.ToString()); _ = st.Append(",");
-            _ = st.Append(c.ot.ToString()); _ = st.Append(",");
-            _ = st.Append(c.alias.ToString()); _ = st.Append(",");
+            _ = st.Append(c.id); _ = st.Append(',');
+            _ = st.Append(c.ot); _ = st.Append(',');
+            _ = st.Append(c.alias); _ = st.Append(',');
             if (hex)
             {
-                _ = st.Append("0x" + c.setcode.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.type.ToString("x")); _ = st.Append(",");
+                _ = st.Append("0x" + c.setcode.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.type.ToString("x")); _ = st.Append(',');
             }
             else
             {
-                _ = st.Append(c.setcode.ToString()); _ = st.Append(",");
-                _ = st.Append(c.type.ToString()); _ = st.Append(",");
+                _ = st.Append(c.setcode); _ = st.Append(',');
+                _ = st.Append(c.type); _ = st.Append(',');
             }
-            _ = st.Append(c.atk.ToString()); ; _ = st.Append(",");
-            _ = st.Append(c.def.ToString()); _ = st.Append(",");
+            _ = st.Append(c.atk); ; _ = st.Append(',');
+            _ = st.Append(c.def); _ = st.Append(',');
             if (hex)
             {
-                _ = st.Append("0x" + c.level.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.race.ToString("x")); _ = st.Append(",");
-                _ = st.Append("0x" + c.attribute.ToString("x")); _ = st.Append(",");
+                _ = st.Append("0x" + c.level.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.race.ToString("x")); _ = st.Append(',');
+                _ = st.Append("0x" + c.attribute.ToString("x")); _ = st.Append(',');
                 _ = st.Append("0x" + c.category.ToString("x"));
             }
             else
             {
-                _ = st.Append(c.level.ToString()); _ = st.Append(",");
-                _ = st.Append(c.race.ToString()); _ = st.Append(",");
-                _ = st.Append(c.attribute.ToString()); _ = st.Append(",");
-                _ = st.Append(c.category.ToString());
+                _ = st.Append(c.level); _ = st.Append(',');
+                _ = st.Append(c.race); _ = st.Append(',');
+                _ = st.Append(c.attribute); _ = st.Append(',');
+                _ = st.Append(c.category);
             }
-            _ = st.Append(")");
+            _ = st.Append(')');
             if (ignore)
             {
                 _ = st.Append(";\nINSERT or ignore into texts values(");
@@ -724,7 +729,7 @@ namespace DataEditorX.Core
                 _ = st.Append(";\nINSERT or replace into texts values(");
             }
 
-            _ = st.Append(c.id.ToString()); _ = st.Append(",'");
+            _ = st.Append(c.id); _ = st.Append(",'");
             _ = st.Append(c.name.Replace("'", "''")); _ = st.Append("','");
             _ = st.Append(c.desc.Replace("'", "''"));
             for (int i = 0; i < 0x10; i++)
@@ -746,39 +751,39 @@ namespace DataEditorX.Core
         public static string OmegaGetUpdateSQL(Card c)
         {
             StringBuilder st = new();
-            _ = st.Append("update datas set ot="); _ = st.Append(c.ot.ToString());
-            _ = st.Append(",alias="); _ = st.Append(c.alias.ToString());
-            _ = st.Append(",setcode="); _ = st.Append(c.setcode.ToString());
-            _ = st.Append(",type="); _ = st.Append(c.type.ToString());
-            _ = st.Append(",atk="); _ = st.Append(c.atk.ToString());
-            _ = st.Append(",def="); _ = st.Append(c.def.ToString());
-            _ = st.Append(",level="); _ = st.Append(c.level.ToString());
-            _ = st.Append(",race="); _ = st.Append(c.race.ToString());
-            _ = st.Append(",attribute="); _ = st.Append(c.attribute.ToString());
+            _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
+            _ = st.Append(",alias="); _ = st.Append(c.alias);
+            _ = st.Append(",setcode="); _ = st.Append(c.setcode);
+            _ = st.Append(",type="); _ = st.Append(c.type);
+            _ = st.Append(",atk="); _ = st.Append(c.atk);
+            _ = st.Append(",def="); _ = st.Append(c.def);
+            _ = st.Append(",level="); _ = st.Append(c.level);
+            _ = st.Append(",race="); _ = st.Append(c.race);
+            _ = st.Append(",attribute="); _ = st.Append(c.attribute);
             _ = st.Append(",category=");
             if (c.omega[0] > 0)
             {
-                _ = st.Append(c.omega[1].ToString());
-                _ = st.Append(",script="); _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + st.Append(c.script.Replace("'", "''")) + "'");
-                _ = st.Append(",ocgdate="); _ = st.Append(((DateTime.Parse(c.GetDate()).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
-                _ = st.Append(",tcgdate="); _ = st.Append(((DateTime.Parse(c.GetDate(1)).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000).ToString());
+                _ = st.Append(c.omega[1]);
+                _ = st.Append(",script="); _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
+                _ = st.Append(",ocgdate="); _ = st.Append((DateTime.Parse(c.GetDate()).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
+                _ = st.Append(",tcgdate="); _ = st.Append((DateTime.Parse(c.GetDate(1)).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
                 _ = st.Append(",genre=");
             }
-            _ = st.Append(c.category.ToString());
-            _ = st.Append(" where id="); _ = st.Append(c.id.ToString());
+            _ = st.Append(c.category);
+            _ = st.Append(" where id="); _ = st.Append(c.id);
             _ = st.Append("; update texts set name='"); _ = st.Append(c.name.Replace("'", "''"));
             _ = st.Append("',desc='"); _ = st.Append(c.desc.Replace("'", "''")); _ = st.Append("', ");
             for (int i = 0; i < 0x10; i++)
             {
-                _ = st.Append("str"); _ = st.Append((i + 1).ToString()); _ = st.Append("='");
+                _ = st.Append("str"); _ = st.Append(i + 1); _ = st.Append("='");
                 _ = st.Append(c.Str[i].Replace("'", "''"));
                 if (i < 15)
                 {
                     _ = st.Append("',");
                 }
             }
-            _ = st.Append("' where id="); _ = st.Append(c.id.ToString());
-            _ = st.Append(";");
+            _ = st.Append("' where id="); _ = st.Append(c.id);
+            _ = st.Append(';');
             string sql = st.ToString();
             return sql;
         }
@@ -790,30 +795,30 @@ namespace DataEditorX.Core
         public static string GetUpdateSQL(Card c)
         {
             StringBuilder st = new();
-            _ = st.Append("update datas set ot="); _ = st.Append(c.ot.ToString());
-            _ = st.Append(",alias="); _ = st.Append(c.alias.ToString());
-            _ = st.Append(",setcode="); _ = st.Append(c.setcode.ToString());
-            _ = st.Append(",type="); _ = st.Append(c.type.ToString());
-            _ = st.Append(",atk="); _ = st.Append(c.atk.ToString());
-            _ = st.Append(",def="); _ = st.Append(c.def.ToString());
-            _ = st.Append(",level="); _ = st.Append(c.level.ToString());
-            _ = st.Append(",race="); _ = st.Append(c.race.ToString());
-            _ = st.Append(",attribute="); _ = st.Append(c.attribute.ToString());
-            _ = st.Append(",category="); _ = st.Append(c.category.ToString());
-            _ = st.Append(" where id="); _ = st.Append(c.id.ToString());
+            _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
+            _ = st.Append(",alias="); _ = st.Append(c.alias);
+            _ = st.Append(",setcode="); _ = st.Append(c.setcode);
+            _ = st.Append(",type="); _ = st.Append(c.type);
+            _ = st.Append(",atk="); _ = st.Append(c.atk);
+            _ = st.Append(",def="); _ = st.Append(c.def);
+            _ = st.Append(",level="); _ = st.Append(c.level);
+            _ = st.Append(",race="); _ = st.Append(c.race);
+            _ = st.Append(",attribute="); _ = st.Append(c.attribute);
+            _ = st.Append(",category="); _ = st.Append(c.category);
+            _ = st.Append(" where id="); _ = st.Append(c.id);
             _ = st.Append("; update texts set name='"); _ = st.Append(c.name.Replace("'", "''"));
             _ = st.Append("',desc='"); _ = st.Append(c.desc.Replace("'", "''")); _ = st.Append("', ");
             for (int i = 0; i < 0x10; i++)
             {
-                _ = st.Append("str"); _ = st.Append((i + 1).ToString()); _ = st.Append("='");
+                _ = st.Append("str"); _ = st.Append(i + 1); _ = st.Append("='");
                 _ = st.Append(c.Str[i].Replace("'", "''"));
                 if (i < 15)
                 {
                     _ = st.Append("',");
                 }
             }
-            _ = st.Append("' where id="); _ = st.Append(c.id.ToString());
-            _ = st.Append(";");
+            _ = st.Append("' where id="); _ = st.Append(c.id);
+            _ = st.Append(';');
             string sql = st.ToString();
             return sql;
         }

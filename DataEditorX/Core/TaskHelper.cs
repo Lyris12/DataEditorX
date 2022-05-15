@@ -280,11 +280,6 @@ namespace DataEditorX.Core
                 return;
             }
 
-            string pack_db = MyPath.GetRealPath(DEXConfig.ReadString("pack_db"));
-            bool rarity = DEXConfig.ReadBoolean("mse_auto_rarity", false);
-#if DEBUG
-            MessageBox.Show("db = " + pack_db + ",auto rarity=" + rarity);
-#endif
             int c = cards.Length;
             //不分开，或者卡片数小于单个存档的最大值
             if (mseHelper.MaxNum == 0 || c < mseHelper.MaxNum)
@@ -329,24 +324,23 @@ namespace DataEditorX.Core
 
             int i = 0;
             int count = images.Count;
-            using (ZipStorer zips = ZipStorer.Create(file, ""))
+            if (File.Exists(file)) File.Delete(file);
+            ZipArchive zips = ZipFile.Open(file, ZipArchiveMode.Create, System.Text.Encoding.UTF8);
+            zips.CreateEntryFromFile(setFile, "set");
+            foreach (Card c in images.Keys)
             {
-                zips.EncodeUTF8 = true;//zip里面的文件名为utf8
-                zips.AddFile(setFile, "set", "");
-                foreach (Card c in images.Keys)
+                string img = images[c];
+                if (isCancel)
                 {
-                    string img = images[c];
-                    if (isCancel)
-                    {
-                        break;
-                    }
-
-                    i++;
-                    worker.ReportProgress(i / count, string.Format("{0}/{1}-{2}", i, count, num));
-                    //TODO 先裁剪图片
-                    zips.AddFile(mseHelper.GetImageCache(img, c), Path.GetFileName(img), "");
+                    break;
                 }
+
+                i++;
+                worker.ReportProgress(i / count, string.Format("{0}/{1}-{2}", i, count, num));
+                //TODO 先裁剪图片
+                zips.CreateEntryFromFile(img, Path.GetFileName(img));
             }
+            zips.Dispose();
             File.Delete(setFile);
         }
         public Card[] ReadMSE(string mseset, bool repalceOld)

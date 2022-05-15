@@ -1160,6 +1160,7 @@ namespace DataEditorX
             this.pl_cardtype.Padding = new System.Windows.Forms.Padding(2);
             this.pl_cardtype.Size = new System.Drawing.Size(301, 120);
             this.pl_cardtype.TabIndex = 12;
+            this.pl_cardtype.Leave += new System.EventHandler(this.TextToPendulum);
             // 
             // pl_flags
             // 

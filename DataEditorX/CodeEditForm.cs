@@ -12,8 +12,14 @@ using DataEditorX.Language;
 using FastColoredTextBoxNS;
 using Neo.IronLua;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
@@ -380,9 +386,7 @@ namespace DataEditorX
                 if (tl > 0)
                 {
                     //获取卡片信息
-                    if (File.Exists(nowcdb) && (nowcdb.EndsWith(".db",
-                        StringComparison.OrdinalIgnoreCase) || nowcdb.EndsWith(".bytes",
-                        StringComparison.OrdinalIgnoreCase)))
+                    if (File.Exists(nowcdb) && !nowcdb.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase))
                     {
                         _ = DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
                     }
