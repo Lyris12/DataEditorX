@@ -95,6 +95,7 @@ namespace DataEditorX.Config
                 }
 
                 string[] words = line.Split(SEP_LINE);
+                if (line.StartsWith("!setname ")) words = line.Split(" ")[1..];
                 if (words.Length < 2)
                 {
                     continue;
@@ -111,7 +112,7 @@ namespace DataEditorX.Config
                 // N/A 的数据不显示
                 if (!tempDic.ContainsKey(lkey) && words[1] != "N/A")
                 {
-                    tempDic.Add(lkey, words[1]);
+                    tempDic.Add(lkey, string.Join(' ', words[1..]));
                 }
             }
             return tempDic;

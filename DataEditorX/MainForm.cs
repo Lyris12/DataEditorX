@@ -9,6 +9,7 @@ using DataEditorX.Config;
 using DataEditorX.Controls;
 using DataEditorX.Core;
 using DataEditorX.Language;
+using System.Text;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
@@ -211,7 +212,7 @@ namespace DataEditorX
             DataEditForm def;
             if (string.IsNullOrEmpty(file) || !File.Exists(file))
             {
-                def = new DataEditForm(datapath);
+                def = new DataEditForm(datapath, "", datacfg);
             }
             else
             {
@@ -657,7 +658,11 @@ namespace DataEditorX
                 if (!d.ContainsKey(setcode)) d.Add(setcode, setname);
                 codecfg.SetNames(d);
                 if (dockPanel.ActiveContent != null && dockPanel.ActiveContent is DataEditForm df)
+                {
                     df.InitControl(datacfg);
+                    DataBase.Command(df.GetOpenFile(), "insert or ignore into setcodes values(" + setcode + ", 0, '"
+                        + setname + "', 0);");
+                }
             }
         }
         private void MainForm_Load(object sender, EventArgs e)

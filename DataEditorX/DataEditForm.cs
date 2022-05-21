@@ -88,8 +88,7 @@ namespace DataEditorX
         public DataEditForm(string datapath, string cdbfile, DataConfig datacfg = null)
         {
             Initialize(datapath);
-            if (datacfg != null && cdbfile.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
-                || cdbfile.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase))
+            if (datacfg != null && File.Exists(cdbfile) && !cdbfile.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase))
             {
                 Dictionary<long, string> d = datacfg.dicSetnames;
                 if (!d.ContainsKey(0)) d.Add(0L, "Archetype");
