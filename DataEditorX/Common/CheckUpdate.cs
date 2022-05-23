@@ -43,7 +43,7 @@ namespace DataEditorX.Common
             if (!string.IsNullOrEmpty(html))
             {
                 Regex ver = new(@"\[DataEditorX\]([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\[DataEditorX\]");
-                Regex url = new(@"\[URL\]([^\[]+?)\[URL\]");
+                Regex url = new(@"\[URL\]([^\[]+?) ?\[URL\]");
                 if (ver.IsMatch(html) && url.IsMatch(html))
                 {
                     Match mVer = ver.Match(html);
@@ -102,23 +102,20 @@ namespace DataEditorX.Common
             string htmlContent = string.Empty;
             try
             {
-                HttpWebRequest httpWebRequest =
-                    (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.Timeout = 15000;
-                using (HttpWebResponse httpWebResponse =
-                       (HttpWebResponse)httpWebRequest.GetResponse())
+                HttpClient httpClient = new()
                 {
-                    using (Stream stream = httpWebResponse.GetResponseStream())
+                    //(HttpWebRequest)WebRequest.Create(url);
+                    Timeout = TimeSpan.FromMilliseconds(15000)
+                };
+                using (Stream stream = httpClient.GetStreamAsync(url).Result)
+                {
+                    using (StreamReader streamReader =
+                            new(stream, Encoding.UTF8))
                     {
-                        using (StreamReader streamReader =
-                               new(stream, Encoding.UTF8))
-                        {
-                            htmlContent = streamReader.ReadToEnd();
-                            streamReader.Close();
-                        }
-                        stream.Close();
+                        htmlContent = streamReader.ReadToEnd();
+                        streamReader.Close();
                     }
-                    httpWebResponse.Close();
+                    stream.Close();
                 }
                 return htmlContent;
             }
@@ -145,11 +142,7 @@ namespace DataEditorX.Common
                     File.Delete(filename);
                 }
 
-                HttpWebRequest Myrq = (HttpWebRequest)WebRequest.Create(URL);
-                HttpWebResponse myrp = (HttpWebResponse)Myrq.GetResponse();
-                long totalBytes = myrp.ContentLength;
-
-                Stream st = myrp.GetResponseStream();
+                Stream st = new HttpClient().GetStreamAsync(URL).Result;
                 Stream so = new FileStream(filename + ".tmp", FileMode.Create);
                 long totalDownloadedByte = 0;
                 byte[] by = new byte[1024 * 512];
