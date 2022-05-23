@@ -296,7 +296,11 @@ namespace DataEditorX.Core
             string lua;
             if (c.id > 0)
             {
-                lua = c.omega[0] > 0 ? MyPath.Combine(dataform.GetPath().gamepath, "..", "Scripts", "c" + id + ".lua") : dataform.GetPath().GetScript(id);
+                lua = dataform.GetPath().GetScript(id);
+                if (c.omega[0] > 0 && !File.Exists(lua))
+                {
+                    lua = MyPath.Combine(dataform.GetPath().gamepath, "../Scripts", "c" + id + ".lua");
+                }
             }
             else if (addrequire.Length > 0)
             {
@@ -306,11 +310,16 @@ namespace DataEditorX.Core
             {
                 return false;
             }
-            if (!File.Exists(lua))
+            if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script) && !byte.TryParse(c.script, out _))
             {
-                MyPath.CreateDirByFile(lua);
-                if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script))
+                if (openinthis)
                 {
+                    DEXConfig.OpenFileInThis(c.script);
+                    return true;
+                }
+                else
+                {
+                    MyPath.CreateDirByFile(lua);
                     using FileStream fs = new(lua,
                         FileMode.OpenOrCreate, FileAccess.Write);
                     StreamWriter sw = new(fs, new UTF8Encoding(false));
@@ -318,7 +327,11 @@ namespace DataEditorX.Core
                     sw.Close();
                     fs.Close();
                 }
-                else if (MyMsg.Question(LMSG.IfCreateScript))//是否创建脚本
+            }
+            if (!File.Exists(lua))
+            {
+                MyPath.CreateDirByFile(lua);
+                if (MyMsg.Question(LMSG.IfCreateScript))//是否创建脚本
                 {
                     using FileStream fs = new(lua,
                         FileMode.OpenOrCreate, FileAccess.Write);

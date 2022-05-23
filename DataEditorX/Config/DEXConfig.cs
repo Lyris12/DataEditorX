@@ -351,6 +351,7 @@ namespace DataEditorX.Config
             File.WriteAllText(tmpfile, file);
             //发送消息
             _ = User32.SendMessage(Process.GetCurrentProcess().MainWindowHandle, WM_OPEN, 0, 0);
+            File.Delete(tmpfile);
         }
         public static Process RunningInstance(string filename)
         {

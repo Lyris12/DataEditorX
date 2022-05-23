@@ -9,7 +9,6 @@ using DataEditorX.Config;
 using DataEditorX.Controls;
 using DataEditorX.Core;
 using DataEditorX.Language;
-using System.Text;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace DataEditorX
@@ -203,7 +202,15 @@ namespace DataEditorX
             //初始化函数提示
             cf.InitTooltip(codecfg);
             //打开文件
-            _ = cf.Open(file, dockPanel.ActiveContent is DataEditForm df ? Path.GetFileNameWithoutExtension(df.GetOpenFile()) : "cards");
+            DataEditForm df;
+            try { df = (DataEditForm)dockPanel.ActiveContent; }
+            catch { df = null; }
+            if (file.IndexOf('\n') > -1 || file.IndexOf("function ") > -1)
+            {
+                if (df != null) cf.SetCardDB(df.GetOpenFile());
+                cf.Controls["fctb"].Text = file;
+            }
+            else _ = cf.Open(file, df == null ? "cards" : Path.GetFileNameWithoutExtension(df.GetOpenFile()));
             cf.Show(dockPanel, DockState.Document);
         }
         //打开数据库
@@ -227,6 +234,11 @@ namespace DataEditorX
         //打开文件
         public void Open(string file)
         {
+            if (file.IndexOf('\n') > -1)
+            {
+                OpenScript(file);
+                return;
+            }
             if (string.IsNullOrEmpty(file) || !File.Exists(file))
             {
                 return;

@@ -211,6 +211,12 @@ namespace DataEditorX
                     Path.GetDirectoryName(file), "../Databases", dbname + ".bytes");
                 if (!File.Exists(cdb)) cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "../Databases", dbname + ".db");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                      Path.GetDirectoryName(file), "../Database.bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "..", dbname + ".bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "..", dbname + ".db");
                 SetCardDB(cdb);//后台加载卡片数据
                 fctb.OpenFile(nowFile, new UTF8Encoding(false));
                 oldtext = fctb.Text;
