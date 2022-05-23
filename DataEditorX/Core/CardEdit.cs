@@ -336,24 +336,13 @@ namespace DataEditorX.Core
                     using FileStream fs = new(lua,
                         FileMode.OpenOrCreate, FileAccess.Write);
                     StreamWriter sw = new(fs, new UTF8Encoding(false));
-                    if (string.IsNullOrEmpty(addrequire))
-                    {
-                        // OCG script
-                        sw.WriteLine("--" + c.name);
-                        sw.WriteLine("function c" + id.ToString() + ".initial_effect(c)");
-                        sw.WriteLine("\t");
-                        sw.WriteLine("end");
-                    }
-                    else
-                    {
-                        // DIY script
-                        sw.WriteLine("--" + c.name);
-                        sw.WriteLine("local s,id=GetID()");
-                        sw.WriteLine("Duel.LoadScript(\"" + addrequire + ".lua\")");
-                        sw.WriteLine("function s.initial_effect(c)");
-                        sw.WriteLine("\t");
-                        sw.WriteLine("end");
-                    }
+                    sw.WriteLine("--" + c.name);
+                    sw.WriteLine("local s,id=GetID()");
+                    if (!string.IsNullOrEmpty(addrequire))
+                        sw.WriteLine("Duel.LoadScript(\"" + addrequire + ".lua\")"); // DIY script
+                    sw.WriteLine("function s.initial_effect(c)");
+                    sw.WriteLine("\t");
+                    sw.WriteLine("end");
                     sw.Close();
                     fs.Close();
                 }
