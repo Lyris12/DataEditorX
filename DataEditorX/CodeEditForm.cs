@@ -93,7 +93,7 @@ namespace DataEditorX
             popupMenu.MinimumSize = new Size(300, 0);
             popupMenu.BackColor = fctb.BackColor;
             popupMenu.ForeColor = fctb.ForeColor;
-            popupMenu.Closed += new ToolStripDropDownClosedEventHandler(popupMenu_Closed);
+            popupMenu.Closed += new ToolStripDropDownClosedEventHandler(PopupMenu_Closed);
             popupMenu.SelectedColor = Color.LightGray;
             popupMenu.VisibleChanged += PopupMenu_VisibleChanged;
             popupMenu.Opened += PopupMenu_VisibleChanged;
@@ -158,7 +158,7 @@ namespace DataEditorX
                 popupMenu.Items.FocussedItem.ToolTipText);
         }
 
-        void popupMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        void PopupMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
             popupMenu.Items.SetAutocompleteItems(items);
         }
@@ -183,7 +183,7 @@ namespace DataEditorX
         }
         public bool Save(bool shift)
         {
-            return savefile(shift);
+            return SaveFile(shift);
         }
         public bool Open(string file, string dbname = "cards")
         {
@@ -358,7 +358,7 @@ namespace DataEditorX
         #endregion
 
         #region 保存文件
-        bool savefile(bool saveas)
+        bool SaveFile(bool saveas)
         {
             string alltext = fctb.Text;
             if (!tabisspaces)
@@ -366,7 +366,7 @@ namespace DataEditorX
                 alltext = alltext.Replace("    ", "\t");
             }
 
-            if (saveas)
+            if (saveas || string.IsNullOrEmpty(nowFile))
             {
                 using SaveFileDialog sfdlg = new();
                 try

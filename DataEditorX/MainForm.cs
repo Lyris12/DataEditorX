@@ -205,7 +205,7 @@ namespace DataEditorX
             DataEditForm df;
             try { df = (DataEditForm)dockPanel.ActiveContent; }
             catch { df = null; }
-            if (file.IndexOf('\n') > -1 || file.IndexOf("function ") > -1)
+            if (!string.IsNullOrEmpty(file) && (file.IndexOf('\n') > -1 || file.IndexOf("function ") > -1))
             {
                 if (df != null) cf.SetCardDB(df.GetOpenFile());
                 cf.Controls["fctb"].Text = file;

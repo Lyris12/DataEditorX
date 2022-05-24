@@ -299,7 +299,14 @@ namespace DataEditorX.Core
                 lua = dataform.GetPath().GetScript(id);
                 if (c.omega[0] > 0 && !File.Exists(lua))
                 {
-                    lua = MyPath.Combine(dataform.GetPath().gamepath, "../Scripts", "c" + id + ".lua");
+                    string tmp = MyPath.Combine(dataform.GetPath().gamepath, "../Scripts", "c" + id + ".lua");
+                    if (File.Exists(tmp)) lua = tmp;
+                    if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script)
+                        && !byte.TryParse(c.script, out _) && openinthis)
+                    {
+                        DEXConfig.OpenFileInThis(c.script);
+                        return true;
+                    }
                 }
             }
             else if (addrequire.Length > 0)
@@ -310,14 +317,10 @@ namespace DataEditorX.Core
             {
                 return false;
             }
-            if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script) && !byte.TryParse(c.script, out _))
+            if (!File.Exists(lua))
             {
-                if (openinthis)
-                {
-                    DEXConfig.OpenFileInThis(c.script);
-                    return true;
-                }
-                else
+                if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script) && !byte.TryParse(c.script, out _)
+                    && !openinthis)
                 {
                     MyPath.CreateDirByFile(lua);
                     using FileStream fs = new(lua,
@@ -327,12 +330,9 @@ namespace DataEditorX.Core
                     sw.Close();
                     fs.Close();
                 }
-            }
-            if (!File.Exists(lua))
-            {
-                MyPath.CreateDirByFile(lua);
                 if (MyMsg.Question(LMSG.IfCreateScript))//是否创建脚本
                 {
+                    MyPath.CreateDirByFile(lua);
                     using FileStream fs = new(lua,
                         FileMode.OpenOrCreate, FileAccess.Write);
                     StreamWriter sw = new(fs, new UTF8Encoding(false));
