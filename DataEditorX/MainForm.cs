@@ -36,6 +36,9 @@ namespace DataEditorX
         public DataConfig GetDataConfig(bool old = false) {
             return old ? olddatacfg : datacfg;
         }
+        public CodeConfig GetCodeConfig() {
+            return codecfg;
+        }
         #region 设置界面，消息语言
         public MainForm()
         {
@@ -658,24 +661,6 @@ namespace DataEditorX
         private void MainForm_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.All;
-        }
-        private void AddArchetypeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Dictionary<long, string> d = datacfg.dicSetnames;
-            AddArchetypeForm form = new(d);
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                int setcode = form.code;
-                string setname = form.name;
-                if (!d.ContainsKey(setcode)) d.Add(setcode, setname);
-                codecfg.SetNames(d);
-                if (dockPanel.ActiveContent != null && dockPanel.ActiveContent is DataEditForm df)
-                {
-                    df.InitControl(datacfg);
-                    DataBase.Command(df.GetOpenFile(), "insert or ignore into setcodes values(" + setcode + ", 0, '"
-                        + setname + "', 0);");
-                }
-            }
         }
         private void MainForm_Load(object sender, EventArgs e)
         {

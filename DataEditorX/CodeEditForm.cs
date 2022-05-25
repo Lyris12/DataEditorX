@@ -5,6 +5,7 @@
  * 时间: 19:16
  * 
  */
+using DataEditorX.Common;
 using DataEditorX.Config;
 using DataEditorX.Controls;
 using DataEditorX.Core;
@@ -206,17 +207,17 @@ namespace DataEditorX
                 if (!File.Exists(cdb)) cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "..", dbname + ".cdb");
                 if (!File.Exists(cdb)) cdb = MyPath.Combine(
-                      Path.GetDirectoryName(file), "../Databases/Database.bytes");
-                if (!File.Exists(cdb)) cdb = MyPath.Combine(
-                    Path.GetDirectoryName(file), "../Databases", dbname + ".bytes");
-                if (!File.Exists(cdb)) cdb = MyPath.Combine(
-                    Path.GetDirectoryName(file), "../Databases", dbname + ".db");
-                if (!File.Exists(cdb)) cdb = MyPath.Combine(
                       Path.GetDirectoryName(file), "../Database.bytes");
                 if (!File.Exists(cdb)) cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "..", dbname + ".bytes");
                 if (!File.Exists(cdb)) cdb = MyPath.Combine(
                     Path.GetDirectoryName(file), "..", dbname + ".db");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                      Path.GetDirectoryName(file), "../Databases/Database.bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "../Databases", dbname + ".bytes");
+                if (!File.Exists(cdb)) cdb = MyPath.Combine(
+                    Path.GetDirectoryName(file), "../Databases", dbname + ".db");
                 SetCardDB(cdb);//后台加载卡片数据
                 fctb.OpenFile(nowFile, new UTF8Encoding(false));
                 oldtext = fctb.Text;
@@ -386,19 +387,15 @@ namespace DataEditorX
             }
             oldtext = fctb.Text;
             File.WriteAllText(nowFile, alltext, new UTF8Encoding(false));
-            try
+            if (long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl) && tl > 0
+                && File.Exists(nowcdb) && DEXConfig.ReadBoolean(DEXConfig.TAG_SAVE2DB))
             {
-                _ = long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl);
-                if (tl > 0)
+                try
                 {
-                    //获取卡片信息
-                    if (File.Exists(nowcdb) && !nowcdb.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase))
-                    {
-                        _ = DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
-                    }
+                    _ = DataBase.Command(nowcdb, "update datas set script = '" + alltext.Replace("'", "''") + "' where id=" + tl);
                 }
+                catch { }
             }
-            catch { }
             return true;
         }
         #endregion
@@ -716,6 +713,12 @@ namespace DataEditorX
                 Common.XMLReader.Save(DEXConfig.TOOLTIP_FONT, JsonConvert.SerializeObject(fd.Font));
                 fctb.lbTooltip.Font = fd.Font;
             }
+        }
+        private void Menuitem_save2database_Click(object sender, EventArgs e)
+        {
+            menuitem_save2database.Checked = !menuitem_save2database.Checked;
+            XMLReader.Save(DEXConfig.TAG_SAVE2DB, menuitem_save2database.Checked.ToString().ToLower());
+
         }
     }
 }

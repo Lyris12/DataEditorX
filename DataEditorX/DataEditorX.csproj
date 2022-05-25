@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
     <Title></Title>
-    <Version>4.0.1.6</Version>
+    <Version>4.0.1.7</Version>
     <AssemblyVersion>4.0.1.1</AssemblyVersion>
     <FileVersion>4.0.1.1</FileVersion>
     <PackageId />
@@ -28,6 +28,10 @@
     <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
     <DebugType>portable</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Config\ts1xi1ol.qaq~" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="icon.ico" />

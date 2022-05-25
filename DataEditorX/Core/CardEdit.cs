@@ -302,7 +302,7 @@ namespace DataEditorX.Core
                     string tmp = MyPath.Combine(dataform.GetPath().gamepath, "../Scripts", "c" + id + ".lua");
                     if (File.Exists(tmp)) lua = tmp;
                     if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script)
-                        && !byte.TryParse(c.script, out _) && openinthis)
+                        && !byte.TryParse(c.script, out _) && !File.Exists(lua) && openinthis)
                     {
                         DEXConfig.OpenFileInThis(c.script);
                         return true;

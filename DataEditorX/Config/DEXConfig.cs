@@ -115,7 +115,7 @@ namespace DataEditorX.Config
         /// <summary>
         /// 图片质量
         /// </summary>
-        public const string TAG_IMAGE_QUILTY = "image_quilty";
+        public const string TAG_IMAGE_QUALITY = "image_quality";
         //CodeEditor
         /// <summary>
         /// 字体名
@@ -141,6 +141,9 @@ namespace DataEditorX.Config
         /// tab替换为空格
         /// </summary>
         public const string TAG_TAB2SPACES = "tabisspace";
+        /// <summary>
+        /// </summary>
+        public const string TAG_SAVE2DB = "save_to_db";
         /// <summary>
         /// 规则
         /// </summary>

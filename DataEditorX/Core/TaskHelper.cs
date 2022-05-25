@@ -119,7 +119,7 @@ namespace DataEditorX.Core
 
             Bitmap bmp = new(img);
             _ = MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
-                                saveimg1, imgSet.quilty);
+                                saveimg1, imgSet.quality);
             //MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.w, imgSet.h),
             //					saveimg2, imgSet.quilty);
             bmp.Dispose();
@@ -210,7 +210,7 @@ namespace DataEditorX.Core
                         bmp = MyBitmap.Cut(bp, imgSet.normalArea);
                     }
                     bp.Dispose();
-                    _ = MyBitmap.SaveAsJPEG(bmp, savejpg, imgSet.quilty);
+                    _ = MyBitmap.SaveAsJPEG(bmp, savejpg, imgSet.quality);
                     //bmp.Save(savejpg, ImageFormat.Png);
                 }
             }
@@ -250,7 +250,7 @@ namespace DataEditorX.Core
                         {
 
                             _ = MyBitmap.SaveAsJPEG(MyBitmap.Zoom(bmp, imgSet.W, imgSet.H),
-                                                jpg_b, imgSet.quilty);
+                                                jpg_b, imgSet.quality);
                         }
                         //小图，如果替换，或者不存在
                         //if (isreplace || !File.Exists(jpg_s))

@@ -69,7 +69,6 @@ namespace DataEditorX
             this.menuitem_closeother = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_closeall = new System.Windows.Forms.ToolStripMenuItem();
             this.bgWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.addArchetypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,8 +93,7 @@ namespace DataEditorX
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuitem_file,
-            this.menuitem_windows,
-            this.addArchetypeToolStripMenuItem});
+            this.menuitem_windows});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.MdiWindowListItem = this.menuitem_windows;
             this.mainMenu.Name = "mainMenu";
@@ -297,13 +295,6 @@ namespace DataEditorX
             this.bgWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BgWorker1_DoWork);
             this.bgWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BgWorker1_RunWorkerCompleted);
             // 
-            // addArchetypeToolStripMenuItem
-            // 
-            this.addArchetypeToolStripMenuItem.Name = "addArchetypeToolStripMenuItem";
-            this.addArchetypeToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
-            this.addArchetypeToolStripMenuItem.Text = "Add Arche&type";
-            this.addArchetypeToolStripMenuItem.Click += new System.EventHandler(this.AddArchetypeToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -354,6 +345,5 @@ namespace DataEditorX
         private System.ComponentModel.BackgroundWorker bgWorker1;
         private System.Windows.Forms.ToolStripMenuItem menuitem_save;
         private System.Windows.Forms.ToolStripMenuItem menuitem_saveas;
-        private System.Windows.Forms.ToolStripMenuItem addArchetypeToolStripMenuItem;
     }
 }

@@ -660,7 +660,7 @@ namespace DataEditorX
             return oldCard;
         }
 
-        private void setLinkMarks(long mark, bool setCheck = false)
+        private void SetLinkMarks(long mark, bool setCheck = false)
         {
             if (setCheck)
             {
@@ -696,7 +696,7 @@ namespace DataEditorX
             SetCheck(pl_cardtype, c.type);
             if (c.IsType(Core.Info.CardType.TYPE_LINK))
             {
-                setLinkMarks(c.def, true);
+                SetLinkMarks(c.def, true);
             }
             else
             {
@@ -988,7 +988,7 @@ namespace DataEditorX
             {
                 _ = DataBase.Read(nowCdbFile,
                                               true, tmpCodes.ToArray());
-                SetCards(getCompCards(), true);
+                SetCards(GetCompCards(), true);
             }
             else
             {
@@ -1182,7 +1182,7 @@ namespace DataEditorX
         }
         public void CheckUpdate(bool showNew)
         {
-            if (!isRun())
+            if (!IsRun())
             {
                 tasker.SetTask(MyTask.CheckUpdate, null, showNew.ToString());
                 Run(LanguageHelper.GetMsg(LMSG.checkUpdate));
@@ -1308,7 +1308,7 @@ namespace DataEditorX
 
         #region 线程
         //是否在执行
-        bool isRun()
+        bool IsRun()
         {
             if (tasker != null && tasker.IsRuning())
             {
@@ -1320,7 +1320,7 @@ namespace DataEditorX
         //执行任务
         void Run(string name)
         {
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1510,7 +1510,7 @@ namespace DataEditorX
                 return;
             }
 
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1538,7 +1538,7 @@ namespace DataEditorX
                 return;
             }
 
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1591,7 +1591,7 @@ namespace DataEditorX
                 ImportImage(dlg.FileName, tid);
             }
         }
-        private void pl_image_DoubleClick(object sender, EventArgs e)
+        private void Pl_image_DoubleClick(object sender, EventArgs e)
         {
             ImportImageFromSelect();
         }
@@ -1615,7 +1615,7 @@ namespace DataEditorX
                 e.Effect = DragDropEffects.None;
             }
         }
-        private void menuitem_importmseimg_Click(object sender, EventArgs e)
+        private void Menuitem_importmseimg_Click(object sender, EventArgs e)
         {
             string tid = tb_cardcode.Text;
             menuitem_importmseimg.Checked = !menuitem_importmseimg.Checked;
@@ -1680,7 +1680,7 @@ namespace DataEditorX
                 return;
             }
 
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1705,7 +1705,7 @@ namespace DataEditorX
                 return;
             }
 
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1756,7 +1756,7 @@ namespace DataEditorX
             return false;
         }
         //读取将要对比的数据
-        Card[] getCompCards()
+        Card[] GetCompCards()
         {
             if (tmpCodes.Count == 0)
             {
@@ -1793,7 +1793,7 @@ namespace DataEditorX
                 SetCards(null, false);
                 return;
             }
-            SetCards(getCompCards(), false);
+            SetCards(GetCompCards(), false);
         }
         #endregion
 
@@ -1832,7 +1832,7 @@ namespace DataEditorX
         }
         void SetMseConfig_Click(object sender, EventArgs e)
         {
-            if (isRun())//正在执行任务
+            if (IsRun())//正在执行任务
             {
                 return;
             }
@@ -1850,7 +1850,7 @@ namespace DataEditorX
         #endregion
 
         #region 查找lua函数
-        private void menuitem_findluafunc_Click(object sender, EventArgs e)
+        private void Menuitem_findluafunc_Click(object sender, EventArgs e)
         {
             string funtxt = MyPath.Combine(datapath, DEXConfig.FILE_FUNCTION);
             using FolderBrowserDialog fd = new();
@@ -1867,7 +1867,7 @@ namespace DataEditorX
 
         #region 系列名textbox
         //系列名输入时
-        void setCode_InputText(int index, ComboBox cb, TextBox tb)
+        void SetCode_InputText(int index, ComboBox cb, TextBox tb)
         {
             if (index >= 0 && index < setcodeIsedit.Length)
             {
@@ -1888,30 +1888,30 @@ namespace DataEditorX
                 setcodeIsedit[index] = false;
             }
         }
-        private void tb_setcode1_TextChanged(object sender, EventArgs e)
+        private void Tb_setcode1_TextChanged(object sender, EventArgs e)
         {
-            setCode_InputText(1, cb_setname1, tb_setcode1);
+            SetCode_InputText(1, cb_setname1, tb_setcode1);
         }
 
-        private void tb_setcode2_TextChanged(object sender, EventArgs e)
+        private void Tb_setcode2_TextChanged(object sender, EventArgs e)
         {
-            setCode_InputText(2, cb_setname2, tb_setcode2);
+            SetCode_InputText(2, cb_setname2, tb_setcode2);
         }
 
-        private void tb_setcode3_TextChanged(object sender, EventArgs e)
+        private void Tb_setcode3_TextChanged(object sender, EventArgs e)
         {
-            setCode_InputText(3, cb_setname3, tb_setcode3);
+            SetCode_InputText(3, cb_setname3, tb_setcode3);
         }
 
-        private void tb_setcode4_TextChanged(object sender, EventArgs e)
+        private void Tb_setcode4_TextChanged(object sender, EventArgs e)
         {
-            setCode_InputText(4, cb_setname4, tb_setcode4);
+            SetCode_InputText(4, cb_setname4, tb_setcode4);
         }
         #endregion
 
         #region 系列名comobox
         //系列选择框 选择时
-        void setCode_Selected(int index, ComboBox cb, TextBox tb)
+        void SetCode_Selected(int index, ComboBox cb, TextBox tb)
         {
             if (index >= 0 && index < setcodeIsedit.Length)
             {
@@ -1926,36 +1926,36 @@ namespace DataEditorX
                 setcodeIsedit[index] = false;
             }
         }
-        private void cb_setname1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Cb_setname1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setCode_Selected(1, cb_setname1, tb_setcode1);
+            SetCode_Selected(1, cb_setname1, tb_setcode1);
         }
 
-        private void cb_setname2_SelectedIndexChanged(object sender, EventArgs e)
+        private void Cb_setname2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setCode_Selected(2, cb_setname2, tb_setcode2);
+            SetCode_Selected(2, cb_setname2, tb_setcode2);
         }
 
-        private void cb_setname3_SelectedIndexChanged(object sender, EventArgs e)
+        private void Cb_setname3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setCode_Selected(3, cb_setname3, tb_setcode3);
+            SetCode_Selected(3, cb_setname3, tb_setcode3);
         }
 
-        private void cb_setname4_SelectedIndexChanged(object sender, EventArgs e)
+        private void Cb_setname4_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setCode_Selected(4, cb_setname4, tb_setcode4);
+            SetCode_Selected(4, cb_setname4, tb_setcode4);
         }
         #endregion
 
         #region 读取MSE存档
-        private void menuitem_readmse_Click(object sender, EventArgs e)
+        private void Menuitem_readmse_Click(object sender, EventArgs e)
         {
             if (!CheckOpen())
             {
                 return;
             }
 
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -1978,7 +1978,7 @@ namespace DataEditorX
         #endregion
 
         #region 压缩数据库
-        private void menuitem_compdb_Click(object sender, EventArgs e)
+        private void Menuitem_compdb_Click(object sender, EventArgs e)
         {
             if (!CheckOpen())
             {
@@ -1992,25 +1992,25 @@ namespace DataEditorX
 
         #region 设置
         //删除卡片的时候，是否要删除图片和脚本
-        private void menuitem_deletecardsfile_Click(object sender, EventArgs e)
+        private void Menuitem_deletecardsfile_Click(object sender, EventArgs e)
         {
             menuitem_operacardsfile.Checked = !menuitem_operacardsfile.Checked;
             XMLReader.Save(DEXConfig.TAG_DELETE_WITH, menuitem_operacardsfile.Checked.ToString().ToLower());
         }
         //用CodeEditor打开lua
-        private void menuitem_openfileinthis_Click(object sender, EventArgs e)
+        private void Menuitem_openfileinthis_Click(object sender, EventArgs e)
         {
             menuitem_openfileinthis.Checked = !menuitem_openfileinthis.Checked;
             XMLReader.Save(DEXConfig.TAG_OPEN_IN_THIS, menuitem_openfileinthis.Checked.ToString().ToLower());
         }
         //自动检查更新
-        private void menuitem_autocheckupdate_Click(object sender, EventArgs e)
+        private void Menuitem_autocheckupdate_Click(object sender, EventArgs e)
         {
             menuitem_autocheckupdate.Checked = !menuitem_autocheckupdate.Checked;
             XMLReader.Save(DEXConfig.TAG_AUTO_CHECK_UPDATE, menuitem_autocheckupdate.Checked.ToString().ToLower());
         }
         //add require automatically
-        private void menuitem_addrequire_Click(object sender, EventArgs e)
+        private void Menuitem_addrequire_Click(object sender, EventArgs e)
         {
             Addrequire = Microsoft.VisualBasic.Interaction.InputBox("Module script?\n\nPress \"Cancel\" to remove module script.", "", Addrequire);
             menuitem_addrequire.Checked = (Addrequire.Length > 0);
@@ -2052,7 +2052,7 @@ namespace DataEditorX
         }
         void SetLanguage_Click(object sender, EventArgs e)
         {
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -2069,7 +2069,7 @@ namespace DataEditorX
         //把mse存档导出为图片
         void Menuitem_exportMSEimageClick(object sender, EventArgs e)
         {
-            if (isRun())
+            if (IsRun())
             {
                 return;
             }
@@ -2223,12 +2223,12 @@ namespace DataEditorX
             }
         }
 
-        private void text2LinkMarks(string text)
+        private void Text2LinkMarks(string text)
         {
             try
             {
                 long mark = Convert.ToInt64(text, 2);
-                setLinkMarks(mark, true);
+                SetLinkMarks(mark, true);
             }
             catch
             {
@@ -2238,7 +2238,7 @@ namespace DataEditorX
 
         void Tb_linkTextChanged(object sender, EventArgs e)
         {
-            text2LinkMarks(tb_link.Text);
+            Text2LinkMarks(tb_link.Text);
         }
 
         private void DataEditForm_KeyDown(object sender, KeyEventArgs e)
@@ -2250,7 +2250,7 @@ namespace DataEditorX
             }
         }
 
-        private void tb_cardtext_KeyDown(object sender, KeyEventArgs e)
+        private void Tb_cardtext_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.R)
             {
@@ -2386,7 +2386,7 @@ namespace DataEditorX
             }
             else
             {
-                text2LinkMarks(tb_link.Text);
+                Text2LinkMarks(tb_link.Text);
             }
         }
         void DataEditFormSizeChanged(object sender, EventArgs e)
@@ -2396,6 +2396,30 @@ namespace DataEditorX
             tmpCodes.Clear();//清空临时的结果
             Search(true);
         }
-
+        private void AddArchetypeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MainForm mf;
+            try
+            {
+                mf = DockPanel.Parent as MainForm;
+            }
+            catch
+            {
+                return;
+            }
+            DataConfig datacfg = mf.GetDataConfig();
+            Dictionary<long, string> d = datacfg.dicSetnames;
+            AddArchetypeForm form = new(d);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                int setcode = form.code;
+                string setname = form.name;
+                if (!d.ContainsKey(setcode)) d.Add(setcode, setname);
+                mf.GetCodeConfig().SetNames(d);
+                InitControl(datacfg);
+                DataBase.Command(GetOpenFile(), "insert or ignore into setcodes values(" + setcode + ", 0, '"
+                    + setname + "', 0);");
+            }
+        }
     }
 }

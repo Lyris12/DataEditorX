@@ -41,6 +41,7 @@ namespace DataEditorX
             this.menuitem_setting = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_showmap = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_showinput = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuitem_save2database = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_find = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_replace = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_setcard = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +77,7 @@ namespace DataEditorX
             this.menuitem_setting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuitem_showmap,
             this.menuitem_showinput,
+            this.menuitem_save2database,
             this.menuitem_find,
             this.menuitem_replace,
             this.menuitem_setcard,
@@ -99,6 +101,15 @@ namespace DataEditorX
             this.menuitem_showinput.Size = new System.Drawing.Size(184, 22);
             this.menuitem_showinput.Text = "Show/Hide InputBox";
             this.menuitem_showinput.Click += new System.EventHandler(this.Menuitem_showinputClick);
+            // 
+            // menuitem_save2database
+            // 
+            this.menuitem_save2database.Checked = true;
+            this.menuitem_save2database.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menuitem_save2database.Name = "menuitem_save2database";
+            this.menuitem_save2database.Size = new System.Drawing.Size(184, 22);
+            this.menuitem_save2database.Text = "Save to Database";
+            this.menuitem_save2database.Click += new System.EventHandler(this.Menuitem_save2database_Click);
             // 
             // menuitem_find
             // 
@@ -157,14 +168,14 @@ namespace DataEditorX
             // 
             this.menuitem_testlua.Name = "menuitem_testlua";
             this.menuitem_testlua.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.menuitem_testlua.Size = new System.Drawing.Size(165, 22);
+            this.menuitem_testlua.Size = new System.Drawing.Size(164, 22);
             this.menuitem_testlua.Text = "Syntax Check";
             this.menuitem_testlua.Click += new System.EventHandler(this.Menuitem_testlua_Click);
             // 
             // menuitem_fixCardCode
             // 
             this.menuitem_fixCardCode.Name = "menuitem_fixCardCode";
-            this.menuitem_fixCardCode.Size = new System.Drawing.Size(165, 22);
+            this.menuitem_fixCardCode.Size = new System.Drawing.Size(164, 22);
             this.menuitem_fixCardCode.Text = "Fix card code";
             this.menuitem_fixCardCode.Click += new System.EventHandler(this.Menuitem_fixCardCode_Click);
             // 
@@ -212,7 +223,7 @@ namespace DataEditorX
             this.fctb.DelayedTextChangedInterval = 1;
             this.fctb.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.fctb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fctb.Font = new System.Drawing.Font("Consolas", 14.25F);
+            this.fctb.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fctb.ForeColor = System.Drawing.Color.GhostWhite;
             this.fctb.Hotkeys = resources.GetString("fctb.Hotkeys");
             this.fctb.IndentBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -262,7 +273,7 @@ namespace DataEditorX
             this.Controls.Add(this.tb_input);
             this.Controls.Add(this.documentMap1);
             this.Controls.Add(this.mainMenu);
-            this.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "CodeEditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -299,5 +310,6 @@ namespace DataEditorX
         private System.Windows.Forms.ToolStripMenuItem menuitem_testlua;
         private System.Windows.Forms.ToolStripMenuItem menuitem_fixCardCode;
         private System.Windows.Forms.ToolStripMenuItem menuitem_tooltipFont;
+        private ToolStripMenuItem menuitem_save2database;
     }
 }

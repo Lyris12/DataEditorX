@@ -123,8 +123,8 @@ namespace DataEditorX
             this.pl_main = new System.Windows.Forms.Panel();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.lv_cardlist = new DataEditorX.DListView();
-            this.ch_cardcode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.ch_cardname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_cardcode = new System.Windows.Forms.ColumnHeader();
+            this.ch_cardname = new System.Windows.Forms.ColumnHeader();
             this.tb_support = new System.Windows.Forms.TextBox();
             this.pl_markers = new DataEditorX.DFlowLayoutPanel();
             this.pl_cardtype = new DataEditorX.DFlowLayoutPanel();
@@ -139,6 +139,7 @@ namespace DataEditorX
             this.lb_name = new System.Windows.Forms.Label();
             this.lb_support = new System.Windows.Forms.Label();
             this.lb_tdate = new System.Windows.Forms.Label();
+            this.menuitem_addarchetype = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.pl_bottom.SuspendLayout();
             this.pl_main.SuspendLayout();
@@ -153,7 +154,8 @@ namespace DataEditorX
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_image,
             this.menu_data,
-            this.menuitem_help});
+            this.menuitem_help,
+            this.menuitem_addarchetype});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Size = new System.Drawing.Size(991, 24);
@@ -192,7 +194,7 @@ namespace DataEditorX
             this.menuitem_readmse.Name = "menuitem_readmse";
             this.menuitem_readmse.Size = new System.Drawing.Size(210, 22);
             this.menuitem_readmse.Text = "Read from MSE";
-            this.menuitem_readmse.Click += new System.EventHandler(this.menuitem_readmse_Click);
+            this.menuitem_readmse.Click += new System.EventHandler(this.Menuitem_readmse_Click);
             // 
             // menuitem_saveasmse_select
             // 
@@ -232,7 +234,7 @@ namespace DataEditorX
             this.menuitem_importmseimg.Name = "menuitem_importmseimg";
             this.menuitem_importmseimg.Size = new System.Drawing.Size(210, 22);
             this.menuitem_importmseimg.Text = "Drop Image to MSE";
-            this.menuitem_importmseimg.Click += new System.EventHandler(this.menuitem_importmseimg_Click);
+            this.menuitem_importmseimg.Click += new System.EventHandler(this.Menuitem_importmseimg_Click);
             // 
             // menu_data
             // 
@@ -265,21 +267,21 @@ namespace DataEditorX
             this.menuitem_operacardsfile.Name = "menuitem_operacardsfile";
             this.menuitem_operacardsfile.Size = new System.Drawing.Size(222, 22);
             this.menuitem_operacardsfile.Text = "Opera Card\'s Files";
-            this.menuitem_operacardsfile.Click += new System.EventHandler(this.menuitem_deletecardsfile_Click);
+            this.menuitem_operacardsfile.Click += new System.EventHandler(this.Menuitem_deletecardsfile_Click);
             // 
             // menuitem_openfileinthis
             // 
             this.menuitem_openfileinthis.Name = "menuitem_openfileinthis";
             this.menuitem_openfileinthis.Size = new System.Drawing.Size(222, 22);
             this.menuitem_openfileinthis.Text = "Open File in This";
-            this.menuitem_openfileinthis.Click += new System.EventHandler(this.menuitem_openfileinthis_Click);
+            this.menuitem_openfileinthis.Click += new System.EventHandler(this.Menuitem_openfileinthis_Click);
             // 
             // menuitem_addrequire
             // 
             this.menuitem_addrequire.Name = "menuitem_addrequire";
             this.menuitem_addrequire.Size = new System.Drawing.Size(222, 22);
             this.menuitem_addrequire.Text = "Add REQUIRE Automatically";
-            this.menuitem_addrequire.Click += new System.EventHandler(this.menuitem_addrequire_Click);
+            this.menuitem_addrequire.Click += new System.EventHandler(this.Menuitem_addrequire_Click);
             // 
             // tsep2
             // 
@@ -310,7 +312,7 @@ namespace DataEditorX
             this.menuitem_compdb.Name = "menuitem_compdb";
             this.menuitem_compdb.Size = new System.Drawing.Size(222, 22);
             this.menuitem_compdb.Text = "Compression DataBase";
-            this.menuitem_compdb.Click += new System.EventHandler(this.menuitem_compdb_Click);
+            this.menuitem_compdb.Click += new System.EventHandler(this.Menuitem_compdb_Click);
             // 
             // menuitem_export_select_sql
             // 
@@ -331,7 +333,7 @@ namespace DataEditorX
             this.menuitem_findluafunc.Name = "menuitem_findluafunc";
             this.menuitem_findluafunc.Size = new System.Drawing.Size(222, 22);
             this.menuitem_findluafunc.Text = "Find Lua Function";
-            this.menuitem_findluafunc.Click += new System.EventHandler(this.menuitem_findluafunc_Click);
+            this.menuitem_findluafunc.Click += new System.EventHandler(this.Menuitem_findluafunc_Click);
             // 
             // menuitem_exportdata
             // 
@@ -423,7 +425,7 @@ namespace DataEditorX
             this.menuitem_autocheckupdate.Name = "menuitem_autocheckupdate";
             this.menuitem_autocheckupdate.Size = new System.Drawing.Size(177, 22);
             this.menuitem_autocheckupdate.Text = "Auto Check Update";
-            this.menuitem_autocheckupdate.Click += new System.EventHandler(this.menuitem_autocheckupdate_Click);
+            this.menuitem_autocheckupdate.Click += new System.EventHandler(this.Menuitem_autocheckupdate_Click);
             // 
             // menuitem_github
             // 
@@ -437,7 +439,7 @@ namespace DataEditorX
             this.cb_cardattribute.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_cardattribute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_cardattribute.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_cardattribute.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_cardattribute.FormattingEnabled = true;
             this.cb_cardattribute.Location = new System.Drawing.Point(194, 68);
             this.cb_cardattribute.Name = "cb_cardattribute";
@@ -460,7 +462,7 @@ namespace DataEditorX
             this.cb_cardrule.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_cardrule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_cardrule.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_cardrule.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_cardrule.FormattingEnabled = true;
             this.cb_cardrule.Location = new System.Drawing.Point(194, 44);
             this.cb_cardrule.Name = "cb_cardrule";
@@ -472,7 +474,7 @@ namespace DataEditorX
             this.cb_cardlevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_cardlevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_cardlevel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_cardlevel.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_cardlevel.FormattingEnabled = true;
             this.cb_cardlevel.Location = new System.Drawing.Point(194, 93);
             this.cb_cardlevel.Name = "cb_cardlevel";
@@ -485,7 +487,7 @@ namespace DataEditorX
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_cardrace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_cardrace.DropDownWidth = 107;
-            this.cb_cardrace.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_cardrace.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_cardrace.FormattingEnabled = true;
             this.cb_cardrace.Location = new System.Drawing.Point(194, 118);
             this.cb_cardrace.Name = "cb_cardrace";
@@ -499,7 +501,7 @@ namespace DataEditorX
             this.cb_setname2.DropDownHeight = 320;
             this.cb_setname2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_setname2.DropDownWidth = 140;
-            this.cb_setname2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_setname2.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_setname2.FormattingEnabled = true;
             this.cb_setname2.IntegralHeight = false;
             this.cb_setname2.ItemHeight = 12;
@@ -507,7 +509,7 @@ namespace DataEditorX
             this.cb_setname2.Name = "cb_setname2";
             this.cb_setname2.Size = new System.Drawing.Size(113, 20);
             this.cb_setname2.TabIndex = 2;
-            this.cb_setname2.SelectedIndexChanged += new System.EventHandler(this.cb_setname2_SelectedIndexChanged);
+            this.cb_setname2.SelectedIndexChanged += new System.EventHandler(this.Cb_setname2_SelectedIndexChanged);
             // 
             // cb_setname1
             // 
@@ -516,7 +518,7 @@ namespace DataEditorX
             this.cb_setname1.DropDownHeight = 320;
             this.cb_setname1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_setname1.DropDownWidth = 140;
-            this.cb_setname1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_setname1.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_setname1.FormattingEnabled = true;
             this.cb_setname1.IntegralHeight = false;
             this.cb_setname1.ItemHeight = 12;
@@ -524,7 +526,7 @@ namespace DataEditorX
             this.cb_setname1.Name = "cb_setname1";
             this.cb_setname1.Size = new System.Drawing.Size(113, 20);
             this.cb_setname1.TabIndex = 2;
-            this.cb_setname1.SelectedIndexChanged += new System.EventHandler(this.cb_setname1_SelectedIndexChanged);
+            this.cb_setname1.SelectedIndexChanged += new System.EventHandler(this.Cb_setname1_SelectedIndexChanged);
             // 
             // cb_setname4
             // 
@@ -533,7 +535,7 @@ namespace DataEditorX
             this.cb_setname4.DropDownHeight = 320;
             this.cb_setname4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_setname4.DropDownWidth = 140;
-            this.cb_setname4.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_setname4.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_setname4.FormattingEnabled = true;
             this.cb_setname4.IntegralHeight = false;
             this.cb_setname4.ItemHeight = 12;
@@ -541,7 +543,7 @@ namespace DataEditorX
             this.cb_setname4.Name = "cb_setname4";
             this.cb_setname4.Size = new System.Drawing.Size(113, 20);
             this.cb_setname4.TabIndex = 2;
-            this.cb_setname4.SelectedIndexChanged += new System.EventHandler(this.cb_setname4_SelectedIndexChanged);
+            this.cb_setname4.SelectedIndexChanged += new System.EventHandler(this.Cb_setname4_SelectedIndexChanged);
             // 
             // cb_setname3
             // 
@@ -550,7 +552,7 @@ namespace DataEditorX
             this.cb_setname3.DropDownHeight = 320;
             this.cb_setname3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_setname3.DropDownWidth = 140;
-            this.cb_setname3.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cb_setname3.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.cb_setname3.FormattingEnabled = true;
             this.cb_setname3.IntegralHeight = false;
             this.cb_setname3.ItemHeight = 12;
@@ -558,7 +560,7 @@ namespace DataEditorX
             this.cb_setname3.Name = "cb_setname3";
             this.cb_setname3.Size = new System.Drawing.Size(113, 20);
             this.cb_setname3.TabIndex = 2;
-            this.cb_setname3.SelectedIndexChanged += new System.EventHandler(this.cb_setname3_SelectedIndexChanged);
+            this.cb_setname3.SelectedIndexChanged += new System.EventHandler(this.Cb_setname3_SelectedIndexChanged);
             // 
             // tb_cardtext
             // 
@@ -567,7 +569,7 @@ namespace DataEditorX
             this.tb_cardtext.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_cardtext.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_cardtext.Font = new System.Drawing.Font("Microsoft YaHei", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tb_cardtext.Location = new System.Drawing.Point(4, 375);
             this.tb_cardtext.MaxLength = 5000;
             this.tb_cardtext.Multiline = true;
@@ -575,7 +577,7 @@ namespace DataEditorX
             this.tb_cardtext.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tb_cardtext.Size = new System.Drawing.Size(340, 179);
             this.tb_cardtext.TabIndex = 121;
-            this.tb_cardtext.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_cardtext_KeyDown);
+            this.tb_cardtext.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Tb_cardtext_KeyDown);
             // 
             // tb_edittext
             // 
@@ -850,7 +852,7 @@ namespace DataEditorX
             this.pl_image.TabIndex = 14;
             this.pl_image.DragDrop += new System.Windows.Forms.DragEventHandler(this.Pl_imageDragDrop);
             this.pl_image.DragEnter += new System.Windows.Forms.DragEventHandler(this.Pl_imageDragEnter);
-            this.pl_image.DoubleClick += new System.EventHandler(this.pl_image_DoubleClick);
+            this.pl_image.DoubleClick += new System.EventHandler(this.Pl_image_DoubleClick);
             // 
             // lb_types
             // 
@@ -919,7 +921,7 @@ namespace DataEditorX
             this.tb_setcode1.TabIndex = 111;
             this.tb_setcode1.Text = "0";
             this.tb_setcode1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tb_setcode1.TextChanged += new System.EventHandler(this.tb_setcode1_TextChanged);
+            this.tb_setcode1.TextChanged += new System.EventHandler(this.Tb_setcode1_TextChanged);
             // 
             // tb_setcode2
             // 
@@ -931,7 +933,7 @@ namespace DataEditorX
             this.tb_setcode2.TabIndex = 112;
             this.tb_setcode2.Text = "0";
             this.tb_setcode2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tb_setcode2.TextChanged += new System.EventHandler(this.tb_setcode2_TextChanged);
+            this.tb_setcode2.TextChanged += new System.EventHandler(this.Tb_setcode2_TextChanged);
             // 
             // tb_setcode3
             // 
@@ -943,7 +945,7 @@ namespace DataEditorX
             this.tb_setcode3.TabIndex = 113;
             this.tb_setcode3.Text = "0";
             this.tb_setcode3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tb_setcode3.TextChanged += new System.EventHandler(this.tb_setcode3_TextChanged);
+            this.tb_setcode3.TextChanged += new System.EventHandler(this.Tb_setcode3_TextChanged);
             // 
             // tb_setcode4
             // 
@@ -955,7 +957,7 @@ namespace DataEditorX
             this.tb_setcode4.TabIndex = 114;
             this.tb_setcode4.Text = "0";
             this.tb_setcode4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tb_setcode4.TextChanged += new System.EventHandler(this.tb_setcode4_TextChanged);
+            this.tb_setcode4.TextChanged += new System.EventHandler(this.Tb_setcode4_TextChanged);
             // 
             // lb_cardcode
             // 
@@ -1134,13 +1136,13 @@ namespace DataEditorX
             this.tb_support.TabIndex = 114;
             this.tb_support.Text = "0";
             this.tb_support.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tb_support.TextChanged += new System.EventHandler(this.tb_setcode4_TextChanged);
+            this.tb_support.TextChanged += new System.EventHandler(this.Tb_setcode4_TextChanged);
             // 
             // pl_markers
             // 
             this.pl_markers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pl_markers.AutoScroll = true;
-            this.pl_markers.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pl_markers.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pl_markers.Location = new System.Drawing.Point(285, 244);
             this.pl_markers.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.pl_markers.Name = "pl_markers";
@@ -1152,7 +1154,7 @@ namespace DataEditorX
             // 
             this.pl_cardtype.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pl_cardtype.AutoScroll = true;
-            this.pl_cardtype.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pl_cardtype.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pl_cardtype.Location = new System.Drawing.Point(348, 25);
             this.pl_cardtype.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.pl_cardtype.MaximumSize = new System.Drawing.Size(360, 120);
@@ -1166,7 +1168,7 @@ namespace DataEditorX
             // 
             this.pl_flags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pl_flags.AutoScroll = true;
-            this.pl_flags.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pl_flags.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pl_flags.Location = new System.Drawing.Point(348, 300);
             this.pl_flags.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.pl_flags.MaximumSize = new System.Drawing.Size(360, 175);
@@ -1179,7 +1181,7 @@ namespace DataEditorX
             // 
             this.pl_category.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pl_category.AutoScroll = true;
-            this.pl_category.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pl_category.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pl_category.Location = new System.Drawing.Point(348, 169);
             this.pl_category.Margin = new System.Windows.Forms.Padding(1, 2, 1, 2);
             this.pl_category.MaximumSize = new System.Drawing.Size(360, 175);
@@ -1193,7 +1195,7 @@ namespace DataEditorX
             this.lb_scripttext.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_scripttext.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lb_scripttext.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lb_scripttext.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.lb_scripttext.FormattingEnabled = true;
             this.lb_scripttext.IntegralHeight = false;
             this.lb_scripttext.ItemHeight = 12;
@@ -1290,6 +1292,13 @@ namespace DataEditorX
             this.lb_tdate.TabIndex = 7;
             this.lb_tdate.Text = "TCG";
             // 
+            // addArchetypeToolStripMenuItem
+            // 
+            this.menuitem_addarchetype.Name = "addArchetypeToolStripMenuItem";
+            this.menuitem_addarchetype.Size = new System.Drawing.Size(98, 20);
+            this.menuitem_addarchetype.Text = "Add Arche&type";
+            this.menuitem_addarchetype.Click += new EventHandler(AddArchetypeToolStripMenuItem_Click);
+            // 
             // DataEditForm
             // 
             this.AllowDrop = true;
@@ -1298,7 +1307,7 @@ namespace DataEditorX
             this.Controls.Add(this.pl_main);
             this.Controls.Add(this.pl_bottom);
             this.Controls.Add(this.mainMenu);
-            this.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.mainMenu;
             this.MaximizeBox = false;
@@ -1430,5 +1439,6 @@ namespace DataEditorX
         private System.Windows.Forms.Label lb_support;
         private System.Windows.Forms.Label lb_date;
         private System.Windows.Forms.Label lb_name;
+        private ToolStripMenuItem menuitem_addarchetype;
     }
 }
