@@ -47,8 +47,16 @@ namespace DataEditorX.Common
                 if (ver.IsMatch(html) && url.IsMatch(html))
                 {
                     Match mVer = ver.Match(html);
-                    Match mUrl = url.Match(html);
-                    URL = mUrl.Groups[1].Value;
+                    MatchCollection mUrl = url.Matches(html);
+                    try
+                    {
+                        URL = mUrl.First(Environment.Is64BitOperatingSystem ? (m) =>
+                            m.Groups[1].Value.EndsWith("64.zip") : (m) => m.Groups[1].Value.EndsWith("32.zip")).Value;
+                    }
+                    catch
+                    {
+                        URL = mUrl.First().Groups[1].Value;
+                    }
                     return $"{mVer.Groups[1].Value}";
                 }
             }
