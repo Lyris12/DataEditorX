@@ -388,7 +388,7 @@ namespace DataEditorX
             oldtext = fctb.Text;
             File.WriteAllText(nowFile, alltext, new UTF8Encoding(false));
             if (long.TryParse(new FileInfo(nowFile).Name.Replace("c", "").Replace(".lua", ""), out long tl) && tl > 0
-                && File.Exists(nowcdb) && DEXConfig.ReadBoolean(DEXConfig.TAG_SAVE2DB))
+                && File.Exists(nowcdb) && (DEXConfig.ReadBoolean(DEXConfig.TAG_SAVE2DB) || menuitem_save2database.Checked))
             {
                 try
                 {
@@ -710,7 +710,7 @@ namespace DataEditorX
             fd.Font = f;
             if (fd.ShowDialog() == DialogResult.OK)
             {
-                Common.XMLReader.Save(DEXConfig.TOOLTIP_FONT, JsonConvert.SerializeObject(fd.Font));
+                XMLReader.Save(DEXConfig.TOOLTIP_FONT, JsonConvert.SerializeObject(fd.Font));
                 fctb.lbTooltip.Font = fd.Font;
             }
         }

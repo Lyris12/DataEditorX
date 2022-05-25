@@ -124,9 +124,9 @@ namespace FastColoredTextBoxNS
             // lbTooltip
             // 
             lbTooltip.AutoSize = true;
-            lbTooltip.BackColor = System.Drawing.SystemColors.Desktop;
-            lbTooltip.Font = new System.Drawing.Font("微软雅黑", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            lbTooltip.ForeColor = System.Drawing.SystemColors.Control;
+            lbTooltip.BackColor = SystemColors.Desktop;
+            lbTooltip.Font = new System.Drawing.Font("微软雅黑", 15.75F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbTooltip.ForeColor = SystemColors.Control;
             lbTooltip.Location = new System.Drawing.Point(221, 117);
             lbTooltip.MaximumSize = new System.Drawing.Size(480, 0);
             lbTooltip.Name = "lbTooltip";
@@ -137,8 +137,8 @@ namespace FastColoredTextBoxNS
             // lbSizeController
             // 
             lbSizeController.AutoSize = true;
-            lbSizeController.BackColor = System.Drawing.Color.Transparent;
-            lbSizeController.ForeColor = System.Drawing.Color.Transparent;
+            lbSizeController.BackColor = Color.Transparent;
+            lbSizeController.ForeColor = Color.Transparent;
             lbSizeController.Location = new System.Drawing.Point(179, 293);
             lbSizeController.Name = "lbSizeController";
             lbSizeController.Size = new System.Drawing.Size(136, 16);
@@ -148,7 +148,7 @@ namespace FastColoredTextBoxNS
             // FastColoredTextBoxEx
             // 
             AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            BackColor = System.Drawing.SystemColors.Control;
+            BackColor = SystemColors.Control;
             Controls.Add(lbSizeController);
             Controls.Add(lbTooltip);
             Name = "FastColoredTextBoxEx";

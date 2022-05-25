@@ -70,7 +70,7 @@ namespace DataEditorX.Core
                     }
                 }
                 if (DataBase.Command(dataform.GetOpenFile(),
-                    (dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true))) >= 2)
+                    (dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true))) >= 2)
                 {
                     MyMsg.Show(LMSG.AddSucceed);
                     undoSQL = DataBase.GetDeleteSQL(c);
@@ -132,7 +132,7 @@ namespace DataEditorX.Core
                 string sql;
                 if (c.id != oldCard.id)//修改了id
                 {
-                    sql = (dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(c, false) : DataBase.GetInsertSQL(c, false);//插入
+                    sql = (dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(c, false) : DataBase.GetInsertSQL(c, false);//插入
                     bool delold = MyMsg.Question(LMSG.IfDeleteCard);
                     if (delold)//是否删除旧卡片
                     {
@@ -145,7 +145,7 @@ namespace DataEditorX.Core
                         }
                         else
                         {//删除成功，添加还原sql
-                            undoSQL = DataBase.GetDeleteSQL(c) + ((dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(oldCard, false) : DataBase.GetInsertSQL(oldCard, false));
+                            undoSQL = DataBase.GetDeleteSQL(c) + ((dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(oldCard, false) : DataBase.GetInsertSQL(oldCard, false));
                         }
                     }
                     else
@@ -172,8 +172,8 @@ namespace DataEditorX.Core
                 }
                 else
                 {//更新数据
-                    sql = (dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase)) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetUpdateSQL(c) : DataBase.GetUpdateSQL(c);
-                    undoSQL = (dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase)) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetUpdateSQL(oldCard) : DataBase.GetUpdateSQL(oldCard);
+                    sql = (dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase)) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetUpdateSQL(c) : DataBase.GetUpdateSQL(c);
+                    undoSQL = (dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase)) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase) ? DataBase.OmegaGetUpdateSQL(oldCard) : DataBase.GetUpdateSQL(oldCard);
                 }
                 if (DataBase.Command(dataform.GetOpenFile(), sql) > 0)
                 {
@@ -249,7 +249,7 @@ namespace DataEditorX.Core
                 foreach (Card c in cards)
                 {
                     sql.Add(DataBase.GetDeleteSQL(c));//删除
-                    undo += (dataform.GetOpenFile().EndsWith(".db", System.StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", System.StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true);
+                    undo += (dataform.GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || dataform.GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) ? DataBase.OmegaGetInsertSQL(c, true) : DataBase.GetInsertSQL(c, true);
                     //删除资源
                     if (deletefiles)
                     {

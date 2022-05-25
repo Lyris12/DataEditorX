@@ -64,7 +64,7 @@ namespace DataEditorX.Common
         {
             bool hasNew = false;
 #if DEBUG
-            System.Windows.Forms.MessageBox.Show(oldver + "=>" + ver);
+            MessageBox.Show(oldver + "=>" + ver);
 #endif
             string[] vers = ver.Split('.');
             string[] oldvers = oldver.Split('.');
@@ -150,7 +150,7 @@ namespace DataEditorX.Common
                 while (osize > 0)
                 {
                     totalDownloadedByte = osize + totalDownloadedByte;
-                    System.Windows.Forms.Application.DoEvents();
+                    Application.DoEvents();
                     so.Write(by, 0, osize);
                     osize = st.Read(by, 0, by.Length);
                 }
