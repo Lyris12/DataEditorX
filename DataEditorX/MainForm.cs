@@ -208,9 +208,9 @@ namespace DataEditorX
             DataEditForm df;
             try { df = (DataEditForm)dockPanel.ActiveContent; }
             catch { df = null; }
+            if (df != null) cf.SetCardDB(df.GetOpenFile());
             if (!string.IsNullOrEmpty(file) && (file.IndexOf('\n') > -1 || file.IndexOf("function ") > -1))
             {
-                if (df != null) cf.SetCardDB(df.GetOpenFile());
                 cf.Controls["fctb"].Text = file;
             }
             else _ = cf.Open(file, df == null ? "cards" : Path.GetFileNameWithoutExtension(df.GetOpenFile()));

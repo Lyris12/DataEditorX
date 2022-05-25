@@ -6,7 +6,7 @@ https://github.com/Lyris12/DataEditorX/raw/master/win32/win32.zip
 
 > **FAQ**   
 Q: I can't run the program.   
-A: Please install [.NET Framework](https://www.microsoft.com/en-us/download/details.aspx?id=25150).
+A: Please install [.NET Core](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
 ## Features
 * Create and edit card databases.   
