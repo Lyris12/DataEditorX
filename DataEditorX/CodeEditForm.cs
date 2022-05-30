@@ -367,7 +367,7 @@ namespace DataEditorX
                 alltext = alltext.Replace("    ", "\t");
             }
 
-            if (saveas || string.IsNullOrEmpty(nowFile))
+            if (saveas || string.IsNullOrEmpty(nowFile) || !File.Exists(nowFile))
             {
                 using SaveFileDialog sfdlg = new();
                 try

@@ -297,7 +297,7 @@ namespace DataEditorX.Core
             if (c.id > 0)
             {
                 lua = dataform.GetPath().GetScript(id);
-                if (c.omega[0] > 0 && !File.Exists(lua))
+                if (c.omega[0] > 0 && !(dataform.GetOpenFile().EndsWith(".cdb") && File.Exists(lua)))
                 {
                     string tmp = MyPath.Combine(dataform.GetPath().gamepath, "../Scripts", "c" + id + ".lua");
                     if (File.Exists(tmp)) lua = tmp;

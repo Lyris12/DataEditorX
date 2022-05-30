@@ -48,6 +48,12 @@ A or b
 A Move to the right b
 ●int bit.bxor(int a, int b)
 A and b bit XOR
+●int bit.bnot(int a)
+
+●int bit.extract(int r, int field, int width)
+
+●int bit.replace(int r, int v, int field, int width)
+
 ========== Card ==========
 ●int[,int] Card.GetCode(Card c)
 Returns the current codename for c (possibly because the effect changes)
@@ -1454,7 +1460,7 @@ Check player player can special summon [c to target_player field to sumtype summ
 If optional parameters are required, they must all be used
 ●bool Duel.IsPlayerCanFlipSummon(int player, Card c)
 Check whether the player can reverse the call player c
-●bool Duel.IsPlayerCanSpecialSummonMonster(int player, int code[, int setcode|nil, int type|nil, int atk|nil, int def|nil, int level|nil, int race|nil, int attribute|nil, int  pos = POS_FACEUP, int target_player = player, int sumtype = 0])
+●bool Duel.IsPlayerCanSpecialSummonMonster(int player, int code[, int setcode|nil, int type|nil, int atk|nil, int def|nil, int level|nil, int race|nil, int attribute|nil, int pos = POS_FACEUP, int target_player = player, int sumtype = 0])
 Check player player can be pos to the form of special summon the parameters of the monster to the target_player field
 This function is usually used to determine whether it is possible to trick token and trap monsters
 ●bool Duel.IsPlayerCanSpecialSummonCount(int player, int count)
@@ -1558,6 +1564,8 @@ Forced to launch the effect can choose whether to launch
 
 ========== aux ============
 # # Only commonly used functions
+●int aux.GetXyzNumber(Card|int v)
+
 ●int aux.Stringid(int code, int id)
 Used to index the card number code for the card the first id (from 0) effect prompts
 ●Card aux.Next(Group g)
@@ -1576,6 +1584,8 @@ Antisense of aux.IsDualState
 Check if the double monster e: GetHandler () is considered a normal monster state
 ●void aux.EnableDualAttribute(Card c)
 Add double for the c monster attributes
+●Effect,Effect aux.EnableNeosReturn(Card c[, function operation, int set_category])
+
 ●void aux.EnableSpiritReturn(Card c, int event1,...)
 
 ●bool aux.IsUnionState(Effect e)
@@ -1583,6 +1593,10 @@ Add double for the c monster attributes
 ●void aux.SetUnionState(Card c)
 
 ●bool aux.CheckUnionEquip(Card uc, Card tc)
+
+●void aux.EnableUnionAttribute(Card c, function f)
+
+●Effect aux.EnableChangeCode(Card c, int code[, int location, function condition])
 
 ●function aux.TargetEqualFunction(function f, any value, ...)
 
@@ -1592,15 +1606,15 @@ Add double for the c monster attributes
 
 ●function aux.FilterBoolFunction(function f, ...)
 
-●function aux.Tuner(function f, ...)
+●function aux.Tuner(function f|nil, ...)
 
-●function aux.NonTuner(function f, ...)
+●function aux.NonTuner(function f|nil, ...)
 
 ●Card|Group|Effect|int|bool|string|nil|function|table|any aux.GetValueType(any value)
 
-●Group aux.GetMustMaterialGroup(int player , int code)
+●Group aux.GetMustMaterialGroup(int player, int code)
 
-●bool aux.MustMaterialCheck(Card|Group value, int player , int code)
+●bool aux.MustMaterialCheck(Card|Group value, int player, int code)
 
 ●bool aux.MustMaterialCounterFilter(Card c, Group g)
 
@@ -1658,21 +1672,31 @@ For the c designated cc meet the same conditions f monster for the fusion materi
 
 ●void aux.AddFusionProcShaddoll(Card c, int attribute)
 
-●void aux.AddRitualProcGreater(Card c, function filter)
+●Effect aux.AddContactFusionProcedure(Card c[, function filter, int self_location, int opponent_location, function mat_operation, ...])
+
+●Effect aux.AddRitualProcUltimate(Card c[, function filter, function level_function, string greater_or_equal, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
+
+●Effect aux.AddRitualProcGreater(Card c, function filter[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 Add a ritual summon effect to c
 Filter for the ritual monster to meet the conditions, the material level can be more than the ritual monster level
-●void aux.AddRitualProcGreaterCode(Card c, int code)
+●Effect aux.AddRitualProcGreaterCode(Card c, int code[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
-●void aux.AddRitualProcEqual(Card c, function filter)
+●Effect aux.AddRitualProcEqual(Card c, function filter[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 Add a ritual summon effect to c
 Filter for the ritual monster to meet the conditions, the material level must be equal to the ritual monster level
-●void aux.AddRitualProcEqualCode(Card c, int code)
+●Effect aux.AddRitualProcEqualCode(Card c, int code[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
-●void aux.AddRitualProcEqual2(Card c, function filter)
+●Effect aux.AddRitualProcEqual2(Card c, function filter[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
-●void aux.AddRitualProcEqual2Code(Card c, int code)
+●Effect aux.AddRitualProcEqual2Code(Card c, int code[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
-●void aux.AddRitualProcEqual2Code2(Card c, int code1, int code2)
+●Effect aux.AddRitualProcEqual2Code2(Card c, int code1, int code2[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
+
+●Effect aux.AddRitualProcGreater2(Card c, function filter[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
+
+●Effect aux.AddRitualProcGreater2Code(Card c, int code1[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
+
+●Effect aux.AddRitualProcGreater2Code2(Card c, int code1, int code2[, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
 ●void aux.EnablePendulumAttribute(Card c[, active_effect = true])
 
@@ -1680,19 +1704,47 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●void aux.AddLinkProcedure(Card c, function f|nil, int minc[, int maxc = 99, function gf|nil])
 
-●void aux.GetLinkCount(Card c)
+●int aux.GetLinkCount(Card c)
 
-●bool aux.IsMaterialListCode(Card c, int code])
+●void aux.EnableExtraDeckSummonCountLimit()
 
-●bool aux.IsMaterialListSetCard(Card c, int setcode])
+●void aux.AddMaterialCodeList(Card c, ...)
 
-●bool aux.IsCodeListed(Card c, int code])
+●bool aux.IsMaterialListCode(Card c, int code)
+
+●bool aux.IsMaterialListSetCard(Card c, int setcode)
+
+●bool aux.IsMaterialListType(Card c, int type)
+
+●int,int aux.GetMaterialListCount(Card c)
+
+●void aux.AddCodeList(Card c, ...)
+
+●bool aux.IsCodeListed(Card c, int code)
+
+●void aux.AddSetNameMonsterList(Card c, ...)
+
+●void aux.IsSetNameMonsterListed(Card c, int setcode)
+
+●bool aux.IsCounterAdded(Card c, int counter)
+
+●bool aux.IsTypeInText(Card c, int type)
+
+●bool aux.IsInGroup(Card c, Group g)
 
 ●int aux.GetColumn(Card c, int player = 0)
 
 ●int aux.MZoneSequence(int seq)
 
-●bool aux.disfilter1(Card c)
+●int|nil aux.SZoneSequence(int seq)
+
+●function aux.ChangeBattleDamage(int player, int value)
+
+●bool aux.NegateMonsterFilter(Card c)
+
+●bool aux.NegateEffectMonsterFilter(Card c)
+
+●bool aux.NegateAnyFilter(Card c)
 
 ●bool aux.bdcon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
 
@@ -1702,9 +1754,17 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●bool aux.bdogcon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
 
+●bool aux.dsercon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
+
 ●bool aux.dogcon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
 
+●bool aux.dogfcon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
+
 ●bool aux.exccon(Effect e)
+
+●bool aux.bpcon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
+
+●bool aux.dscon(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
 
 ●bool aux.chainreg(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp)
 
@@ -1746,9 +1806,65 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●function aux.NecroValleyFilter(function f)
 
+●bool aux.NecroValleyNegateCheck(v)
+
+●Effect aux.AddUrsarcticSpSummonEffect(Card c)
+
+●Effect aux.AddDrytronSpSummonEffect(Card c, function func)
+
+●void aux.LabrynthDestroyOp(Effect e, int tp, int res)
+
+●bool aux.AtkEqualsDef(Card c)
+
 ●bool aux.bfgcost(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp, int chk)
 
+●bool aux.dncheck(Group g)
+
+●bool aux.dlvcheck(Group g)
+
+●bool aux.drkcheck(Group g)
+
+●bool aux.dlkcheck(Group g)
+
+●bool aux.dabcheck(Group g)
+
+●bool aux.drccheck(Group g)
+
+●bool aux.gfcheck(Group g, function f, a1, a2)
+
+●bool aux.gffcheck(Group g, function f1, a1, function f2, a2)
+
+●bool aux.mzctcheck(Group g, int tp)
+
+●bool aux.mzctcheckrel(Group g, int tp)
+
 ●bool aux.ExceptThisCard(Effect e)
+
+●int aux.GetMultiLinkedZone(int tp)
+
+●table aux.CreateChecks(function f, table list)
+
+●bool aux.nbcon(int tp, Effect re)
+
+●bool|nil aux.nbtg(Effect e, int tp, Group eg, int ep, int ev, Effect re, int r, int rp, int chk)
+
+●bool aux.ndcon(int tp, Effect re)
+
+●function aux.tdcfop(Card c)
+
+●int aux.SequenceToGlobal(int p, int loc, int seq)
+
+●void aux.UseExtraReleaseCount(Group g, int tp)
+
+●bool aux.ExtraReleaseFilter(Card c, int tp)
+
+●bool aux.IsSpecialSummonedByEffect(Effect e)
+
+●int aux.GetCappedLevel(Card c)
+
+●int aux.GetCappedAttack(Card c)
+
+●Effect aux.AddThisCardInGraveAlreadyCheck(Card c)
 
 ========== Debug ==========
 ●void Debug.Message(any msg)

@@ -71,9 +71,6 @@ namespace DataEditorX.Common
         public static bool CheckVersion(string ver, string oldver)
         {
             bool hasNew = false;
-#if DEBUG
-            MessageBox.Show(oldver + "=>" + ver);
-#endif
             string[] vers = ver.Split('.');
             string[] oldvers = oldver.Split('.');
             if (vers.Length == oldvers.Length)

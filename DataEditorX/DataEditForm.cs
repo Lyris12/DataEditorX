@@ -1558,12 +1558,7 @@ namespace DataEditorX
             catch { }
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                bool isUpdate = false;
-#if DEBUG
-                isUpdate = MyMsg.Question(LMSG.OnlySet);
-#endif
-                tasker.SetTask(MyTask.SaveAsMSE, cards,
-                               dlg.FileName, isUpdate.ToString());
+                tasker.SetTask(MyTask.SaveAsMSE, cards, dlg.FileName, "");
                 Run(LanguageHelper.GetMsg(LMSG.SaveMse));
             }
         }

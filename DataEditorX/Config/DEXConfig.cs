@@ -331,7 +331,7 @@ namespace DataEditorX.Config
         /// <param name="file"></param>
         public static bool OpenOnExistForm(string file)
         {
-            Process instance = RunningInstance(Assembly.GetExecutingAssembly().Location.
+            Process instance = RunningInstance(Application.ExecutablePath.
                         Replace('/', Path.DirectorySeparatorChar));
             if (instance == null)
             {
