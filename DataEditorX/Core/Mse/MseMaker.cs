@@ -455,6 +455,8 @@ namespace DataEditorX.Core.Mse
                     _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
+            string txt = c.desc;
+            if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n--+\r?\n")[0];
             if (c.IsType(CardType.TYPE_LINK))
             {
                 if (CardLink.IsLink(c.def, CardLink.DownLeft))
@@ -491,16 +493,16 @@ namespace DataEditorX.Core.Mse
                 }
                 _ = sb.AppendLine(GetLine(TAG_Link_Number, "" + GetLinkNumber(c.def)));
                 _ = sb.AppendLine("	" + TAG_TEXT + ":");
-                _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+                _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
             }
             else
             {
                 if (c.IsType(CardType.TYPE_PENDULUM))//P怪兽
                 {
-                    string text = GetDesc(c.desc, cfg.regx_monster);
+                    string text = GetDesc(txt, cfg.regx_monster);
                     if (string.IsNullOrEmpty(text))
                     {
-                        text = c.desc;
+                        text = txt;
                     }
 
                     _ = sb.AppendLine("	" + TAG_TEXT + ":");
@@ -510,12 +512,12 @@ namespace DataEditorX.Core.Mse
                     _ = sb.AppendLine(GetLine(TAG_PSCALE1, ((c.level >> 0x18) & 0xff).ToString()));
                     _ = sb.AppendLine(GetLine(TAG_PSCALE2, ((c.level >> 0x10) & 0xff).ToString()));
                     _ = sb.AppendLine("	" + TAG_PEND_TEXT + ":");
-                    _ = sb.AppendLine("		" + ReText(ReItalic(GetDesc(c.desc, cfg.regx_pendulum))));
+                    _ = sb.AppendLine("		" + ReText(ReItalic(GetDesc(txt, cfg.regx_pendulum))));
                 }
                 else//一般怪兽
                 {
                     _ = sb.AppendLine("	" + TAG_TEXT + ":");
-                    _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+                    _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
                 }
                 _ = sb.AppendLine(GetLine(TAG_DEF, (c.def < 0) ? UNKNOWN_ATKDEF : c.def.ToString()));
             }
@@ -542,8 +544,10 @@ namespace DataEditorX.Core.Mse
                     _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
+            string txt = c.desc;
+            if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n--+\r?\n")[0];
             _ = sb.AppendLine("	" + TAG_TEXT + ":");
-            _ = sb.AppendLine("		" + ReText(ReItalic(c.desc)));
+            _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
             _ = sb.AppendLine(GetLine(TAG_CODE, c.IdString));
             return sb.ToString();
         }
@@ -1013,19 +1017,23 @@ namespace DataEditorX.Core.Mse
             {
                 string ptext;
                 string text;
-                if (Regex.IsMatch(desc, "【灵摆】"))
+                if (Regex.IsMatch(desc, MSEConfig.RegXPendulum))
                 {
-                    ptext = GetDesc(desc, @"\A←[ ]*\d*[ ]*【灵摆】[ ]*\d*[ ]*→[\r\n]*([\S\s]*?)[\r\n]*【");
-                    text = GetDesc(desc, @"【[^【】\r\n]{3,}】[\r\n]*([\S\s]*?)\z");
+                    ptext = GetDesc(desc, MSEConfig.RegXPendulum);
+                    text = GetDesc(desc, MSEConfig.RegXMonster);
                 }
                 else
                 {
-                    ptext = GetDesc(desc, @"\A[\S\s]*?[\r\n]*【灵摆效果】[\r\n]*([\S\s]*?)\z");
-                    text = GetDesc(desc, @"\A([\S\s]*?)[\r\n]*【灵摆效果】[\r\n]*[\S\s]*?\z");
+                    ptext = text = desc;
                 }
                 if (string.IsNullOrEmpty(text))
                 {
                     text = desc;
+                }
+                else
+                {
+                    if (ptext == text) ptext = Regex.Split(ptext, "\n--+\r?\n")[1];
+                    text = Regex.Split(text, "\r?\n--+\r?\n")[0];
                 }
 
                 List<string> val = new()

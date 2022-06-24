@@ -109,11 +109,11 @@ namespace DataEditorX.Core.Mse
                 }
                 else if (line.StartsWith(TAG_REG_PENDULUM))
                 {
-                    regx_pendulum = ConfHelper.GetValue(line);
+                    regx_pendulum = RegXPendulum = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_REG_MONSTER))
                 {
-                    regx_monster = ConfHelper.GetValue(line);
+                    regx_monster = RegXMonster = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_MAXCOUNT))
                 {
@@ -241,6 +241,8 @@ namespace DataEditorX.Core.Mse
         //效果文正则提取
         public string regx_pendulum;
         public string regx_monster;
+        public static string RegXPendulum { get; set; }
+        public static string RegXMonster { get; set; }
         //存档头部
         public string head;
         //存档结尾
