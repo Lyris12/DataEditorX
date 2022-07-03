@@ -337,7 +337,7 @@ namespace DataEditorX.Core
                         FileMode.OpenOrCreate, FileAccess.Write);
                     StreamWriter sw = new(fs, new UTF8Encoding(false));
                     sw.WriteLine("--" + c.name);
-                    sw.WriteLine("local s,id=GetID()");
+                    sw.WriteLine("local s,id,o=GetID()");
                     if (!string.IsNullOrEmpty(addrequire))
                         sw.WriteLine("Duel.LoadScript(\"" + addrequire + ".lua\")"); // DIY script
                     sw.WriteLine("function s.initial_effect(c)");

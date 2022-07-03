@@ -239,9 +239,7 @@ namespace DataEditorX.Core.Mse
         //获取效果文本
         public static string GetDesc(string cdesc, string regx)
         {
-            string desc = cdesc;
-            desc = desc.Replace("\r\n", "\n");
-            desc = desc.Replace("\r", "\n");
+            string desc = cdesc.Replace("\r\n", "\n").Replace("\r", "\n").Replace("'''", "");
             Regex regex = new(regx, RegexOptions.Multiline);
             Match mc = regex.Match(desc);
             if (mc.Success)
