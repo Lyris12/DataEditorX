@@ -5,6 +5,7 @@ mse-set.txt
 /win32/*.dll
 /win32/*.xml
 /win32/*.exe
+/win32/*.db
 /win32/data
 /win32/*.config
 win32.zip

@@ -45,7 +45,7 @@ namespace DataEditorX.Core
             {
                 return "rare";
             }
-            else if (rarity.Contains("parallel") || rarity.Contains("Kaiba") || rarity.Contains("duel terminal"))
+            else if (rarity.Contains("parallel") || rarity.Contains("duel terminal"))
             {
                 return "parallel rare";
             }
@@ -60,10 +60,6 @@ namespace DataEditorX.Core
             else if (rarity.Contains("secret"))
             {
                 return "secret rare";
-            }
-            else if (rarity.Contains("gold"))
-            {
-                return "gold rare";
             }
             else if (rarity.Contains("ultimate"))
             {
@@ -93,7 +89,11 @@ namespace DataEditorX.Core
             {
                 return "millenium rare";
             }
-            if (this.rarity.Contains("/"))
+            else if (rarity.Contains("Kaiba"))
+            {
+                return "Kaiba Corporation Rare";
+            }
+            if (this.rarity.Contains('/'))
             {
                 return this.rarity.Split('/')[0];
             }

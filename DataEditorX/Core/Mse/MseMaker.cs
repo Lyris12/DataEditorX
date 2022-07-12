@@ -367,7 +367,7 @@ namespace DataEditorX.Core.Mse
 
         #region 写存档
         //写存档
-        public Dictionary<Card, string> WriteSet(string file, Card[] cards)
+        public Dictionary<Card, string> WriteSet(string file, Card[] cards, string cardpack_db, bool rarity = true)
         {
             Dictionary<Card, string> list = new();
             string pic = cfg.imagepath;
@@ -384,13 +384,14 @@ namespace DataEditorX.Core.Mse
                         list.Add(c, jpg);
                         jpg = Path.GetFileName(jpg);
                     }
+                    CardPack cardpack = DataBase.FindPack(cardpack_db, c.id);
                     if (c.IsType(CardType.TYPE_SPELL) || c.IsType(CardType.TYPE_TRAP))
                     {
-                        sw.WriteLine(GetSpellTrap(c, jpg, c.IsType(CardType.TYPE_SPELL)));
+                        sw.WriteLine(GetSpellTrap(c, jpg, c.IsType(CardType.TYPE_SPELL), cardpack, rarity));
                     }
                     else
                     {
-                        sw.WriteLine(GetMonster(c, jpg));
+                        sw.WriteLine(GetMonster(c, jpg), cardpack, rarity);
                     }
                 }
                 sw.WriteLine(cfg.end);
@@ -454,7 +455,17 @@ namespace DataEditorX.Core.Mse
                 }
             }
             string txt = c.desc;
-            if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n--+\r?\n")[0];
+            string ptx = "";
+            if (!string.IsNullOrEmpty(txt))
+            {
+                string[] t0 = Regex.Split(txt, "\r?\n--+\r?\n");
+                if (t0.Length > 2)
+                {
+                    txt = txt[..(txt.Length - t0[2].Length - 1)];
+                }
+                List<string> t1 = GetMPText(txt);
+                ptx = t1[1]; txt = t1[0];
+            }
             if (c.IsType(CardType.TYPE_LINK))
             {
                 if (CardLink.IsLink(c.def, CardLink.DownLeft))
@@ -497,20 +508,14 @@ namespace DataEditorX.Core.Mse
             {
                 if (c.IsType(CardType.TYPE_PENDULUM))//P怪兽
                 {
-                    string text = GetDesc(txt, cfg.regx_monster);
-                    if (string.IsNullOrEmpty(text))
-                    {
-                        text = txt;
-                    }
-
                     _ = sb.AppendLine("	" + TAG_TEXT + ":");
                     //sb.AppendLine(cfg.regx_monster + ":" + cfg.regx_pendulum);
-                    _ = sb.AppendLine("		" + ReText(ReItalic(text)));
+                    _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
                     _ = sb.AppendLine(GetLine(TAG_PENDULUM, "medium"));
                     _ = sb.AppendLine(GetLine(TAG_PSCALE1, ((c.level >> 0x18) & 0xff).ToString()));
                     _ = sb.AppendLine(GetLine(TAG_PSCALE2, ((c.level >> 0x10) & 0xff).ToString()));
                     _ = sb.AppendLine("	" + TAG_PEND_TEXT + ":");
-                    _ = sb.AppendLine("		" + ReText(ReItalic(GetDesc(txt, cfg.regx_pendulum))));
+                    _ = sb.AppendLine("		" + ReText(ReItalic(ptx)));
                 }
                 else//一般怪兽
                 {
@@ -1030,7 +1035,7 @@ namespace DataEditorX.Core.Mse
                 }
                 else
                 {
-                    if (ptext == text) ptext = Regex.Split(ptext, "\n--+\r?\n")[1];
+                    if (ptext == text) ptext = "";
                     text = Regex.Split(text, "\r?\n--+\r?\n")[0];
                 }
 
@@ -1041,55 +1046,6 @@ namespace DataEditorX.Core.Mse
                 };
                 return val;
             }
-        }
-        public static string ConvertPTextNew(string text, string ptext)
-        {
-            if (string.IsNullOrEmpty(ptext))
-            {
-                return text;
-            }
-            else
-            {
-                return string.Format("{0}\r\n\r\n【灵摆效果】\r\n{1}", text, ptext);
-            }
-        }
-
-        public static string ReplaceText(string text, string name)
-        {
-            // pendulum format
-            if (Regex.IsMatch(text, @"【灵摆】"))
-            {
-                List<string> table = GetMPText(text);
-                if (table != null)
-                {
-                    text = ConvertPTextNew(table[0], table[1]);
-                }
-            }
-
-            // give
-            text = text.Replace("给与", "给予");
-
-            // set name
-            text = Regex.Replace(text, @"名字带有「([^「」]+)」的", "「$1」");
-
-            if (Regex.IsMatch(text, "①"))
-            {
-                // this card name
-                string thisname = string.Format("「{0}」", name);
-                text = Regex.Replace(text, thisname + @"在1回合", "这个卡名的卡在1回合");
-                text = Regex.Replace(text, thisname + @"在决斗中", "这个卡名的卡在决斗中");
-                text = Regex.Replace(text, thisname + @"的效果1回合", "这个卡名的效果1回合");
-                text = Regex.Replace(text, thisname + @"的效果在决斗中", "这个卡名的效果在决斗中");
-                text = Regex.Replace(text, thisname + @"的怪兽效果1回合", "这个卡名的怪兽效果1回合");
-                text = Regex.Replace(text, thisname + @"的怪兽效果在决斗中", "这个卡名的怪兽效果在决斗中");
-                text = Regex.Replace(text, thisname + @"的灵摆效果1回合", "这个卡名的灵摆效果1回合");
-                text = Regex.Replace(text, thisname + @"的灵摆效果在决斗中", "这个卡名的灵摆效果在决斗中");
-                text = Regex.Replace(text, thisname + @"的([①②③④⑤⑥⑦⑧⑨⑩]+)的", "这个卡名的$1的");
-                text = Regex.Replace(text, thisname + @"的([①②③④⑤⑥⑦⑧⑨⑩]+)的", "这个卡名的$1的");
-                text = Regex.Replace(text, @"作为([①②③④⑤⑥⑦⑧⑨⑩]+)的", "$1的");
-            }
-
-            return text;
         }
     }
 }

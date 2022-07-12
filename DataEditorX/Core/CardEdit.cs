@@ -304,7 +304,7 @@ namespace DataEditorX.Core
                     if (c.omega[0] > 0 && !string.IsNullOrEmpty(c.script)
                         && !byte.TryParse(c.script, out _) && !File.Exists(lua) && openinthis)
                     {
-                        DEXConfig.OpenFileInThis(c.script);
+                        DEXConfig.OpenFileInThis(id.ToString() + "```" + c.script);
                         return true;
                     }
                 }

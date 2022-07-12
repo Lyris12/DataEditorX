@@ -211,7 +211,8 @@ namespace DataEditorX
             if (df != null) cf.SetCardDB(df.GetOpenFile());
             if (!string.IsNullOrEmpty(file) && (file.IndexOf('\n') > -1 || file.IndexOf("function ") > -1))
             {
-                cf.Controls["fctb"].Text = file;
+                if (long.TryParse(file.Split("```")[0], out long tmp)) cf.nowCode = tmp;
+                cf.Controls["fctb"].Text = file.IndexOf("```") > -1 ? file.Split("```")[1] : file;
             }
             else _ = cf.Open(file, df == null ? "cards" : Path.GetFileNameWithoutExtension(df.GetOpenFile()));
             cf.Show(dockPanel, DockState.Document);

@@ -65,9 +65,9 @@ Returns the codename on the c rule (used as a card rule on this card)
 Return c as the fusion material when the card number (including the original c card number)
 ●int[,int,...] Card.GetLinkCode(Card c)
 
-●bool Card.IsFusionCode(Card c, int code[, ...])
+●bool Card.IsFusionCode(Card c, int code[,...])
 Check the c as a fusion material can be used as the card number for the code card
-●bool Card.IsLinkCode(Card c, int code[, ...])
+●bool Card.IsLinkCode(Card c, int code[,...])
 
 ●bool Card.IsSetCard(Card c, int setname)
 Check whether c is a card with the name setname
@@ -246,7 +246,7 @@ Opening the card from the inside will also change this value
 ●int Card.GetRealFieldID(Card c)
 Returns the actual timestamp for the c transition to the current position
 Opening the card from the inside does not change this value
-●bool Card.IsCode(Card c, int code1[, int code2, ...])
+●bool Card.IsCode(Card c, int code1[, int code2,...])
 Check whether the card number c is code1[, or code2 ...]
 ●bool Card.IsType(Card c, int type)
 Check if c is of type type
@@ -656,7 +656,7 @@ Set c to unique_code only in the field [or monster area or magic trap area, dete
 S is not 0 will check the uniqueness of their field, o is not 0 check the other field uniqueness
 ●bool Card.CheckUniqueOnField(Card c, int check_player[, int check_location = LOCATION_ONFIELD, Card icard|nil])
 Check the uniqueness of c in the check_player field
-●void Card.ResetNegateEffect(Card c[, int code1, ...])
+●void Card.ResetNegateEffect(Card c[, int code1,...])
 Reset c affected by the effect of cards whose card number is code1, code2 ...
 ●void Card.AssumeProperty(Card c, int assume_type, int assume_value)
 Use the value of assume_type c as assume_value (genome fighter)
@@ -843,14 +843,14 @@ Point the pointer to the next card and return the card, or nil if it does not ex
 Returns the number of cards in g
 ●int Group.__len(Group g)
 
-●void Group.ForEach(Group g, function f, ...)
+●void Group.ForEach(Group g, function f,...)
 Call f once for each card in g as a parameter
-●Group Group.Filter(Group g, function f, Card|Group ex|nil, ...)
+●Group Group.Filter(Group g, function f, Card|Group ex|nil,...)
 The filter function filters the card from g that satisfies the filter condition f and is not equal to ex
 Starting from the 4th parameter as an additional parameter
-●int Group.FilterCount(Group g, function f, Card|Group ex|nil, ...)
+●int Group.FilterCount(Group g, function f, Card|Group ex|nil,...)
 Filter function, and Group.Filter is basically the same, the difference is that this function only returns the number of cards to meet the conditions
-●Group Group.FilterSelect(Group g, int player, function f, int min, int max, Card|Group ex|nil, ...)
+●Group Group.FilterSelect(Group g, int player, function f, int min, int max, Card|Group ex|nil,...)
 Filter function, allowing players to choose from the g player min-max sheets meet the screening conditions f and not equal to the ex card
 Starting with the 7th argument is an additional parameter
 ●Group Group.Select(Group g, int player, int min, int max, Card|Group ex|nil)
@@ -860,38 +860,38 @@ Let player player from g select the min-max Zhang is not equal to the ex card
 ●Group Group.RandomSelect(Group g, int player, int count)
 Let the player player randomly select count cards from g
 Because it is a random choice, so the basic parameter useless player, randomly selected by the system
-●bool Group.IsExists(Group g, function f, int count, Card|Group ex|nil, ...)
+●bool Group.IsExists(Group g, function f, int count, Card|Group ex|nil,...)
 Filter function to check if there is at least count of cards in g that satisfy the filter condition f and not equal to ex
 Starting from the 5th parameter as an additional parameter
-●bool Group.CheckWithSumEqual(Group g, function f, int sum, int min = 0, int max, ...)
+●bool Group.CheckWithSumEqual(Group g, function f, int sum, int min = 0, int max,...)
 The subset summation decision function, f, is a function that returns an interger value
 Check whether there is a subset of min-max in g that satisfies that the sum of the values ​​of each element of the subset f is equal to sum, starting at the 6th argument as an extra parameter
 For example: g: CheckWithSumEqual (Card.GetSynchroLevel, 7,2,99)
 Check if the sum of the same call levels in a subset of g satisfies a subset equal to 7
-●Group Group.SelectWithSumEqual(Group g, int player, function f, int sum, int min, int max, ...)
+●Group Group.SelectWithSumEqual(Group g, int player, function f, int sum, int min, int max,...)
 Let the player player select a subset of min-max from g so that the sum of the specific functions of the subset is equal to sum, starting at the 7th argument as an extra parameter
-●bool Group.CheckWithSumGreater(Group g, function f, int sum, ...)
+●bool Group.CheckWithSumGreater(Group g, function f, int sum,...)
 The sum of the subsets is determined by a function f, which is a function that returns an interger value
 Check that there is a subset in g that satisfies that the sum of the values ​​of each element of the subset f is just greater than or equal to sum, starting at the fourth argument as an extra parameter
 For example: g: CheckWithSumGreater (Card.GetRitualLevel, 8)
 Check if the sum of the ritual classes in g satisfies a subset of 8 or greater
 Note: The decision must be "just" greater than or equal to
 To grade, for example, to make the total level is greater than or equal to 8, you can choose LV1 + LV7 and can not choose LV1 + LV4 + LV4
-●Group Group.SelectWithSumGreater(Group g, int player, function f, int sum, ...)
+●Group Group.SelectWithSumGreater(Group g, int player, function f, int sum,...)
 Let the player player select a subset from g so that the sum of the particular function f of the subset is greater than or equal to sum, starting at the fifth argument as an extra parameter
-●Group,int Group.GetMinGroup(Group g, function f, ...)
+●Group,int Group.GetMinGroup(Group g, function f,...)
 F is a function that returns an interger value, and the card with the smallest value of f is selected from g
 The second return value is the minimum value, starting at the third parameter as an additional parameter
 To use the second return value Note Check g is not empty
-●Group,int Group.GetMaxGroup(Group g, function f, ...)
+●Group,int Group.GetMaxGroup(Group g, function f,...)
 F is the function that returns an interger value, and the card with the largest value of f is selected from g
 The second return value is the maximum value, starting with the third parameter as an additional parameter
 To use the second return value Note Check g is not empty
-●int Group.GetSum(Group g, function f, ...)
+●int Group.GetSum(Group g, function f,...)
 Calculates the sum of the values ​​of all cards in g, f is the value function for each card, starting with the third parameter as an additional parameter
-●int Group.GetClassCount(Group g, function f, ...)
+●int Group.GetClassCount(Group g, function f,...)
 Calculate the number of all cards in g, f is the basis of the classification, return the same value as the same category, starting from the first three parameters for additional parameters
-●void Group.Remove(Group g, function f, Card ex|nil, ...)
+●void Group.Remove(Group g, function f, Card ex|nil,...)
 Remove all cards from g that satisfy the filter condition f and not equal to ex, the fourth parameter starts with the extra argument
 ●void Group.Merge(Group g1, Group g2)
 Combine all cards in g2 to g1
@@ -903,9 +903,9 @@ Note: g2 itself does not change
 It is judged whether or not g1 and g2 are the same
 ●bool Group.IsContains(Group g, Card c)
 Check g for card c
-●Card Group.SearchCard(Group g, function f, ...)
+●Card Group.SearchCard(Group g, function f,...)
 Returns the first card in g that satisfies the filter condition f, starting at the third argument as an extra argument
-●int Group.GetBinClassCount(Group g, function f, ...)
+●int Group.GetBinClassCount(Group g, function f,...)
 
 ●Group Group.__add(Group|Card target1, Group|Card target2)
 
@@ -1103,7 +1103,7 @@ Check player player can pay cost point lp
 Allow players to pay cost point player lp
 ●int Duel.DiscardDeck(int player, int count, int reason)
 To reason player player card group top count cards sent to the cemetery, the actual transfer of the number
-●int Duel.DiscardHand(int player, function f, int min, int max, int reason, Card|Group ex|nil, ...)
+●int Duel.DiscardHand(int player, function f, int min, int max, int reason, Card|Group ex|nil,...)
 Filter function allows the player to select and discard the player to meet the screening conditions f soldiers is not equal to ex min-max Zhang card
 The seventh argument starts as an extra parameter
 ●void Duel.DisableShuffleCheck([bool disable = true])
@@ -1184,7 +1184,7 @@ Back to player The player's field is located in the location number seq card, co
 Check if the player's player field is seq in the location of the space is available
 ●int Duel.GetCurrentChain()
 Returns the chain number currently being processed
-●... Duel.GetChainInfo(int chainc, ...)
+●... Duel.GetChainInfo(int chainc,...)
 Returns the chainc information, if chainc = 0, returns the chain of information currently being processed
 This function returns the corresponding number of return values ​​in sequence according to the number of arguments passed in. The arguments can be:
 CHAININFO_CHAIN_COUNT The serial number of the chain
@@ -1239,32 +1239,32 @@ Returns the number of cards in the specified location
 Returns the count card at the top of the player's deck
 ●Group Duel.GetExtraTopGroup(int player, int count)
 
-●Group Duel.GetMatchingGroup(function f|nil, int player, int s, int o, Card|Group ex|nil, ...)
+●Group Duel.GetMatchingGroup(function f|nil, int player, int s, int o, Card|Group ex|nil,...)
 Filter function to return to the specified location to meet the filter condition f and not equal to the ex card
 The sixth parameter starts as an extra parameter
-●int Duel.GetMatchingGroupCount(function f|nil, int player, int s, int o, Card|Group ex|nil, ...)
+●int Duel.GetMatchingGroupCount(function f|nil, int player, int s, int o, Card|Group ex|nil,...)
 Filter function to return to the specified location to meet the filter condition f and not equal to the number of ex card
-●Card Duel.GetFirstMatchingCard(function f|nil, int player, int s, int o, Card|Group ex|nil, ...)
+●Card Duel.GetFirstMatchingCard(function f|nil, int player, int s, int o, Card|Group ex|nil,...)
 Filter function to return to the specified location to meet the filter condition f and not equal to the first card ex
 The sixth parameter starts as an extra parameter
-●bool Duel.IsExistingMatchingCard(function f|nil, int player, int s, int o, int count, Card|Group ex|nil, ...)
+●bool Duel.IsExistingMatchingCard(function f|nil, int player, int s, int o, int count, Card|Group ex|nil,...)
 Filter the function to check if there are at least count cards that satisfy the filter condition f and not equal to ex
 The seventh argument starts as an extra parameter
-●Group Duel.SelectMatchingCard(int sel_player, function f|nil, int player, int s, int o, int min, int max, Card|Group ex|nil, ...)
+●Group Duel.SelectMatchingCard(int sel_player, function f|nil, int player, int s, int o, int min, int max, Card|Group ex|nil,...)
 Filter function, the player sel_player select the specified location to meet the filter condition f and not equal to the ex min-max card
 The ninth parameter starts as an extra parameter
 ●Group Duel.GetReleaseGroup(int player[, bool use_hand = false])
 Return to the player player can be liberated (non-superior summoned use) of the deck, use_hand is true, including the hand card
 ●integer Duel.GetReleaseGroupCount(int player[, bool use_hand = false])
 Return player player can be liberated (non-superior summoned with) the number of cards, use_hand is true, including the hand card
-●bool Duel.CheckReleaseGroup(int player, function f|nil, int count, Card|Group ex|nil, ...)
+●bool Duel.CheckReleaseGroup(int player, function f|nil, int count, Card|Group ex|nil,...)
 Check if the player has at least count of cards that meet the filter condition f and are not equal to ex (non-superior summons)
 The fifth parameter starts as an extra parameter
-●Group Duel.SelectReleaseGroup(int sel_player, function f|nil, int min, int max, Card|Group ex|nil, ...)
+●Group Duel.SelectReleaseGroup(int sel_player, function f|nil, int min, int max, Card|Group ex|nil,...)
 Filter function, allowing players to choose from the field min-max Zhang is not equal to ex to meet the conditions f can be liberated card (non-superior summon)
-●bool Duel.CheckReleaseGroupEx(int player, function f|nil, int count, Card|Group ex|nil, ...)
+●bool Duel.CheckReleaseGroupEx(int player, function f|nil, int count, Card|Group ex|nil,...)
 Check whether there are at least count cards that can satisfy the filter condition f and are not equal to ex. (For non-superior summoning)
-●Group Duel.SelectReleaseGroupEx(int player, function f|nil, int min, int max, Card|Group ex|nil, ...)
+●Group Duel.SelectReleaseGroupEx(int player, function f|nil, int min, int max, Card|Group ex|nil,...)
 Filter function, allowing the player player from the field · hand card selection min-max Zhang does not equal ex to meet the conditions of f can be liberated card (non-superior call)
 ●Group Duel.GetTributeGroup(Card c)
 Returns the deck of cards used for the normal summon c to be released (for higher-level summons)
@@ -1275,13 +1275,13 @@ Because some cards can be used as two sacrifices
 ●bool Duel.CheckTribute(Card target, int min[, int max, Group mg|nil, int toplayer, int zone = 0x1f])
 ●Group Duel.SelectTribute(int player, Card c, int min, int max[, Group mg|nil, int toplayer = c:GetControler()|nil])
 Let the player player [from the mg] choose the min-max sacrifices that are normally used to summon c, ex = true to allow the monster on the other side of the field (the wing of the Sun God-Sphere)
-●int Duel.GetTargetCount(function f|nil, int player, int s, int o, Card|Group ex|nil, ...)
+●int Duel.GetTargetCount(function f|nil, int player, int s, int o, Card|Group ex|nil,...)
 Basic with Duel.GetMatchingGroupCount, the difference lies in the need to add to determine whether the card is currently being processed by the effect of the object
-●bool Duel.IsExistingTarget(function f|nil, int player, int s, int o, int count, Card|Group ex|nil, ...)
+●bool Duel.IsExistingTarget(function f|nil, int player, int s, int o, int count, Card|Group ex|nil,...)
 Filter function to check whether there is at least the specified number of positions to meet the filter conditions f and not equal ex
 And can become a card of an object that is currently being processed
 The seventh argument starts as an extra parameter
-●Group Duel.SelectTarget(int sel_player, function f|nil, int player, int s, int o, int min, int max, Card|Group ex|nil, ...)
+●Group Duel.SelectTarget(int sel_player, function f|nil, int player, int s, int o, int min, int max, Card|Group ex|nil,...)
 Filter function, so that player sel_player select the specified location to meet the filter condition f and not equal ex
 And can be the min-max card of the object that is currently processing the effect
 The ninth parameter starts as an extra parameter
@@ -1385,7 +1385,7 @@ Manually displays the animated effect of the selected object for g and records t
 Let players choose whether to launch the card player c effect
 ●bool Duel.SelectYesNo(int player, int desc)
 Let player player select Yes or No
-●int Duel.SelectOption(int player, int desc1, ...)
+●int Duel.SelectOption(int player, int desc1,...)
 Let the player select the option, starting with the second argument, where each parameter represents an option
 Returns the serial number of the selected option (0-based)
 ●void Duel.SelectSequence()
@@ -1409,15 +1409,15 @@ Available is the combined value of all the optional races
 ●int Duel.AnnounceAttribute(int player, int count, int available)
 Let the player player declare count attributes from the optional attribute
 Available is the combined value of all optional attributes
-●int Duel.AnnounceLevel(int player[, int min = 1|nil, int max = 12|nil, ...])
+●int Duel.AnnounceLevel(int player[, int min = 1|nil, int max = 12|nil,...])
 Let the player declare a level
 ●int Duel.AnnounceCard(int player[, type = TYPE_MONSTER + TYPE_SPELL + TYPE_TRAP])
 Let players declare a player [type type] card code
-●int Duel.AnnounceCardFilter(int player, ...)
+●int Duel.AnnounceCardFilter(int player,...)
 
 ●int Duel.AnnounceType(int player[, int antype = 70|71|72])
 Let the player player declare a card type
-●int,int Duel.AnnounceNumber(int player, int number, ...)
+●int,int Duel.AnnounceNumber(int player, int number,...)
 Let the player player declare a number
 Starting with the second argument, each parameter represents a declarable number
 The first return value is the number of declarations, and the second return value is the declaration number of the position in all options
@@ -1433,10 +1433,10 @@ The return value is count1 + count2 results, 1-6
 Returns the result of the current coin
 ●int,int,int,int,int Duel.GetDiceResult()
 Returns the result of the current dice
-●void Duel.SetCoinResult(int res, ...)
+●void Duel.SetCoinResult(int res,...)
 Forcibly modify the result of casting coins to res
 This function is used in the persistent EVENT_TOSS_COIN event
-●void Duel.SetDiceResult(int res, ...)
+●void Duel.SetDiceResult(int res,...)
 Forcibly modify the result of casting dice to res
 This function is used in the persistent EVENT_TOSS_DICE event
 ●Effect|nil,... Duel.IsPlayerAffectedByEffect(int player, int code)
@@ -1485,7 +1485,7 @@ Check chainC effect can be invalid
 Check whether c is the correct object for chained chainc effects
 ●bool Duel.CheckChainUniqueness()
 Check the existence of the current chain of the same name card launch, true that no card with the same name
-●int,... Duel.GetActivityCount(int player, int activity_type, ...)
+●int,... Duel.GetActivityCount(int player, int activity_type,...)
 Returns the number of times the player performed the corresponding activity_type operation
 The activity_type is of the following type
 ACTIVITY_SUMMON call (not including the usual call placed)
@@ -1526,7 +1526,7 @@ Forced to launch the effect can choose whether to launch
 
 ●int Duel.GetMasterRule()
 
-●int,int,.. Duel.ReadCard(int|Card target, int type, int type2, ..)
+●int,int,.. Duel.ReadCard(int|Card target, int type, int type2,..)
 
 ●int Duel.Exile(Card|Group target, int reason)
 
@@ -1598,17 +1598,17 @@ Add double for the c monster attributes
 
 ●Effect aux.EnableChangeCode(Card c, int code[, int location, function condition])
 
-●function aux.TargetEqualFunction(function f, any value, ...)
+●function aux.TargetEqualFunction(function f, any value,...)
 
-●function aux.TargetBoolFunction(function f, ...)
+●function aux.TargetBoolFunction(function f,...)
 
-●function aux.FilterEqualFunction(function f, any value, ...)
+●function aux.FilterEqualFunction(function f, any value,...)
 
-●function aux.FilterBoolFunction(function f, ...)
+●function aux.FilterBoolFunction(function f,...)
 
-●function aux.Tuner(function f|nil, ...)
+●function aux.Tuner(function f|nil,...)
 
-●function aux.NonTuner(function f|nil, ...)
+●function aux.NonTuner(function f|nil,...)
 
 ●Card|Group|Effect|int|bool|string|nil|function|table|any aux.GetValueType(any value)
 
@@ -1639,9 +1639,9 @@ The rest of the parameters are used to stack on a single monster (usually an exc
 Alterf for this monster to meet the conditions, desc for the description, op for the stacked operation (hope Huanglong)
 ●void aux.AddXyzProcedureLevelFree(Card c, function f|nil, function gf|nil, int minc, int maxc[, function alterf|nil, int desc|nil, function op|nil])
 
-●void aux.AddFusionProcMix(Card c, bool sub, bool insf, ...)
+●void aux.AddFusionProcMix(Card c, bool sub, bool insf,...)
 
-●void aux.AddFusionProcMixRep(Card c, bool sub, bool insf, (function f1)|(int code1), int minc, int maxc, ...)
+●void aux.AddFusionProcMixRep(Card c, bool sub, bool insf, (function f1)|(int code1), int minc, int maxc,...)
 
 ●void aux.AddFusionProcCode2(Card c, int code1, int code2, bool sub, bool insf)
 For the c designated card number for the code1 and code2 monster for the fusion material
@@ -1672,7 +1672,7 @@ For the c designated cc meet the same conditions f monster for the fusion materi
 
 ●void aux.AddFusionProcShaddoll(Card c, int attribute)
 
-●Effect aux.AddContactFusionProcedure(Card c[, function filter, int self_location, int opponent_location, function mat_operation, ...])
+●Effect aux.AddContactFusionProcedure(Card c[, function filter, int self_location, int opponent_location, function mat_operation,...])
 
 ●Effect aux.AddRitualProcUltimate(Card c[, function filter, function level_function, string greater_or_equal, int summon_location, function grave_filter, function mat_filter, bool pause, function extra_operation])
 
@@ -1708,7 +1708,7 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●void aux.EnableExtraDeckSummonCountLimit()
 
-●void aux.AddMaterialCodeList(Card c, ...)
+●void aux.AddMaterialCodeList(Card c,...)
 
 ●bool aux.IsMaterialListCode(Card c, int code)
 
@@ -1718,11 +1718,11 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●int,int aux.GetMaterialListCount(Card c)
 
-●void aux.AddCodeList(Card c, ...)
+●void aux.AddCodeList(Card c,...)
 
 ●bool aux.IsCodeListed(Card c, int code)
 
-●void aux.AddSetNameMonsterList(Card c, ...)
+●void aux.AddSetNameMonsterList(Card c,...)
 
 ●void aux.IsSetNameMonsterListed(Card c, int setcode)
 
@@ -1842,7 +1842,15 @@ Filter for the ritual monster to meet the conditions, the material level must be
 
 ●int aux.GetMultiLinkedZone(int tp)
 
+●bool Group.CheckSubGroup(Group g, function f[, int min, int max,...])
+
+●Card|nil Group.SelectSubGroup(Group g, int tp, function f[, bool cancelable, int min, int max,...])
+
 ●table aux.CreateChecks(function f, table list)
+
+●bool Group.CheckSubGroupEach(Group g, table checks[, function f,...])
+
+●Group|nil Group.SelectSubGroupEach(Group g, int tp, table checks[, bool cancelable, function f,...])
 
 ●bool aux.nbcon(int tp, Effect re)
 

@@ -838,7 +838,6 @@ namespace DataEditorX.Core
         #endregion
         #endregion
 
-
         public static void ExportSql(string file, params Card[] cards)
         {
             using FileStream fs = new(file, FileMode.Create, FileAccess.Write);
@@ -848,6 +847,37 @@ namespace DataEditorX.Core
                 sw.WriteLine(c.omega[0] > 0 ? OmegaGetInsertSQL(c, false, true) : GetInsertSQL(c, false, true));
             }
             sw.Close();
+        }
+        public static CardPack FindPack(string db, long id)
+        {
+            CardPack cardpack = null;
+            if (File.Exists(db) && id >= 0)
+            {
+                using (SqliteConnection sqliteconn = new(@"Data Source=" + db))
+                {
+                    sqliteconn.Open();
+                    using (SqliteCommand sqlitecommand = sqliteconn.CreateCommand())
+                    {
+                        sqlitecommand.CommandText = "select id,pack_id,pack,rarity,date from pack where id=" + id + " order by date desc";
+                        using (SqliteDataReader reader = sqlitecommand.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                cardpack = new CardPack(id)
+                                {
+                                    pack_id = reader.GetString(1),
+                                    pack_name = reader.GetString(2),
+                                    rarity = reader.GetString(3),
+                                    date = reader.GetString(4)
+                                };
+                            }
+                            reader.Close();
+                        }
+                    }
+                    sqliteconn.Close();
+                }
+            }
+            return cardpack;
         }
     }
 }

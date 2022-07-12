@@ -39,6 +39,7 @@ namespace DataEditorX
         //自动完成
         AutocompleteMenu popupMenu;
         string nowFile;
+        public long nowCode;
         string title;
         string oldtext;
         SortedList<string, string> tooltipDic;
@@ -370,6 +371,7 @@ namespace DataEditorX
             if (saveas || string.IsNullOrEmpty(nowFile) || !File.Exists(nowFile))
             {
                 using SaveFileDialog sfdlg = new();
+                sfdlg.FileName = string.IsNullOrEmpty(nowFile) ? "c" + nowCode.ToString() + ".lua" : nowFile;
                 try
                 {
                     sfdlg.Filter = LanguageHelper.GetMsg(LMSG.ScriptFilter);
@@ -621,7 +623,8 @@ namespace DataEditorX
                 Directory.SetCurrentDirectory(fi.DirectoryName);
                 Lua lua = new();
                 var env = lua.CreateEnvironment();
-                string pre = "Duel={} Effect={} Card={} aux={} Auxiliary={} " + cCode + "={} Duel.LoadScript=function(str) end ";
+                string pre = "Duel={} Effect={} Card={} aux={} Auxiliary={} " + cCode + "={} Duel.LoadScript=function(str) end GetID=function() return "
+                    + cCode + "," + cCode[1..] + "," + (long.Parse(cCode[1..]) < 100000000 ? "1" : "100") + " end";
                 _ = env.DoChunk(pre + fctb.Text, "test.lua");
             }
             catch (LuaException ex)

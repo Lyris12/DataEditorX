@@ -1176,6 +1176,7 @@ namespace DataEditorX
             this.pl_flags.Padding = new System.Windows.Forms.Padding(2);
             this.pl_flags.Size = new System.Drawing.Size(301, 105);
             this.pl_flags.TabIndex = 13;
+            this.pl_flags.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Pl_flagsScroll);
             // 
             // pl_category
             // 
@@ -1189,6 +1190,7 @@ namespace DataEditorX
             this.pl_category.Padding = new System.Windows.Forms.Padding(2);
             this.pl_category.Size = new System.Drawing.Size(301, 105);
             this.pl_category.TabIndex = 13;
+            this.pl_category.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Pl_categoryScroll);
             // 
             // lb_scripttext
             // 

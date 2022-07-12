@@ -2205,13 +2205,6 @@ namespace DataEditorX
                 {
                     //
                     _ = DEXConfig.ReadInteger(DEXConfig.TAG_AUTO_LEN, 30);
-                    for (int i = 0; i < count; i++)
-                    {
-                        if (cards[i].desc != null)
-                        {
-                            cards[i].desc = MseMaker.ReplaceText(cards[i].desc, cards[i].name);
-                        }
-                    }
                     _ = DataBase.CopyDB(dlg.FileName, false, cards);
                     MyMsg.Show(LMSG.CopyCardsToDBIsOK);
                 }
@@ -2415,6 +2408,18 @@ namespace DataEditorX
                 DataBase.Command(GetOpenFile(), "insert or ignore into setcodes values(" + setcode + ", 0, '"
                     + setname + "', 0);");
             }
+        }
+        private void Pl_categoryScroll(object sender, MouseEventArgs e)
+        {
+            int d = e.Delta;
+            int c = pl_category.VerticalScroll.Value;
+            pl_category.VerticalScroll.Value = Math.Max(0, c + d / 6);
+        }
+        private void Pl_flagsScroll(object sender, MouseEventArgs e)
+        {
+            int d = e.Delta;
+            int c = pl_flags.VerticalScroll.Value;
+            pl_flags.VerticalScroll.Value = Math.Max(0, c + d / 6);
         }
     }
 }

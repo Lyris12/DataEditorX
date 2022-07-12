@@ -279,12 +279,13 @@ namespace DataEditorX.Core
             {
                 return;
             }
-
+            string pack_db = MyPath.GetRealPath(DEXConfig.ReadString("pack_db"));
+            bool rarity = DEXConfig.ReadBoolean("mse_auto_rarity", false);
             int c = cards.Length;
             //不分开，或者卡片数小于单个存档的最大值
             if (mseHelper.MaxNum == 0 || c < mseHelper.MaxNum)
             {
-                SaveMSE(1, file, cards, isUpdate);
+                SaveMSE(1, file, cards, pack_db, rarity, isUpdate);
             }
             else
             {
@@ -309,14 +310,14 @@ namespace DataEditorX.Core
                     int t = file.LastIndexOf(".mse-set");
                     string fname = (t > 0) ? file[..t] : file;
                     fname += string.Format("_{0}.mse-set", i + 1);
-                    SaveMSE(i + 1, fname, clist.ToArray(), isUpdate);
+                    SaveMSE(i + 1, fname, clist.ToArray(), pack_db, rarity, isUpdate);
                 }
             }
         }
-        public void SaveMSE(int num, string file, Card[] cards, bool isUpdate)
+        public void SaveMSE(int num, string file, Card[] cards, string pack_db, bool rarity, bool isUpdate)
         {
             string setFile = file + ".txt";
-            Dictionary<Card, string> images = mseHelper.WriteSet(setFile, cards);
+            Dictionary<Card, string> images = mseHelper.WriteSet(setFile, cards, pack_db, rarity);
             if (isUpdate)//仅更新文字
             {
                 return;
