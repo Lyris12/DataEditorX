@@ -198,7 +198,7 @@ namespace DataEditorX.Core
                 str = sr.ReadLine();
                 while (str != null)
                 {
-                    if (!str.StartsWith("!") && !str.StartsWith("#") && str.Length > 0)
+                    if (int.TryParse(str.Trim(), out _) && str.Length > 0)
                     {
                         if (IDs.IndexOf(str) < 0)
                         {
@@ -228,10 +228,20 @@ namespace DataEditorX.Core
             for (int i = 0; i < n; i++)
             {
                 string ex = Path.GetExtension(files[i]).ToLower();
-                if (ex == ".jpg" || ex == ".png" || ex == ".bmp")
-                {
-                    list.Add(Path.GetFileNameWithoutExtension(files[i]));
-                }
+                if ((ex == ".jpg" || ex == ".png" || ex == ".bmp") && int.TryParse(Path.GetFileNameWithoutExtension(files[i]), out int s))
+                        list.Add(s.ToString());
+            }
+            return list.ToArray();
+        }
+        public static string[] ReadScript(string path)
+        {
+            List<string> list = new();
+            string[] files = Directory.GetFiles(path, "*.lua");
+            int n = files.Length;
+            for (int i = 0; i < n; i++)
+            {
+                if (int.TryParse(Path.GetFileNameWithoutExtension(files[i])[(Path.GetFileName(files[i])[0] == 'c' ? 1 : 0)..], out int s))
+                    list.Add(s.ToString());
             }
             return list.ToArray();
         }

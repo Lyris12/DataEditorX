@@ -14,6 +14,7 @@ using System.Globalization;
 using WeifenLuo.WinFormsUI.Docking;
 using Microsoft.Data.Sqlite;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace DataEditorX
 {
@@ -1275,9 +1276,59 @@ namespace DataEditorX
             {
                 tmpCodes.Clear();
                 string[] ids = YGOUtil.ReadYDK(dlg.FileName);
-                tmpCodes.AddRange(ids);
-                SetCards(DataBase.Read(nowCdbFile, true,
-                                       ids), false);
+                if (MessageBox.Show("Show cards outside of this YDK?", null, MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                    SetCards(DataBase.Read(nowCdbFile, true, "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id and datas.id not in ("
+                        + string.Join(",", ids) + ");"), false);
+                    foreach (Card c in cardlist)
+                        tmpCodes.Add(c.id.ToString());
+                } else {
+                    tmpCodes.AddRange(ids);
+                    SetCards(DataBase.Read(nowCdbFile, true,
+                                           ids), false);
+                }
+            }
+        }
+        void Menuitem_readlistClick(object sender, EventArgs e)
+        {
+            if (!CheckOpen())
+            {
+                return;
+            }
+
+            using OpenFileDialog dlg = new();
+            dlg.Title = "Select decklist file";
+            dlg.Filter = "Plain text files (*.txt)|*.txt|all files(*.*)|*.*";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                tmpCodes.Clear();
+                List<string> IDs = new();
+                string ydkfile = dlg.FileName;
+                string str;
+                if (File.Exists(ydkfile))
+                {
+                    using FileStream f = new(ydkfile, FileMode.Open, FileAccess.Read);
+                    StreamReader sr = new(f, Encoding.Default);
+                    str = sr.ReadLine();
+                    while (str != null)
+                    {
+                        if (str.Length > 0)
+                            if (IDs.IndexOf(str) < 0)
+                                IDs.Add(str.Replace("\"", "\"\"").ToLowerInvariant());
+                        str = sr.ReadLine();
+                    }
+                    sr.Close();
+                    f.Close();
+                }
+                if (IDs.Count == 0)
+                    return;
+                string[] names = IDs.ToArray();
+                if (MessageBox.Show("Show cards outside of this YDK?", null, MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                    SetCards(DataBase.Read(nowCdbFile, true, "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id and lower(name) not in (\"" + string.Join("\",\"", names) + "\");"), false);
+                } else {
+                    SetCards(DataBase.Read(nowCdbFile, true, "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id and lower(name) in (\"" + string.Join("\",\"", names) + "\");"), false);
+                }
+                foreach (Card c in cardlist)
+                    tmpCodes.Add(c.id.ToString());
             }
         }
         //从图片文件夹读取
@@ -1294,9 +1345,40 @@ namespace DataEditorX
             {
                 tmpCodes.Clear();
                 string[] ids = YGOUtil.ReadImage(fdlg.SelectedPath);
-                tmpCodes.AddRange(ids);
-                SetCards(DataBase.Read(nowCdbFile, true,
-                                       ids), false);
+                if (MessageBox.Show("Show cards without an image?", null, MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                    SetCards(DataBase.Read(nowCdbFile, true, "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id and alias=0 and datas.id not in (" + string.Join(",", ids) + ");"), false);
+                    foreach(Card c in cardlist)
+                        tmpCodes.Add(c.id.ToString());
+                } else {
+                    tmpCodes.AddRange(ids);
+                    SetCards(DataBase.Read(nowCdbFile, true,
+                                           ids.OrderBy(int.Parse).ToArray()), false);
+                }
+            }
+        }
+        void Menuitem_readscriptsClick(object sender, EventArgs e)
+        {
+            if (!CheckOpen())
+            {
+                return;
+            }
+
+            using FolderBrowserDialog fdlg = new();
+            fdlg.Description = "Select script folder";
+            if (fdlg.ShowDialog() == DialogResult.OK)
+            {
+                tmpCodes.Clear();
+                string[] ids = YGOUtil.ReadScript(fdlg.SelectedPath);
+                if (MessageBox.Show("Show cards without a script?", null,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
+                    SetCards(DataBase.Read(nowCdbFile, true, "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id and type & 17 != 17 and alias = 0 and datas.id not in (4005,4006,4007,4010,4011,4012,4017,4018,4019,10000050,10000060,10000070," + string.Join(",", ids) + ");"), false);
+                    foreach (Card c in cardlist)
+                        tmpCodes.Add(c.id.ToString());
+                } else {
+                    tmpCodes.AddRange(ids);
+                    SetCards(DataBase.Read(nowCdbFile, true,
+                                       ids.OrderBy(int.Parse).ToArray()), false);
+                }
             }
         }
         //关闭

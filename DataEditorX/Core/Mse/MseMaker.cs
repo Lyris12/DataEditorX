@@ -458,7 +458,7 @@ namespace DataEditorX.Core.Mse
             string ptx = "";
             if (!string.IsNullOrEmpty(txt))
             {
-                string[] t0 = Regex.Split(txt, "\r?\n--+\r?\n");
+                string[] t0 = Regex.Split(txt, "\r?\n\r?\n");
                 if (t0.Length > 2)
                 {
                     txt = txt[..(txt.Length - t0[2].Length - 1)];
@@ -548,7 +548,7 @@ namespace DataEditorX.Core.Mse
                 }
             }
             string txt = c.desc;
-            if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n--+\r?\n")[0];
+            if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n\r?\n")[0];
             _ = sb.AppendLine("	" + TAG_TEXT + ":");
             _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
             _ = sb.AppendLine(GetLine(TAG_CODE, c.IdString));
@@ -1036,7 +1036,7 @@ namespace DataEditorX.Core.Mse
                 else
                 {
                     if (ptext == text) ptext = "";
-                    text = Regex.Split(text, "\r?\n--+\r?\n")[0];
+                    text = Regex.Split(text, "\r?\n-*?\r?\n")[0];
                 }
 
                 List<string> val = new()

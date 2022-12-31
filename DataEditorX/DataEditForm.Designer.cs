@@ -52,7 +52,9 @@ namespace DataEditorX
             this.menuitem_addrequire = new System.Windows.Forms.ToolStripMenuItem();
             this.tsep2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuitem_readydk = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuitem_readlist = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_readimages = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuitem_readscripts = new System.Windows.Forms.ToolStripMenuItem();
             this.tsep6 = new System.Windows.Forms.ToolStripSeparator();
             this.menuitem_compdb = new System.Windows.Forms.ToolStripMenuItem();
             this.menuitem_export_select_sql = new System.Windows.Forms.ToolStripMenuItem();
@@ -244,7 +246,9 @@ namespace DataEditorX
             this.menuitem_addrequire,
             this.tsep2,
             this.menuitem_readydk,
+            this.menuitem_readlist,
             this.menuitem_readimages,
+            this.menuitem_readscripts,
             this.tsep6,
             this.menuitem_compdb,
             this.menuitem_export_select_sql,
@@ -294,6 +298,10 @@ namespace DataEditorX
             this.menuitem_readydk.Size = new System.Drawing.Size(222, 22);
             this.menuitem_readydk.Text = "Cards Form ydk file(&Y)";
             this.menuitem_readydk.Click += new System.EventHandler(this.Menuitem_readydkClick);
+            this.menuitem_readlist.Name = "menuitem_readlist";
+            this.menuitem_readlist.Size = new System.Drawing.Size(222, 22);
+            this.menuitem_readlist.Text = "Cards Form deck list";
+            this.menuitem_readlist.Click += new System.EventHandler(this.Menuitem_readlistClick);
             // 
             // menuitem_readimages
             // 
@@ -301,6 +309,13 @@ namespace DataEditorX
             this.menuitem_readimages.Size = new System.Drawing.Size(222, 22);
             this.menuitem_readimages.Text = "Cards From Images(&I)";
             this.menuitem_readimages.Click += new System.EventHandler(this.Menuitem_readimagesClick);
+            // 
+            // menuitem_readimages
+            // 
+            this.menuitem_readscripts.Name = "menuitem_readscripts";
+            this.menuitem_readscripts.Size = new System.Drawing.Size(222, 22);
+            this.menuitem_readscripts.Text = "Read Cards From Scripts";
+            this.menuitem_readscripts.Click += new System.EventHandler(this.Menuitem_readscriptsClick);
             // 
             // tsep6
             // 
@@ -1402,7 +1417,9 @@ namespace DataEditorX
         private System.Windows.Forms.ToolStripMenuItem menuitem_about;
         private System.Windows.Forms.ToolStripMenuItem menuitem_help;
         private System.Windows.Forms.ToolStripMenuItem menuitem_readimages;
+        private System.Windows.Forms.ToolStripMenuItem menuitem_readscripts;
         private System.Windows.Forms.ToolStripMenuItem menuitem_readydk;
+        private System.Windows.Forms.ToolStripMenuItem menuitem_readlist;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem menu_image;
         private System.Windows.Forms.ToolStripMenuItem menuitem_mseconfig;

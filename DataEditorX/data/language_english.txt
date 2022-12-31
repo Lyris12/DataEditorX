@@ -71,7 +71,9 @@ DataEditForm.mainMenu.menuitem_openfileinthis	Open Lua with CodeEditor
 DataEditForm.mainMenu.menuitem_addrequire	Auto Add Requires
 DataEditForm.mainMenu.menuitem_findluafunc	Find Lua Functions from C++ Code
 DataEditForm.mainMenu.menuitem_readydk	Read Cards from YDK File(&Y)
+DataEditForm.mainMenu.menuitem_readlist	Read from Deck List
 DataEditForm.mainMenu.menuitem_readimages	Read from Images Path(&I)
+DataEditForm.mainMenu.menuitem_readscripts	Read from Scripts Path
 DataEditForm.mainMenu.menuitem_compdb	Compress Database
 DataEditForm.mainMenu.menuitem_exportdata	Export Data as ZIP File
 DataEditForm.mainMenu.menuitem_mseconfig	Set MSE Config
