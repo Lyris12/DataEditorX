@@ -2,7 +2,7 @@
 Manage card database(.cdb file) for [ygopro](https://github.com/Fluorohydride/ygopro).
 
 ## Download
-https://github.com/Lyris12/DataEditorX/raw/master/win32/win32.zip
+https://github.com/Lyris12/DataEditorX/releases/download/omega/win32.zip
 
 > **FAQ**   
 Q: I can't run the program.   
