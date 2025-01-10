@@ -30,6 +30,7 @@ namespace DataEditorX.Core.Mse
         public const string TAG_TRAP = "trap";
         public const string TAG_REG_PENDULUM = "pendulum-text";
         public const string TAG_REG_MONSTER = "monster-text";
+        public const string TAG_REG_RUSH = "rush-text";
         public const string TAG_MAXCOUNT = "maxcount";
         public const string TAG_RACE = "race";
         public const string TAG_TYPE = "type";
@@ -68,6 +69,7 @@ namespace DataEditorX.Core.Mse
 
             regx_monster = "(\\s\\S*?)";
             regx_pendulum = "(\\s\\S*?)";
+            regx_rush = "(\\s\\S*?)";
             //设置文件名
             configName = MyPath.GetFullFileName(TAG, config);
 
@@ -114,6 +116,10 @@ namespace DataEditorX.Core.Mse
                 else if (line.StartsWith(TAG_REG_MONSTER))
                 {
                     regx_monster = RegXMonster = ConfHelper.GetValue(line);
+                }
+                else if (line.StartsWith(TAG_REG_RUSH))
+                {
+                    regx_rush = RegXRush = ConfHelper.GetValue(line);
                 }
                 else if (line.StartsWith(TAG_MAXCOUNT))
                 {
@@ -241,8 +247,10 @@ namespace DataEditorX.Core.Mse
         //效果文正则提取
         public string regx_pendulum;
         public string regx_monster;
+        public string regx_rush;
         public static string RegXPendulum { get; set; }
         public static string RegXMonster { get; set; }
+        public static string RegXRush { get; set; }
         //存档头部
         public string head;
         //存档结尾

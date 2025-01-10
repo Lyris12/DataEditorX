@@ -66,9 +66,9 @@ namespace DataEditorX.Language
         }
         public static bool Question(LMSG msg)
         {
-            return (MessageBox.Show(LanguageHelper.GetMsg(msg), _question,
+            return MessageBox.Show(LanguageHelper.GetMsg(msg), _question,
                            MessageBoxButtons.OKCancel,
-                           MessageBoxIcon.Question) == DialogResult.OK);
+                           MessageBoxIcon.Question) == DialogResult.OK;
         }
     }
 }

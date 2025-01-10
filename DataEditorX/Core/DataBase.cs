@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 using System.IO;
 using System.Text;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace DataEditorX.Core
 {
@@ -20,13 +22,13 @@ namespace DataEditorX.Core
     {
         #region 默认
         static readonly string _defaultSQL;
+        static readonly string _defaultOSQL;
         static readonly string _defaultTableSQL;
         static readonly string _defaultOTableSQL;
 
         static DataBase()
         {
-            _defaultSQL =
-                "SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id ";
+            _defaultSQL = "SELECT * FROM datas NATURAL JOIN texts";
             StringBuilder st = new();
             _ = st.Append(@"CREATE TABLE texts(id integer primary key,name text,desc text");
             for (int i = 1; i <= 16; i++)
@@ -52,14 +54,10 @@ namespace DataEditorX.Core
             }
             _ = ost.Append(");");
             _ = ost.Append(@"CREATE TABLE IF NOT EXISTS datas(id integer primary key default 0,
-            ot integer default 0,alias integer default 0,setcode integer default 0,
+            ot integer default 0,alias integer default 0,setcode blob,
             type integer default 0,atk integer default 0,def integer default 0,level integer default 0,
             race integer default 0,attribute integer default 0,category integer default 0,
-            genre integer default 0,script blob,support integer default 0,
-            ocgdate integer default 253402207200,tcgdate integer default 253402207200);
-            CREATE TABLE IF NOT EXISTS setcodes(officialcode integer,betacode integer,
-            name text unique,cardid integer default 0);
-            ");
+            genre integer default 0,script blob,support blob);");
             _defaultOTableSQL = ost.ToString();
             _ = ost.Remove(0, ost.Length);
         }
@@ -82,8 +80,7 @@ namespace DataEditorX.Core
             SqliteConnection.ClearAllPools();
             try
             {
-                if (Db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || Db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) _ = Command(Db, _defaultOTableSQL);
-                else _ = Command(Db, _defaultTableSQL);
+                _ = Db.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase) ? Command(Db, _defaultTableSQL) : Command(Db, _defaultOTableSQL);
             }
             catch
             {
@@ -95,8 +92,7 @@ namespace DataEditorX.Core
         {
             try
             {
-                if (db.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || db.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) _ = Command(db, _defaultOTableSQL);
-                else _ = Command(db, _defaultTableSQL);
+                _ = db.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase) ? Command(db, _defaultTableSQL) : Command(db, _defaultOTableSQL);
             }
             catch
             {
@@ -153,7 +149,6 @@ namespace DataEditorX.Core
                 id = reader.GetInt64(reader.GetOrdinal("id")),
                 ot = reader.GetInt32(reader.GetOrdinal("ot")),
                 alias = reader.GetInt64(reader.GetOrdinal("alias")),
-                setcode = reader.GetInt64(reader.GetOrdinal("setcode")),
                 type = reader.GetInt64(reader.GetOrdinal("type")),
                 atk = reader.GetInt32(reader.GetOrdinal("atk")),
                 def = reader.GetInt32(reader.GetOrdinal("def")),
@@ -163,34 +158,35 @@ namespace DataEditorX.Core
             };
             try
             {
+                string setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? "\0" : reader.GetString(reader.GetOrdinal("setcode"));
+                long setc = 0L;
+                foreach(byte sc in setcode.Reverse().Select(v => (byte)v)) setc = (setc << 8) | sc;
+                // for(ushort i = 0; i < 4;) Debug.WriteLine(setc & (0xffff << (i++ * 16)));
+                c.setcode = setc;
                 c.category = reader.GetInt64(reader.GetOrdinal("genre"));
-                c.omega = new long[5];
+                c.omega = new long[3];
                 c.omega[0] = 1L;
                 c.omega[1] = reader.GetInt64(reader.GetOrdinal("category"));
-                c.omega[2] = reader.GetInt64(reader.GetOrdinal("support"));
-                c.omega[3] = reader.GetInt64(reader.GetOrdinal("ocgdate"));
-                c.omega[4] = reader.GetInt64(reader.GetOrdinal("tcgdate"));
+                string support = reader.IsDBNull(reader.GetOrdinal("support")) ? "\0" : reader.GetString(reader.GetOrdinal("support"));
+                setc = 0L;
+                foreach (byte sc in support.Reverse().Select(v => (byte)v)) setc = (setc << 8) | sc;
+                c.omega[2] = setc;
                 c.script = reader.IsDBNull(reader.GetOrdinal("script")) ? ""
                     : reader.GetString(reader.GetOrdinal("script"));
             }
             catch
             {
+                c.setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? 0L : reader.GetInt64(reader.GetOrdinal("setcode"));
                 c.category = reader.GetInt64(reader.GetOrdinal("category"));
-                c.omega = new long[5] { 0L, 0L, 0L, 253402207200L, 253402207200L };
+                c.omega = new long[3] { 0L, 0L, 0L };
                 c.script = "";
             }
             c.name = reader.GetString(reader.GetOrdinal("name"));
-            c.desc = reader.GetString(reader.GetOrdinal("desc"));
+            c.desc = reader.IsDBNull(reader.GetOrdinal("desc")) ? "" : reader.GetString(reader.GetOrdinal("desc"));
             if (reNewLine)
-            {
                 c.desc = Retext(c.desc);
-            }
-
-            for (int i = 0; i < 0x10; i++)
-            {
-                string temp = reader.GetString(reader.GetOrdinal("str" + (i + 1).ToString()));
-                c.Str[i] = temp ?? "";
-            }
+            for (int i = 1; i <= 0x10; i++)
+                c.Str[i - 1] = reader.IsDBNull(reader.GetOrdinal("str" + i.ToString())) ? "" : reader.GetString(reader.GetOrdinal("str" + i.ToString())) ?? "";
             return c;
         }
         static string Retext(string text)
@@ -227,26 +223,17 @@ namespace DataEditorX.Core
                 foreach (string str in SQLs)
                 {
                     _ = int.TryParse(str, out int tmp);
-                    string SQLstr;
-                    if (string.IsNullOrEmpty(str))
+                    string SQLstr = _defaultSQL;
+                    if (!string.IsNullOrEmpty(str))
                     {
-                        SQLstr = _defaultSQL;
-                    }
-                    else if (tmp > 0)
-                    {
-                        SQLstr = _defaultSQL + " and datas.id=" + tmp.ToString();
-                    }
-                    else if (str.StartsWith("select", StringComparison.OrdinalIgnoreCase))
-                    {
-                        SQLstr = str;
-                    }
-                    else if (str.Contains("and ", StringComparison.CurrentCulture))
-                    {
-                        SQLstr = _defaultSQL + str;
-                    }
-                    else
-                    {
-                        SQLstr = _defaultSQL + " and texts.name like '%" + str + "%'";
+                        if (tmp > 0)
+                            SQLstr += " and datas.id=" + tmp.ToString();
+                        else if (str.StartsWith("select", StringComparison.OrdinalIgnoreCase))
+                            SQLstr = str;
+                        else if (str.Contains("and ", StringComparison.CurrentCulture))
+                            SQLstr += str;
+                        else
+                            SQLstr += " and texts.name like '%" + str + "%'";
                     }
                     using SqliteConnection con = new(@"Data Source=" + DB);
                     con.Open();
@@ -294,7 +281,7 @@ namespace DataEditorX.Core
                 foreach (Card c in cards)
                 {
                     using SqliteCommand cmd = con.CreateCommand();
-                    cmd.CommandText = (DB.EndsWith(".db", StringComparison.OrdinalIgnoreCase) || DB.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) ? OmegaGetInsertSQL(c, ignore) : GetInsertSQL(c, ignore);
+                    cmd.CommandText = DB.EndsWith(".cdb", StringComparison.OrdinalIgnoreCase) ? GetInsertSQL(c, ignore) : OmegaGetInsertSQL(c, ignore);
                     result += cmd.ExecuteNonQuery();
                 }
                 trans.Commit();
@@ -421,13 +408,9 @@ namespace DataEditorX.Core
             if (c.omega != null && c.omega[0] > 0)
             {
                 if (c.omega[1] > 0)
-                    _ = sb.Append(" and datas.category & " + ToInt((long)c.omega[1]) + " = " + ToInt((long)c.omega[1]));
+                    _ = sb.Append(" and datas.category & " + ToInt(c.omega[1]) + " = " + ToInt(c.omega[1]));
                 if (c.omega[2] > 0)
-                    _ = sb.Append(" and datas.support & " + ToInt((long)c.omega[2]) + " = " + ToInt((long)c.omega[2]));
-                if (c.omega[3] > 0 && c.omega[3] < 253402207200)
-                    _ = sb.Append(" and datas.tcgdate = " + ToInt(DateTime.Parse(c.GetDate(1)).Ticks / 10000000));
-                if (c.omega[4] > 0 && c.omega[4] < 253402207200)
-                    _ = sb.Append(" and datas.ocgdate = " + ToInt(DateTime.Parse(c.GetDate()).Ticks / 10000000));
+                    _ = sb.Append(" and datas.support & " + ToInt(c.omega[2]) + " = " + ToInt(c.omega[2]));
             }
 
             if (c.atk == -1)
@@ -603,17 +586,21 @@ namespace DataEditorX.Core
             _ = st.Append(c.id); _ = st.Append(',');
             _ = st.Append(c.ot); _ = st.Append(',');
             _ = st.Append(c.alias); _ = st.Append(',');
-            if (hex)
+            if (c.omega[0] > 0)
             {
-                _ = st.Append("0x" + c.setcode.ToString("x")); _ = st.Append(',');
-                _ = st.Append("0x" + c.type.ToString("x")); _ = st.Append(',');
+                string set = "";
+                for (ushort i = 0; c.setcode >= 0x1 << i * 8; ++i)
+                    set += (byte)(c.setcode & (0xff << i * 8) >> i * 8);
+                _ = st.Append("quote(" + set + ")");
             }
             else
             {
-                _ = st.Append(c.setcode); _ = st.Append(',');
-                _ = st.Append(c.type); _ = st.Append(',');
+                if (hex) _ = st.Append("0x" + c.setcode.ToString("x")); else st.Append(c.setcode);
             }
-            _ = st.Append(c.atk); ; _ = st.Append(',');
+            _ = st.Append(',');
+            if (hex) _ = st.Append("0x" + c.type.ToString("x")); else _ = st.Append(c.type);
+            _ = st.Append(',');
+            _ = st.Append(c.atk); _ = st.Append(',');
             _ = st.Append(c.def); _ = st.Append(',');
             if (hex)
             {
@@ -628,10 +615,8 @@ namespace DataEditorX.Core
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
                     _ = st.Append(','); _ = st.Append("0x" + c.omega[2].ToString("x"));
-                    _ = st.Append(','); _ = st.Append(c.omega[3]);
-                    _ = st.Append(','); _ = st.Append(c.omega[4]);
                 }
-                else _ = st.Append(",null,0x0,253402207200,253402207200");
+                else _ = st.Append(",null,0x0");
             }
             else
             {
@@ -753,8 +738,11 @@ namespace DataEditorX.Core
             StringBuilder st = new();
             _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
             _ = st.Append(",alias="); _ = st.Append(c.alias);
-            _ = st.Append(",setcode="); _ = st.Append(c.setcode);
-            _ = st.Append(",type="); _ = st.Append(c.type);
+            string set = "";
+            for (ushort i = 0; c.setcode >= 0x1 << i * 8; ++i)
+                set += (byte)(c.setcode & (0xff << i * 8) >> i * 8);
+            _ = st.Append(",setcode=quote("); _ = st.Append(set);
+            _ = st.Append("),type="); _ = st.Append(c.type);
             _ = st.Append(",atk="); _ = st.Append(c.atk);
             _ = st.Append(",def="); _ = st.Append(c.def);
             _ = st.Append(",level="); _ = st.Append(c.level);
@@ -765,8 +753,6 @@ namespace DataEditorX.Core
             {
                 _ = st.Append(c.omega[1]);
                 _ = st.Append(",script="); _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                _ = st.Append(",ocgdate="); _ = st.Append((DateTime.Parse(c.GetDate()).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
-                _ = st.Append(",tcgdate="); _ = st.Append((DateTime.Parse(c.GetDate(1)).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
                 _ = st.Append(",genre=");
             }
             _ = st.Append(c.category);

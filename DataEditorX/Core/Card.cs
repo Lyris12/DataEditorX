@@ -34,7 +34,7 @@ namespace DataEditorX.Core
             race = 0;
             attribute = 0;
             category = 0;
-            omega = new long[5]{ 0L, 0L, 0L, 253402207200L, 253402207200L };
+            omega = new long[3]{ 0L, 0L, 0L };
             script = "";
             desc = "";
             str = new string[STR_MAX];
@@ -110,7 +110,7 @@ namespace DataEditorX.Core
             {
                 foreach (long sc in setcodes)
                 {
-                    setcode += (sc << i);
+                    setcode += sc << i;
                     i += 0x10;
                 }
             }
@@ -124,7 +124,7 @@ namespace DataEditorX.Core
                 foreach (string sc in setcodes)
                 {
                     _ = long.TryParse(sc, NumberStyles.HexNumber, null, out long temp);
-                    setcode += (temp << i);
+                    setcode += temp << i;
                     i += 0x10;
                 }
             }
@@ -145,14 +145,6 @@ namespace DataEditorX.Core
         public long GetRightScale()
         {
             return (level >> 16) & 0xff;
-        }
-        public string GetDate(byte offset = 0)
-        {
-            return new DateTime(new DateTime(1970, 1, 1).AddSeconds(omega[3 + offset]).ToBinary()).ToString("yyyy-MM-dd HH:mm:ss");
-        }
-        public void SetDate(string date, byte offset = 0)
-        {
-            omega[3 + offset] = Math.Abs(DateTime.Parse(date).Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000;
         }
         #endregion
 
@@ -234,7 +226,7 @@ namespace DataEditorX.Core
                 equalBool = false;
             }
             else if (omega[0] > 0 && other.omega[0] > 0)
-                for (byte i = 1; i < 5; i++)
+                for (byte i = 1; i < 3; i++)
                 {
                     if (omega[i] != other.omega[i])
                     {

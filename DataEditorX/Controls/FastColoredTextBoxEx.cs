@@ -118,14 +118,14 @@ namespace FastColoredTextBoxNS
         {
             lbTooltip = new System.Windows.Forms.Label();
             lbSizeController = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)this).BeginInit();
             SuspendLayout();
             // 
             // lbTooltip
             // 
             lbTooltip.AutoSize = true;
             lbTooltip.BackColor = SystemColors.Desktop;
-            lbTooltip.Font = new System.Drawing.Font("微软雅黑", 15.75F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            lbTooltip.Font = new System.Drawing.Font("微软雅黑", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lbTooltip.ForeColor = SystemColors.Control;
             lbTooltip.Location = new System.Drawing.Point(221, 117);
             lbTooltip.MaximumSize = new System.Drawing.Size(480, 0);
@@ -156,7 +156,7 @@ namespace FastColoredTextBoxNS
             Load += new System.EventHandler(FastColoredTextBoxEx_Load);
             Scroll += new System.Windows.Forms.ScrollEventHandler(FastColoredTextBoxEx_Scroll);
             SizeChanged += new System.EventHandler(FastColoredTextBoxEx_SizeChanged);
-            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this).EndInit();
             ResumeLayout(false);
             PerformLayout();
 

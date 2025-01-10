@@ -163,11 +163,11 @@ namespace DataEditorX.Config
         /// <summary>
         /// 效果分类
         /// </summary>
-        public const string TAG_CATEGORY = "category (genre)";
+        public const string TAG_CATEGORY = "category \\(genre\\)";
         /// <summary>
         /// Omega-exclusive
         /// </summary>
-        public const string TAG_FLAGS = "flags (category)";
+        public const string TAG_FLAGS = "flags \\(category\\)";
         /// <summary>
         /// 类型
         /// </summary>

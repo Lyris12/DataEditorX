@@ -96,7 +96,6 @@ namespace DataEditorX
                 using SqliteConnection con = new(@"Data Source=" + cdbfile);
                 con.Open();
                 using SqliteCommand cmd = con.CreateCommand();
-                cmd.CommandText = "select officialcode,betacode,name from setcodes;";
                 using SqliteDataReader reader = cmd.ExecuteReader();
                 try
                 {
@@ -228,7 +227,7 @@ namespace DataEditorX
             menuitem_autocheckupdate.Checked = DEXConfig.ReadBoolean(DEXConfig.TAG_AUTO_CHECK_UPDATE);
             //add require automatically
             Addrequire = DEXConfig.ReadString(DEXConfig.TAG_ADD_REQUIRE);
-            menuitem_addrequire.Checked = (Addrequire.Length > 0);
+            menuitem_addrequire.Checked = Addrequire.Length > 0;
             if (nowCdbFile != null && File.Exists(nowCdbFile))
             {
                 _ = Open(nowCdbFile);
@@ -249,18 +248,6 @@ namespace DataEditorX
                 {
                     e.Cancel = true;
                     return;
-                }
-            }
-            if (nowCdbFile.EndsWith(".db", StringComparison.OrdinalIgnoreCase)
-                || nowCdbFile.EndsWith(".bytes", StringComparison.OrdinalIgnoreCase) && DockPanel.Parent is MainForm)
-            {
-                MainForm mf = (MainForm)DockPanel.Parent;
-                Dictionary<long, string> d = mf.GetDataConfig().dicSetnames;
-                Dictionary<long, string> o = mf.GetDataConfig(true).dicSetnames;
-                foreach (long setcode in d.Keys)
-                {
-                    if (o.ContainsKey(setcode)) continue;
-                    _ = DataBase.Command(nowCdbFile, new string[] { $"insert or ignore into setcodes values({setcode},{setcode},'{d[setcode].Replace("'", "''")}',0);" });
                 }
             }
         }
@@ -685,7 +672,7 @@ namespace DataEditorX
             //data
             SetSelect(cb_cardrule, c.ot);
             SetSelect(cb_cardattribute, c.attribute);
-            SetSelect(cb_cardlevel, (c.level & 0xff));
+            SetSelect(cb_cardlevel, c.level & 0xff);
             SetSelect(cb_cardrace, c.race);
             //setcode
             long[] setcodes = c.GetSetCode();
@@ -706,19 +693,15 @@ namespace DataEditorX
             }
             SetCheck(pl_category, c.category);
             //Omega-exclusive
-            if (GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase))
+            if (!GetOpenFile().EndsWith(".cdb", StringComparison.OrdinalIgnoreCase))
             {
-                SetCheck(pl_flags, (long)c.omega[1]);
+                SetCheck(pl_flags, c.omega[1]);
                 tb_support.Text = c.omega[2].ToString("x");
-                tb_odate.Text = c.GetDate();
-                tb_tdate.Text = c.GetDate(1);
             }
             else
             {
                 SetCheck(pl_flags, 0);
                 tb_support.Text = "0";
-                tb_odate.Text = "9999-12-30 22:00:00";
-                tb_tdate.Text = "9999-12-30 22:00:00";
             }
             //Pendulum
             tb_pleft.Text = ((c.level >> 24) & 0xff).ToString();
@@ -766,19 +749,17 @@ namespace DataEditorX
             c.category = GetCheck(pl_category);
 
             c.omega = new long[5];
-            if (GetOpenFile().EndsWith(".db", StringComparison.OrdinalIgnoreCase) || GetOpenFile().EndsWith(".bytes", StringComparison.OrdinalIgnoreCase)) {
+            if (!GetOpenFile().EndsWith(".cdb", StringComparison.OrdinalIgnoreCase)) {
                 c.script = oldCard.script;
                 c.omega[0] = 1L;
                 c.omega[1] = GetCheck(pl_flags);
                 c.SetSupport(tb_support.Text);
-                c.SetDate(tb_odate.Text);
-                c.SetDate(tb_tdate.Text, 1);
-            } else for (byte i = 0; i < 5; i++) c.omega[i] = i < 3 ? 0L : 253402207200L;
+            } else for (byte i = 0; i < 3; i++) c.omega[i] = 0L;
 
             _ = int.TryParse(tb_pleft.Text, out int temp);
-            c.level += (temp << 24);
+            c.level += temp << 24;
             _ = int.TryParse(tb_pright.Text, out temp);
-            c.level += (temp << 16);
+            c.level += temp << 16;
             if (tb_atk.Text == "?" || tb_atk.Text == "？")
             {
                 c.atk = -2;
@@ -2090,7 +2071,7 @@ namespace DataEditorX
         private void Menuitem_addrequire_Click(object sender, EventArgs e)
         {
             Addrequire = Microsoft.VisualBasic.Interaction.InputBox("Module script?\n\nPress \"Cancel\" to remove module script.", "", Addrequire);
-            menuitem_addrequire.Checked = (Addrequire.Length > 0);
+            menuitem_addrequire.Checked = Addrequire.Length > 0;
             XMLReader.Save(DEXConfig.TAG_ADD_REQUIRE, Addrequire);
         }
         #endregion
@@ -2411,12 +2392,11 @@ namespace DataEditorX
                         + "\r\n----------------------------------------\r\n[ Monster Effect ]\r\n"
                         + (((GetCheck(pl_flags) & 0x800000) > 0) ? tmp[0] + "\r\n" : "") + tmp[1];
                 }
-                else if (!txt.StartsWith("←"))
+                else if(txt.StartsWith("P\r\n") || txt.StartsWith("P\n"))
                 {
                     GetTexts(txt, out string[] tmp);
-                    tb_cardtext.Text = "←" + tb_pleft.Text + " 【Pendulum Effect】 " + tb_pright.Text
-                        + "→\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? "" : tmp[0])
-                        + "\r\n【Monster Effect】\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? tmp[0] + "\r\n" : "")
+                    tb_cardtext.Text = "P\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? "" : tmp[0])
+                        + "\r\nM\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? tmp[0] + "\r\n" : "")
                         + tmp[1];
                 }
                 string pregx = msecfg.regx_pendulum.Replace("\n", "\r\n");
@@ -2487,8 +2467,6 @@ namespace DataEditorX
                 if (!d.ContainsKey(setcode)) d.Add(setcode, setname);
                 mf.GetCodeConfig().SetNames(d);
                 InitControl(datacfg);
-                DataBase.Command(GetOpenFile(), "insert or ignore into setcodes values(" + setcode + ", 0, '"
-                    + setname + "', 0);");
             }
         }
         private void Pl_categoryScroll(object sender, MouseEventArgs e)

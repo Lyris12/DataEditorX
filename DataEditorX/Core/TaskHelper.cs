@@ -190,7 +190,7 @@ namespace DataEditorX.Core
                 }
 
                 i++;
-                worker.ReportProgress((i / count), string.Format("{0}/{1}", i, count));
+                worker.ReportProgress(i / count, string.Format("{0}/{1}", i, count));
                 string jpg = MyPath.Combine(imgpath, c.id + ".jpg");
                 string savejpg = MyPath.Combine(mseHelper.ImagePath, c.id + ".jpg");
                 if (File.Exists(jpg) && (isreplace || !File.Exists(savejpg)))

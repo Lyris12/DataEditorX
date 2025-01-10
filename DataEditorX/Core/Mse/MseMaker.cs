@@ -239,13 +239,13 @@ namespace DataEditorX.Core.Mse
         //获取效果文本
         public static string GetDesc(string cdesc, string regx)
         {
-            string desc = cdesc.Replace("\r\n", "\n").Replace("\r", "\n").Replace("'''", "");
+            string desc = cdesc.Replace("\r\n", "\n").Replace("\r", "\n");
             Regex regex = new(regx, RegexOptions.Multiline);
             Match mc = regex.Match(desc);
             if (mc.Success)
             {
-                return ((mc.Groups.Count > 1) ?
-                        mc.Groups[1].Value : mc.Groups[0].Value);
+                return (mc.Groups.Count > 1) ?
+                        mc.Groups[1].Value : mc.Groups[0].Value;
             }
 
             return "";
@@ -258,7 +258,7 @@ namespace DataEditorX.Core.Mse
             _ = sb.Replace("\r", "");
             _ = sb.Replace("\n\n", "\n");
             _ = sb.Replace("\n", "\n\t\t");
-            return sb.ToString().Trim('\n');
+            return Regex.Replace(sb.ToString().Trim('\n'), "</?[bi]>", "");
         }
         //获取星星
         public static string GetStar(long level)
@@ -389,9 +389,9 @@ namespace DataEditorX.Core.Mse
                     {
                         sw.WriteLine(GetSpellTrap(c, jpg, c.IsType(CardType.TYPE_SPELL), cardpack, rarity));
                     }
-                    else
+                    else if(c.type != (long)CardType.TYPE_TOKEN && c.type != (long)(CardType.TYPE_MONSTER | CardType.TYPE_TOKEN))
                     {
-                        sw.WriteLine(GetMonster(c, jpg), cardpack, rarity);
+                         sw.WriteLine(GetMonster(c, jpg), cardpack, rarity);
                     }
                 }
                 sw.WriteLine(cfg.end);
@@ -454,7 +454,7 @@ namespace DataEditorX.Core.Mse
                     _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
-            string txt = c.desc;
+            string txt = Regex.Replace(c.desc, "\\[/?b\\]", "");
             string ptx = "";
             if (!string.IsNullOrEmpty(txt))
             {
@@ -547,7 +547,7 @@ namespace DataEditorX.Core.Mse
                     _ = sb.AppendLine(GetLine(TAG_RARITY, cardpack.GetMseRarity()));
                 }
             }
-            string txt = c.desc;
+            string txt = Regex.Replace(c.desc, "\\[/?b\\]", "");
             if (!string.IsNullOrEmpty(txt)) txt = Regex.Split(txt, "\r?\n\r?\n")[0];
             _ = sb.AppendLine("	" + TAG_TEXT + ":");
             _ = sb.AppendLine("		" + ReText(ReItalic(txt)));
@@ -801,9 +801,9 @@ namespace DataEditorX.Core.Mse
             }
             //摇摆刻度
             _ = int.TryParse(GetValue(content, TAG_PSCALE1), out int itmp);
-            c.level += (itmp << 0x18);
+            c.level += itmp << 0x18;
             _ = int.TryParse(GetValue(content, TAG_PSCALE2), out itmp);
-            c.level += (itmp << 0x10);
+            c.level += itmp << 0x10;
             return c;
         }
         //读取所有卡片
@@ -997,7 +997,7 @@ namespace DataEditorX.Core.Mse
 
         public void TestPendulum(string desc)
         {
-            List<string> table = GetMPText(desc);
+            List<string> table = GetMPText(Regex.Replace(desc, "\\[/?b\\]", ""));
             if (table == null && table.Count != 2)
             {
                 _ = MessageBox.Show("desc is null", "info");
@@ -1024,6 +1024,18 @@ namespace DataEditorX.Core.Mse
                 {
                     ptext = GetDesc(desc, MSEConfig.RegXPendulum);
                     text = GetDesc(desc, MSEConfig.RegXMonster);
+                }
+                else if(Regex.IsMatch(desc, MSEConfig.RegXRush))
+                {
+                    ptext = text = "";
+                    Regex regex = new(MSEConfig.RegXRush, RegexOptions.Multiline);
+                    Match mc = regex.Match(desc);
+                    if (mc.Success) {
+                        text = "<b>[Requirement]</b> " + mc.Groups[3].Value
+                            + "\n<b>[Effect]</b> " + mc.Groups[4].Value;
+                        if(!string.IsNullOrEmpty(mc.Groups[2].Value)) text = mc.Groups[2].Value + "\n" + text;
+                        if(!string.IsNullOrEmpty(mc.Groups[1].Value)) text = mc.Groups[1].Value + "\n" + text;
+                    }
                 }
                 else
                 {

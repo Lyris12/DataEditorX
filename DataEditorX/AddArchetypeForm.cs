@@ -2,14 +2,14 @@
 {
     public partial class AddArchetypeForm : Form
     {
+        public string name;
+        public int code;
+        public Dictionary<long, string> setcodes;
         public AddArchetypeForm(Dictionary<long, string> dic)
         {
             InitializeComponent();
             setcodes = dic;
         }
-        public string name;
-        public int code;
-        public Dictionary<long, string> setcodes;
         private void Btn_confirm_Click(object sender, EventArgs e)
         {
             name = tb_archename.Text;
@@ -19,14 +19,15 @@
         }
         private void AddArchetypeForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            switch(e.KeyCode)
             {
+            case Keys.Enter:
                 Btn_confirm_Click(sender, e);
                 Close();
-            }
-            else if (e.KeyCode == Keys.Escape)
-            {
+                break;
+            case Keys.Escape:
                 Close();
+                break;
             }
         }
     }

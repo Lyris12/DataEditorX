@@ -72,7 +72,8 @@ namespace DataEditorX.Common
         {
             bool hasNew = false;
             string[] vers = ver.Split('.');
-            string[] oldvers = oldver.Split('.');
+            string[] oldvers = Regex.Replace(oldver, "\\+.*", "").Split('.');
+
             if (vers.Length == oldvers.Length)
             {
                 //从左到右比较数字

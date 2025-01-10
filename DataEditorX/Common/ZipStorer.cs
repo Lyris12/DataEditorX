@@ -85,7 +85,7 @@ namespace System.IO.Compression
         // Static CRC32 Table
         private static readonly uint[] _crcTable = null;
         // Default filename encoder
-        private static readonly Encoding _defaultEncoding = Encoding.GetEncoding(437);
+        private static readonly Encoding _defaultEncoding = Encoding.GetEncoding(65001);
         #endregion
 
         #region Public methods
@@ -253,7 +253,7 @@ namespace System.IO.Compression
                 Method = _method,
                 EncodeUTF8 = EncodeUTF8,
                 FilenameInZip = NormalizedFilename(_filenameInZip),
-                Comment = (_comment ?? ""),
+                Comment = _comment ?? "",
 
                 // Even though we write the header now, it will have to be rewritten, since we don't know compressed size or crc.
                 Crc32 = 0,  // to be updated later
@@ -366,7 +366,7 @@ namespace System.IO.Compression
                 }
 
                 result.Add(zfe);
-                pointer += (46 + filenameSize + extraSize + commentSize);
+                pointer += 46 + filenameSize + extraSize + commentSize;
             }
 
             return result;
