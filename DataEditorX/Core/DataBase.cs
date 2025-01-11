@@ -343,7 +343,7 @@ namespace DataEditorX.Core
         public static string OmegaGetSelectSQL(Card c)
         {
             StringBuilder sb = new();
-            _ = sb.Append("SELECT * FROM datas NATURAL JOIN texts ");
+            _ = sb.Append("SELECT * FROM datas NATURAL JOIN texts WHERE datas.id > 0");
             if (c == null)
             {
                 return sb.ToString();
