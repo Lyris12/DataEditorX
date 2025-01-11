@@ -343,7 +343,7 @@ namespace DataEditorX.Core
         public static string OmegaGetSelectSQL(Card c)
         {
             StringBuilder sb = new();
-            _ = sb.Append("SELECT datas.*,texts.* FROM datas,texts WHERE datas.id=texts.id ");
+            _ = sb.Append("SELECT * FROM datas NATURAL JOIN texts ");
             if (c == null)
             {
                 return sb.ToString();
@@ -588,10 +588,13 @@ namespace DataEditorX.Core
             _ = st.Append(c.alias); _ = st.Append(',');
             if (c.omega[0] > 0)
             {
-                string set = "";
-                for (ushort i = 0; c.setcode >= 0x1 << i * 8; ++i)
-                    set += (byte)(c.setcode & (0xff << i * 8) >> i * 8);
-                _ = st.Append("quote(" + set + ")");
+                _ = st.Append("char(");
+                for (ushort i = 0; c.setcode >= 1 << i * 8; ++i)
+                {
+                    if (i > 0) _ = st.Append(',');
+                    _ = st.Append((c.setcode & (0xff << i * 8)) >> i * 8);
+                }
+                _ = st.Append(')');
             }
             else
             {
@@ -738,10 +741,12 @@ namespace DataEditorX.Core
             StringBuilder st = new();
             _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
             _ = st.Append(",alias="); _ = st.Append(c.alias);
-            string set = "";
-            for (ushort i = 0; c.setcode >= 0x1 << i * 8; ++i)
-                set += (byte)(c.setcode & (0xff << i * 8) >> i * 8);
-            _ = st.Append(",setcode=quote("); _ = st.Append(set);
+            _ = st.Append(",setcode=char(");
+            for (int i = 0; c.setcode >> i * 8 > 0; ++i)
+            {
+                if (i > 0) _ = st.Append(',');
+                _ = st.Append((c.setcode >> i * 8) & 0xff);
+            }
             _ = st.Append("),type="); _ = st.Append(c.type);
             _ = st.Append(",atk="); _ = st.Append(c.atk);
             _ = st.Append(",def="); _ = st.Append(c.def);
@@ -770,8 +775,7 @@ namespace DataEditorX.Core
             }
             _ = st.Append("' where id="); _ = st.Append(c.id);
             _ = st.Append(';');
-            string sql = st.ToString();
-            return sql;
+            return st.ToString();
         }
         /// <summary>
         /// 转换为更新语句

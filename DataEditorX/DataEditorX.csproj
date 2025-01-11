@@ -8,9 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
     <Title></Title>
-    <Version>4.0.2.8</Version>
-    <AssemblyVersion>4.0.2.8</AssemblyVersion>
-    <FileVersion>4.0.2.8</FileVersion>
+    <Version>4.0.2.9</Version>
+    <AssemblyVersion>4.0.2.9</AssemblyVersion>
+    <FileVersion>4.0.2.9</FileVersion>
     <PackageId />
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <BaseOutputPath>..\bin\</BaseOutputPath>
