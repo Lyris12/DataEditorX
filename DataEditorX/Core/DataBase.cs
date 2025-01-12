@@ -158,9 +158,12 @@ namespace DataEditorX.Core
             };
             try
             {
-                string setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? "\0" : reader.GetString(reader.GetOrdinal("setcode"));
+                byte[] setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? null : (byte[])reader.GetValue(reader.GetOrdinal("setcode"));
                 long setc = 0L;
-                foreach(byte sc in setcode.Reverse().Select(v => (byte)v)) setc = (setc << 8) | sc;
+                for (int i = setcode.Length; i > 0; --i) // (int i = 0; setcode >> i * 8 > 0; ++i)
+                {
+                    setc = (setc << 8) | setcode[i - 1] & 0xffu;
+                }
                 // for(ushort i = 0; i < 4;) Debug.WriteLine(setc & (0xffff << (i++ * 16)));
                 c.setcode = setc;
                 c.category = reader.GetInt64(reader.GetOrdinal("genre"));
@@ -589,10 +592,10 @@ namespace DataEditorX.Core
             if (c.omega[0] > 0)
             {
                 _ = st.Append("char(");
-                for (ushort i = 0; c.setcode >= 1 << i * 8; ++i)
+                for (ushort i = 0; c.setcode >> i * 8 > 0; ++i)
                 {
                     if (i > 0) _ = st.Append(',');
-                    _ = st.Append((c.setcode & (0xff << i * 8)) >> i * 8);
+                    _ = st.Append((c.setcode >> i * 8) & 0xff);
                 }
                 _ = st.Append(')');
             }
@@ -742,7 +745,7 @@ namespace DataEditorX.Core
             _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
             _ = st.Append(",alias="); _ = st.Append(c.alias);
             _ = st.Append(",setcode=char(");
-            for (int i = 0; c.setcode >> i * 8 > 0; ++i)
+            for (ushort i = 0; c.setcode >> i * 8 > 0; ++i)
             {
                 if (i > 0) _ = st.Append(',');
                 _ = st.Append((c.setcode >> i * 8) & 0xff);
