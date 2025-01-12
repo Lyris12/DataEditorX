@@ -158,7 +158,7 @@ namespace DataEditorX.Core
             };
             try
             {
-                byte[] setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? null : (byte[])reader.GetValue(reader.GetOrdinal("setcode"));
+                byte[] setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? Array.Empty<byte>() : (byte[])reader.GetValue(reader.GetOrdinal("setcode"));
                 long setc = 0L;
                 for (int i = setcode.Length; i > 0; --i) // (int i = 0; setcode >> i * 8 > 0; ++i)
                 {
@@ -591,13 +591,22 @@ namespace DataEditorX.Core
             _ = st.Append(c.alias); _ = st.Append(',');
             if (c.omega[0] > 0)
             {
-                _ = st.Append("char(");
+                byte[] set = Array.Empty<byte>();
                 for (ushort i = 0; c.setcode >> i * 8 > 0; ++i)
                 {
-                    if (i > 0) _ = st.Append(',');
-                    _ = st.Append((c.setcode >> i * 8) & 0xff);
+                    Array.Resize(ref set, i + 1);
+                    set[i] = (byte)((c.setcode >> i * 8) & 0xff);
                 }
-                _ = st.Append(')');
+                if (set.Length > 0 && c.setcode > 0)
+                {
+                    _ = st.Append("x'");
+                    foreach (byte sc in set)
+                    {
+                        _ = st.Append(sc.ToString("x02"));
+                    }
+                    _ = st.Append('\'');
+                }
+                else _ = st.Append("null");
             }
             else
             {
@@ -744,13 +753,24 @@ namespace DataEditorX.Core
             StringBuilder st = new();
             _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
             _ = st.Append(",alias="); _ = st.Append(c.alias);
-            _ = st.Append(",setcode=char(");
+            _ = st.Append(",setcode=");
+            byte[] set = Array.Empty<byte>();
             for (ushort i = 0; c.setcode >> i * 8 > 0; ++i)
             {
-                if (i > 0) _ = st.Append(',');
-                _ = st.Append((c.setcode >> i * 8) & 0xff);
+                Array.Resize(ref set, i + 1);
+                set[i] = (byte)((c.setcode >> i * 8) & 0xff);
             }
-            _ = st.Append("),type="); _ = st.Append(c.type);
+            if (set.Length > 0 && c.setcode > 0)
+            {
+                _ = st.Append("x'");
+                foreach (byte sc in set)
+                {
+                    _ = st.Append(sc.ToString("x02"));
+                }
+                _ = st.Append('\'');
+            }
+            else _ = st.Append("null");
+            _ = st.Append(",type="); _ = st.Append(c.type);
             _ = st.Append(",atk="); _ = st.Append(c.atk);
             _ = st.Append(",def="); _ = st.Append(c.def);
             _ = st.Append(",level="); _ = st.Append(c.level);
