@@ -646,10 +646,8 @@ namespace DataEditorX.Core
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
                     _ = st.Append(','); _ = st.Append(c.omega[2]);
-                    _ = st.Append(','); _ = st.Append(c.omega[3]);
-                    _ = st.Append(','); _ = st.Append(c.omega[4]);
                 }
-                else _ = st.Append(",null,0,253402207200,253402207200");
+                else _ = st.Append(",null,0");
             }
             _ = st.Append(')');
             if (ignore)
