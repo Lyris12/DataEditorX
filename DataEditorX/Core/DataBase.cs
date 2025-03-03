@@ -22,13 +22,12 @@ namespace DataEditorX.Core
     {
         #region 默认
         static readonly string _defaultSQL;
-        static readonly string _defaultOSQL;
         static readonly string _defaultTableSQL;
         static readonly string _defaultOTableSQL;
 
         static DataBase()
         {
-            _defaultSQL = "SELECT * FROM datas NATURAL JOIN texts";
+            _defaultSQL = "SELECT * FROM datas NATURAL JOIN texts WHERE datas.id > 0";
             StringBuilder st = new();
             _ = st.Append(@"CREATE TABLE texts(id integer primary key,name text,desc text");
             for (int i = 1; i <= 16; i++)
