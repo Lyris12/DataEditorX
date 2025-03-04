@@ -22,6 +22,7 @@ namespace DataEditorX
     {
         private string addrequire_str;
 
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public string Addrequire
         {
             get

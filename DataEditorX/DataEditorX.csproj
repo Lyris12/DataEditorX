@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>annotations</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
-    <Title></Title>
+    <Title>
+    </Title>
     <Version>4.0.3.4</Version>
     <AssemblyVersion>4.0.3.4</AssemblyVersion>
     <FileVersion>4.0.3.4</FileVersion>
@@ -15,35 +14,37 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <BaseOutputPath>..\bin\</BaseOutputPath>
     <BaseIntermediateOutputPath>obj</BaseIntermediateOutputPath>
-    <StartupObject></StartupObject>
+    <StartupObject>
+    </StartupObject>
     <ErrorReport>none</ErrorReport>
+    <TargetFrameworks>net9.0-windows7.0</TargetFrameworks>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
     <DebugType>portable</DebugType>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <NoWarn>1701;1702;8618;8602;8625;8622;8604;8600;8601;8073;8603;8765;</NoWarn>
     <DebugType>portable</DebugType>
   </PropertyGroup>
-
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="DockPanelSuite" Version="3.1.1" />
     <PackageReference Include="DockPanelSuite.ThemeVS2015" Version="3.1.1" />
     <PackageReference Include="FCTB" Version="2.16.24" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="9.0.2" />
     <PackageReference Include="NeoLua" Version="1.3.14" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.10" />
+    <PackageReference Include="System.Memory" Version="4.6.0" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="data\avalon.xshd">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -112,9 +113,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="if exist &quot;..\obj\&quot; del /Q &quot;..\obj\&quot;" />
   </Target>
-
 </Project>
