@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-namespace DataEditorX.Controls
+﻿namespace DataEditorX.Controls
 {
     public interface IMainForm
     {

@@ -1,7 +1,6 @@
 ﻿using DataEditorX.Common;
 using System.Diagnostics;
 using System.Globalization;
-using System.Reflection;
 
 namespace DataEditorX.Config
 {

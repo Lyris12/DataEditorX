@@ -5,13 +5,8 @@
  * 时间: 17:01
  * 
  */
-using System;
-using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
-using System.IO;
 using System.Text;
-using System.Drawing;
-using System.Diagnostics;
 
 namespace DataEditorX.Core
 {
@@ -628,7 +623,7 @@ namespace DataEditorX.Core
                 {
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(','); _ = st.Append("0x" + c.omega[2].ToString("x"));
+                    _ = st.Append(','); _ = st.Append("x'" + c.omega[2].ToString("x02") + '\'');
                 }
                 else _ = st.Append(",null,0x0");
             }
@@ -644,7 +639,7 @@ namespace DataEditorX.Core
                 {
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(','); _ = st.Append(c.omega[2]);
+                    _ = st.Append(','); _ = st.Append("x'"); _ = st.Append(c.omega[2].ToString("x02")); _ = st.Append('\'');
                 }
                 else _ = st.Append(",null,0");
             }
@@ -778,7 +773,8 @@ namespace DataEditorX.Core
             {
                 _ = st.Append(c.omega[1]);
                 _ = st.Append(",script="); _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                _ = st.Append(",genre=");
+                _ = st.Append(",support=x'"); _ = st.Append(c.omega[2].ToString("x02"));
+                _ = st.Append("',genre=");
             }
             _ = st.Append(c.category);
             _ = st.Append(" where id="); _ = st.Append(c.id);

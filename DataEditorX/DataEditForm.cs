@@ -2472,15 +2472,15 @@ namespace DataEditorX
         }
         private void Pl_categoryScroll(object sender, MouseEventArgs e)
         {
-            int d = e.Delta;
+            int d = e.Delta / 6;
             int c = pl_category.VerticalScroll.Value;
-            pl_category.VerticalScroll.Value = Math.Max(0, c + d / 6);
+            pl_category.VerticalScroll.Value = Math.Max(0, c + d);
         }
         private void Pl_flagsScroll(object sender, MouseEventArgs e)
         {
-            int d = e.Delta;
+            int d = e.Delta / 6;
             int c = pl_flags.VerticalScroll.Value;
-            pl_flags.VerticalScroll.Value = Math.Max(0, c + d / 6);
+            pl_flags.VerticalScroll.Value = Math.Max(0, c + d);
         }
     }
 }
