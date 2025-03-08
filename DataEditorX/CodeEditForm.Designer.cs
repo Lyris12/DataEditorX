@@ -5,6 +5,8 @@
  * 时间: 19:16
  * 
  */
+using System.Data;
+
 namespace DataEditorX
 {
 	partial class CodeEditForm
@@ -225,7 +227,7 @@ namespace DataEditorX
             this.fctb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fctb.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.fctb.ForeColor = System.Drawing.Color.GhostWhite;
-            this.fctb.Hotkeys = resources.GetString("fctb.Hotkeys");
+            //this.fctb.HotkeysMapping = FastColoredTextBoxNS.HotkeysMapping.Parse(resources.GetString("fctb.Hotkeys"));
             this.fctb.IndentBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.fctb.IsReplaceMode = false;
             this.fctb.Language = FastColoredTextBoxNS.Language.Lua;
