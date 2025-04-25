@@ -5,7 +5,6 @@
  * 时间: 9:58
  * 
  */
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -16,11 +15,6 @@ namespace DataEditorX.Common
     /// </summary>
     public static class CheckUpdate
     {
-        static CheckUpdate()
-        {
-            //连接数
-            ServicePointManager.DefaultConnectionLimit = 255;
-        }
         /// <summary>
         /// 下载URL
         /// </summary>
@@ -51,7 +45,7 @@ namespace DataEditorX.Common
                     try
                     {
                         URL = mUrl.First(Environment.Is64BitOperatingSystem ? (m) =>
-                            m.Groups[1].Value.EndsWith("64.zip") : (m) => m.Groups[1].Value.EndsWith("32.zip")).Value;
+                            m.Groups[1].Value.EndsWith("64.zip") : (m) => m.Groups[1].Value.EndsWith("32.zip")).Groups[1].Value;
                     }
                     catch
                     {
@@ -164,7 +158,7 @@ namespace DataEditorX.Common
                 st.Close();
                 File.Move(filename + ".tmp", filename);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 return false;
             }
