@@ -20,11 +20,11 @@ trap = %%
 head = mse version: 2.0.0\r\ngame: yugioh\r\nstylesheet: series10\r\nset info:\r\n\tlanguage: EN\r\n\tedition: \r\n\tcopyright: ©2020 Studio Dice/SHUEISHA, TV TOKYO, KONAMI\r\n\twatermark: \r\n\twatermark2: \r\n\tST mark is text: yes\r\n\tedition images: no\r\n\tpendulum image is small: yes
 end = version control:\n\ttype: none\napprentice code: 
 ############################ Text
-text = Pendulum Scale = %scale%\n[ Pendulum Effect ]\n%ptext%\n----------------------------------------\n[ Monster Effect ]\n%text%
+text = P\n%ptext%\nE\n%text%
 ############################
-pendulum-text = [\S\s]+? Effect \]\s*\r?\n(?:-n/a-)*([\S\s]*?)\r?\n---+
-monster-text = \[ (?:Monster Effect|Flavor Text) \]\s*\r?\n([\S\s]*)
-rush-text = ([\S\s]*?)\r\n\[Requirement\] ([\S\s]*?)\r?\n\[Effect\]([\S\s]*)
+pendulum-text = ^P\s*\r?\n(?:-n/a-)*([\S\s]*?)\r?\nE\r?\n
+monster-text = \r?\nE\s*\r?\n([\S\s]*)
+rush-text = (?:M\r?\n([\S\s]*?)\r?\n)*(?:C\r?\n([\S\s]*?)\r?\n)*R\r?\n([\S\s]*?)\r?\nE\r?\n([\S\s]*)
 ########################### Replace
 #replace = \s <sym-auto>^</sym-auto>
 #replace = ([A-Z]) <i>$1</i>
@@ -58,6 +58,12 @@ race 0x400000 Creator God
 race 0x800000 Wyrm
 race 0x1000000 Cyberse
 race 0x2000000 Illusion
+race 0x4000000 Cyborg
+race 0x8000000 Magical Knight
+race 0x10000000 High Dragon
+race 0x20000000 Omega Psychic
+race 0x40000000 Celestial Warrior
+race 0x80000000 Galaxy
 ###########################
 ##type
 type 0x1 Monster

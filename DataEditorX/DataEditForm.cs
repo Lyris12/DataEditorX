@@ -2383,31 +2383,14 @@ namespace DataEditorX
             string txt = tb_cardtext.Text;
             if ((GetCheck(pl_cardtype) & 0x1000000) > 0)
             {
-                if (GetOpenFile().EndsWith(".cdb") && !(Regex.IsMatch(txt, "^Pendulum Scale = \\d*",
-                    RegexOptions.Multiline) || txt.StartsWith("[")))
-                {
-                    GetTexts(txt, out string[] tmp);
-                    tb_cardtext.Text = "Pendulum Scale = " + tb_pleft.Text + (tb_pleft.Text != tb_pright.Text
-                        ? "/" + tb_pright.Text : "") + "\r\n[ Pendulum Effect ]\r\n" + (((GetCheck(pl_flags)
-                        & 0x800000) > 0) ? "" : tmp[0])
-                        + "\r\n----------------------------------------\r\n[ Monster Effect ]\r\n"
-                        + (((GetCheck(pl_flags) & 0x800000) > 0) ? tmp[0] + "\r\n" : "") + tmp[1];
-                }
-                else if(txt.StartsWith("P\r\n") || txt.StartsWith("P\n"))
-                {
-                    GetTexts(txt, out string[] tmp);
-                    tb_cardtext.Text = "P\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? "" : tmp[0])
-                        + "\r\nM\r\n" + (((GetCheck(pl_flags) & 0x800000) > 0) ? tmp[0] + "\r\n" : "")
-                        + tmp[1];
-                }
-                string pregx = msecfg.regx_pendulum.Replace("\n", "\r\n");
-                if (Regex.IsMatch(txt, pregx))
-                {
-                    string tmp = Regex.Replace(pregx
-                        + msecfg.regx_monster.Replace("\n", "\r\n"), Regex.Escape("([\\S\\s]*?)"), "");
-                    tmp = Regex.Replace(tmp, Regex.Escape("([\\S\\s]*)"), Regex.Escape(txt));
-                    tb_cardtext.Text = tmp;
-                }
+                string[] template = msecfg.temp_text.Replace("\n", Environment.NewLine).Split("%");
+                GetTexts(txt, out string[] tmp);
+                if (!txt.StartsWith(template[0]))
+                    tb_cardtext.Text = template.Length > 5 ? template[0] + tb_pleft.Text
+                        + (tb_pleft.Text != tb_pright.Text ? "/" + tb_pright.Text : "") + template[2]
+                        + ((GetCheck(pl_flags) & 0x800000) > 0 ? "" : tmp[0]) + template[4] + tmp[1] + template[6]
+                        : template[0] + ((GetCheck(pl_flags) & 0x800000) > 0 ? "" : tmp[0]) + template[2] + tmp[1]
+                        + template[4];
             }
             else
             {
@@ -2415,12 +2398,8 @@ namespace DataEditorX
                 txt = Regex.Replace(txt, "(\\r?\\n)*---*\\r?\\n.*", "");
                 txt = Regex.Replace(txt, msecfg.regx_monster, "$1");
                 txt = Regex.Replace(txt, "^(\\r?\\n)*", "", RegexOptions.Multiline);
-                txt = Regex.Replace(txt, "(?<!\\r)\\n", "\r\n");
-                txt = Regex.Replace(txt, "←" + tb_pleft.Text + " 【Pendulum Effect】 " + tb_pright.Text + "→(\r?\n)+",
-                    ""); txt = Regex.Replace(txt, "【Monster Effect】\r?\n", "");
-                txt = Regex.Replace(txt, "Pendulum Scale = \\d*\\r?\\n", "");
-                txt = Regex.Replace(txt, "\\[ Pendulum Effect \\]\\r?\\n", "");
-                tb_cardtext.Text = Regex.Replace(txt, "\\[ Monster Effect \\]\\r?\\n", "");
+                txt = Regex.Replace(txt, "(?:\\r)?\\n", Environment.NewLine);
+                tb_cardtext.Text = txt;
             }
         }
         private void OnDragEnter(object sender, DragEventArgs e)
