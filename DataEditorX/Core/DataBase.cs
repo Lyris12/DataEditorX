@@ -596,7 +596,7 @@ namespace DataEditorX.Core
                     _ = st.Append("x'");
                     foreach (byte sc in set)
                     {
-                        _ = st.Append(sc.ToString("x02"));
+                        _ = st.Append(sc.ToString("x02").Replace("'", "''"));
                     }
                     _ = st.Append('\'');
                 }
@@ -623,9 +623,23 @@ namespace DataEditorX.Core
                 {
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(','); _ = st.Append("x'" + c.omega[2].ToString("x02") + '\'');
-                }
-                else _ = st.Append(",null,0x0");
+                    _ = st.Append(',');
+                    byte[] set = Array.Empty<byte>();
+                    for (ushort i = 0; c.omega[2] >> i * 8 > 0; ++i)
+                    {
+                        Array.Resize(ref set, i + 1);
+                        set[i] = (byte)((c.omega[2] >> i * 8) & 0xff);
+                    }
+                    if (set.Length > 0 && c.omega[2] > 0)
+                    {
+                        _ = st.Append("x'");
+                        foreach (byte sc in set)
+                        {
+                            _ = st.Append(sc.ToString("x02").Replace("'", "''"));
+                        }
+                        _ = st.Append('\'');
+                    } else st.Append("null");
+                } else _ = st.Append(",null,null");
             }
             else
             {
@@ -639,9 +653,25 @@ namespace DataEditorX.Core
                 {
                     _ = st.Append(',');
                     _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                    _ = st.Append(','); _ = st.Append("x'"); _ = st.Append(c.omega[2].ToString("x02")); _ = st.Append('\'');
+                    _ = st.Append(',');
+                    byte[] set = Array.Empty<byte>();
+                    for (ushort i = 0; c.omega[2] >> i * 8 > 0; ++i)
+                    {
+                        Array.Resize(ref set, i + 1);
+                        set[i] = (byte)((c.omega[2] >> i * 8) & 0xff);
+                    }
+                    if (set.Length > 0 && c.omega[2] > 0)
+                    {
+                        _ = st.Append("x'");
+                        foreach (byte sc in set)
+                        {
+                            _ = st.Append(sc.ToString("x02").Replace("'", "''"));
+                        }
+                        _ = st.Append('\'');
+                    }
+                    else st.Append("null");
                 }
-                else _ = st.Append(",null,0");
+                else _ = st.Append(",null,null");
             }
             _ = st.Append(')');
             if (ignore)
