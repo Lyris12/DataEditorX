@@ -140,9 +140,9 @@ namespace DataEditorX.Core
         {
             Card c = new(0)
             {
-                id = reader.GetInt64(reader.GetOrdinal("id")),
+                id = (uint)reader.GetInt32(reader.GetOrdinal("id")),
                 ot = reader.GetInt32(reader.GetOrdinal("ot")),
-                alias = reader.GetInt64(reader.GetOrdinal("alias")),
+                alias = (uint)reader.GetInt64(reader.GetOrdinal("alias")),
                 type = reader.GetInt64(reader.GetOrdinal("type")),
                 atk = reader.GetInt32(reader.GetOrdinal("atk")),
                 def = reader.GetInt32(reader.GetOrdinal("def")),

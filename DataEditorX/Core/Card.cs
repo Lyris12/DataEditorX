@@ -20,7 +20,7 @@ namespace DataEditorX.Core
         /// </summary>
         /// <param name="cardCode">密码</param>
         /// <param name="cardName">名字</param>
-        public Card(long cardCode)
+        public Card(uint cardCode)
         {
             id = cardCode;
             name = "";
@@ -47,11 +47,11 @@ namespace DataEditorX.Core
 
         #region 成员
         /// <summary>卡片密码</summary>
-        public long id;
+        public uint id;
         /// <summary>卡片规则</summary>
         public int ot;
         /// <summary>卡片同名卡</summary>
-        public long alias;
+        public uint alias;
         /// <summary>卡片系列号</summary>
         public long setcode;
         /// <summary>卡片种类</summary>

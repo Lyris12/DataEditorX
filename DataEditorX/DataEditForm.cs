@@ -793,8 +793,8 @@ namespace DataEditorX
                     _ = int.TryParse(tb_def.Text, out c.def);
                 }
             }
-            _ = long.TryParse(tb_cardcode.Text, out c.id);
-            _ = long.TryParse(tb_cardalias.Text, out c.alias);
+            _ = uint.TryParse(tb_cardcode.Text, out c.id);
+            _ = uint.TryParse(tb_cardalias.Text, out c.alias);
 
             return c;
         }
@@ -1065,7 +1065,7 @@ namespace DataEditorX
             if (e.KeyChar == (char)Keys.Enter)
             {
                 Card c = new(0);
-                _ = long.TryParse(tb_cardcode.Text, out c.id);
+                _ = uint.TryParse(tb_cardcode.Text, out c.id);
                 if (c.id > 0)
                 {
                     tmpCodes.Clear();//清空临时的结果

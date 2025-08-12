@@ -45,7 +45,7 @@ namespace DataEditorX.Core
                     MyMsg.Error(LMSG.CodeCanNotIsZero);
                     return false;
                 }
-                else if (c.id > 268435455)
+                else if (c.id > 999999999)
                 {
                     MyMsg.Error(LMSG.AddFail);
                     return false;
@@ -57,7 +57,7 @@ namespace DataEditorX.Core
                         MyMsg.Error(LMSG.AddFail);
                         return false;
                     }
-                    else if (c.id > 134217727)
+                    else if (c.id > uint.MaxValue / 16)
                         MyMsg.Warning("Strings will fail to show up for this passcode.");
                 }
                 Card[] cards = dataform.GetCardList(false);
@@ -292,7 +292,7 @@ namespace DataEditorX.Core
             }
 
             Card c = dataform.GetCard();
-            long id = c.id;
+            uint id = c.id;
             string lua;
             if (c.id > 0)
             {

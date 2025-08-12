@@ -109,7 +109,7 @@
 0x10000000	High Dragon
 0x20000000	Omega Psychic
 0x40000000	Celestial Warrior
-0x80000000  Galaxy
+0x80000000	Galaxy
 ##type
 0x1	Monster
 0x2	Spell

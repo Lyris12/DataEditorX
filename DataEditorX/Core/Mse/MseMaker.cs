@@ -763,7 +763,7 @@ namespace DataEditorX.Core.Mse
             //属性
             c.attribute = GetAttributeInt(GetValue(content, TAG_ATTRIBUTE));
             //密码
-            _ = long.TryParse(GetValue(content, TAG_CODE), out c.id);
+            _ = uint.TryParse(GetValue(content, TAG_CODE), out c.id);
             //ATK
             tmp = GetValue(content, TAG_ATK);
             if (tmp == UNKNOWN_ATKDEF)
@@ -820,7 +820,7 @@ namespace DataEditorX.Core.Mse
             Regex regx = new(@"^card:[\S\s]+?gamecode:[\S\s]+?$",
                                    RegexOptions.Multiline);
             MatchCollection matchs = regx.Matches(allcontent);
-            int i = 0;
+            uint i = 0;
 
             foreach (Match match in matchs.Cast<Match>())
             {
