@@ -175,7 +175,7 @@ namespace DataEditorX.Core
             {
                 c.setcode = reader.IsDBNull(reader.GetOrdinal("setcode")) ? 0L : reader.GetInt64(reader.GetOrdinal("setcode"));
                 c.category = reader.GetInt64(reader.GetOrdinal("category"));
-                c.omega = new long[3] { 0L, 0L, 0L };
+                c.omega = [0L, 0L, 0L];
                 c.script = "";
             }
             c.name = reader.GetString(reader.GetOrdinal("name"));
@@ -776,22 +776,18 @@ namespace DataEditorX.Core
             _ = st.Append("update datas set ot="); _ = st.Append(c.ot);
             _ = st.Append(",alias="); _ = st.Append(c.alias);
             _ = st.Append(",setcode=");
-            byte[] set = Array.Empty<byte>();
-            for (ushort i = 0; c.setcode >> i * 8 > 0; ++i)
-            {
-                Array.Resize(ref set, i + 1);
-                set[i] = (byte)((c.setcode >> i * 8) & 0xff);
-            }
-            if (set.Length > 0 && c.setcode > 0)
-            {
-                _ = st.Append("x'");
-                foreach (byte sc in set)
-                {
-                    _ = st.Append(sc.ToString("x02"));
-                }
-                _ = st.Append('\'');
-            }
-            else _ = st.Append("null");
+            if (c.omega[0] > 0) {
+                byte[] set = Array.Empty<byte>();
+                for (ushort i = 0; c.setcode >> i * 8 > 0; ++i) {
+                    Array.Resize(ref set, i + 1);
+                    set[i] = (byte)((c.setcode >> i * 8) & 0xff);
+                } if (set.Length > 0 && c.setcode > 0) {
+                    _ = st.Append("x'");
+                    foreach (byte sc in set)
+                        _ = st.Append(sc.ToString("x02"));
+                    _ = st.Append('\'');
+                } else _ = st.Append("null");
+            } else _ = st.Append(c.setcode);
             _ = st.Append(",type="); _ = st.Append(c.type);
             _ = st.Append(",atk="); _ = st.Append(c.atk);
             _ = st.Append(",def="); _ = st.Append(c.def);
@@ -803,23 +799,28 @@ namespace DataEditorX.Core
             {
                 _ = st.Append(c.omega[1]);
                 _ = st.Append(",script="); _ = st.Append(string.IsNullOrEmpty(c.script) ? "null" : "'" + c.script.Replace("'", "''") + "'");
-                _ = st.Append(",support=x'"); _ = st.Append(c.omega[2].ToString("x02"));
+                _ = st.Append(",support=");
+                byte[] set = Array.Empty<byte>();
+                for (ushort i = 0; c.omega[2] >> i * 8 > 0; ++i) {
+                    Array.Resize(ref set, i + 1);
+                    set[i] = (byte)((c.omega[2] >> i * 8) & 0xff);
+                } if (set.Length > 0 && c.omega[2] > 0) {
+                    _ = st.Append("x'");
+                    foreach (byte sc in set)
+                        _ = st.Append(sc.ToString("x02"));
+                    _ = st.Append('\'');
+                }
                 _ = st.Append("',genre=");
-            }
-            _ = st.Append(c.category);
+            } _ = st.Append(c.category);
             _ = st.Append(" where id="); _ = st.Append(c.id);
             _ = st.Append("; update texts set name='"); _ = st.Append(c.name.Replace("'", "''"));
             _ = st.Append("',desc='"); _ = st.Append(c.desc.Replace("'", "''")); _ = st.Append("', ");
-            for (int i = 0; i < 0x10; i++)
-            {
+            for (int i = 0; i < 0x10; i++) {
                 _ = st.Append("str"); _ = st.Append(i + 1); _ = st.Append("='");
                 _ = st.Append(c.Str[i].Replace("'", "''"));
                 if (i < 15)
-                {
                     _ = st.Append("',");
-                }
-            }
-            _ = st.Append("' where id="); _ = st.Append(c.id);
+            } _ = st.Append("' where id="); _ = st.Append(c.id);
             _ = st.Append(';');
             return st.ToString();
         }

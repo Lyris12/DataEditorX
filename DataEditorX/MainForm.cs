@@ -90,7 +90,7 @@ namespace DataEditorX
                 {
                     if (l.StartsWith("!setname"))
                     {
-                        string[] sn = l.Split(new char[] { ' ' }, 3);
+                        string[] sn = l.Split([' '], 3);
                         _ = long.TryParse(sn[1], System.Globalization.NumberStyles.HexNumber, null,
                             out long sc);
                         if (!d.ContainsKey(sc)) d.Add(sc, sn[2]);
@@ -632,7 +632,7 @@ namespace DataEditorX
             if (drops == null)
             {
                 string file = (string)e.Data.GetData(DataFormats.Text);
-                drops = new string[1] { file };
+                drops = [file];
             }
             foreach (string file in drops)
             {

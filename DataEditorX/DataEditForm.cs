@@ -2321,7 +2321,7 @@ namespace DataEditorX
             if (drops == null)
             {
                 string file = (string)e.Data.GetData(DataFormats.Text);
-                drops = new string[1] { file };
+                drops = [file];
             }
             foreach (string file in drops)
             {

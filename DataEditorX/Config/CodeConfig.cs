@@ -68,7 +68,7 @@ namespace DataEditorX.Config
                     if (line.StartsWith("!victory")
                        || line.StartsWith("!counter"))
                     {
-                        string[] ws = line.Split(new char[] { ' ' }, 3);
+                        string[] ws = line.Split([' '], 3);
                         if (ws.Length > 2)
                         {
                             AddToolIipDic(ws[1], ws[2]);
@@ -145,7 +145,7 @@ namespace DataEditorX.Config
                 int t = line.IndexOf("=");
                 _ = line.IndexOf("--");
                 //常量 = 0x1 ---注释
-                string k = (t > 0) ? line[..t].TrimEnd(new char[] { ' ', '\t' })
+                string k = (t > 0) ? line[..t].TrimEnd([' ', '\t'])
                     : line;
                 string desc = (t > 0) ? line[(t + 1)..].Replace("--", "\n")
     : line;

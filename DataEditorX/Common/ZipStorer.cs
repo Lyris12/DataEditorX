@@ -562,11 +562,11 @@ namespace System.IO.Compression
             Encoding encoder = _zfe.EncodeUTF8 ? Encoding.UTF8 : _defaultEncoding;
             byte[] encodedFilename = encoder.GetBytes(_zfe.FilenameInZip);
 
-            zipFileStream.Write(new byte[] { 80, 75, 3, 4, 20, 0 }, 0, 6); // No extra header
+            zipFileStream.Write([80, 75, 3, 4, 20, 0], 0, 6); // No extra header
             zipFileStream.Write(BitConverter.GetBytes((ushort)(_zfe.EncodeUTF8 ? 0x0800 : 0)), 0, 2); // filename and comment encoding 
             zipFileStream.Write(BitConverter.GetBytes((ushort)_zfe.Method), 0, 2);  // zipping method
             zipFileStream.Write(BitConverter.GetBytes(DateTimeToDosTime(_zfe.ModifyTime)), 0, 4); // zipping date and time
-            zipFileStream.Write(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 12); // unused CRC, un/compressed size, updated later
+            zipFileStream.Write([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 0, 12); // unused CRC, un/compressed size, updated later
             zipFileStream.Write(BitConverter.GetBytes((ushort)encodedFilename.Length), 0, 2); // filename length
             zipFileStream.Write(BitConverter.GetBytes((ushort)0), 0, 2); // extra length
 
@@ -602,7 +602,7 @@ namespace System.IO.Compression
             byte[] encodedFilename = encoder.GetBytes(_zfe.FilenameInZip);
             byte[] encodedComment = encoder.GetBytes(_zfe.Comment);
 
-            zipFileStream.Write(new byte[] { 80, 75, 1, 2, 23, 0xB, 20, 0 }, 0, 8);
+            zipFileStream.Write([80, 75, 1, 2, 23, 0xB, 20, 0], 0, 8);
             zipFileStream.Write(BitConverter.GetBytes((ushort)(_zfe.EncodeUTF8 ? 0x0800 : 0)), 0, 2); // filename and comment encoding 
             zipFileStream.Write(BitConverter.GetBytes((ushort)_zfe.Method), 0, 2);  // zipping method
             zipFileStream.Write(BitConverter.GetBytes(DateTimeToDosTime(_zfe.ModifyTime)), 0, 4);  // zipping date and time
@@ -643,7 +643,7 @@ namespace System.IO.Compression
             Encoding encoder = EncodeUTF8 ? Encoding.UTF8 : _defaultEncoding;
             byte[] encodedComment = encoder.GetBytes(comment);
 
-            zipFileStream.Write(new byte[] { 80, 75, 5, 6, 0, 0, 0, 0 }, 0, 8);
+            zipFileStream.Write([80, 75, 5, 6, 0, 0, 0, 0], 0, 8);
             zipFileStream.Write(BitConverter.GetBytes((ushort)files.Count + existingFiles), 0, 2);
             zipFileStream.Write(BitConverter.GetBytes((ushort)files.Count + existingFiles), 0, 2);
             zipFileStream.Write(BitConverter.GetBytes(_size), 0, 4);

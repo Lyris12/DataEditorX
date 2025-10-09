@@ -34,7 +34,7 @@ namespace DataEditorX.Core
             race = 0;
             attribute = 0;
             category = 0;
-            omega = new long[3]{ 0L, 0L, 0L };
+            omega = [0L, 0L, 0L];
             script = "";
             desc = "";
             str = new string[STR_MAX];

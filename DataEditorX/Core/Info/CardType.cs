@@ -70,7 +70,7 @@ namespace DataEditorX.Core.Info
     }
     public static class CardTypes
     {
-        public static readonly CardType[] TYPE1 = {
+        public static readonly CardType[] TYPE1 = [
             CardType.TYPE_TOKEN,
             CardType.TYPE_LINK,
             CardType.TYPE_RITUAL,
@@ -84,8 +84,8 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_DUAL,
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
-        };
-        public static readonly CardType[] TYPE1_10 = {
+        ];
+        public static readonly CardType[] TYPE1_10 = [
             CardType.TYPE_TOKEN,
             CardType.TYPE_LINK,
             CardType.TYPE_RITUAL,
@@ -100,8 +100,8 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
             CardType.TYPE_SPSUMMON,
-        };
-        public static readonly CardType[] TYPE2 = {
+        ];
+        public static readonly CardType[] TYPE2 = [
             CardType.TYPE_XYZ,
             CardType.TYPE_SYNCHRO,
             CardType.TYPE_PENDULUM,
@@ -111,8 +111,8 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_DUAL,
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
-        };
-        public static readonly CardType[] TYPE2_10 = {
+        ];
+        public static readonly CardType[] TYPE2_10 = [
             CardType.TYPE_XYZ,
             CardType.TYPE_SYNCHRO,
             CardType.TYPE_PENDULUM,
@@ -123,8 +123,8 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
             CardType.TYPE_SPSUMMON,
-        };
-        public static readonly CardType[] TYPE3 ={
+        ];
+        public static readonly CardType[] TYPE3 =[
             CardType.TYPE_SYNCHRO,
             CardType.TYPE_PENDULUM,
 
@@ -133,8 +133,8 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_DUAL,
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
-        };
-        public static readonly CardType[] TYPE3_10 ={
+        ];
+        public static readonly CardType[] TYPE3_10 =[
             CardType.TYPE_SYNCHRO,
             CardType.TYPE_PENDULUM,
 
@@ -144,18 +144,18 @@ namespace DataEditorX.Core.Info
             CardType.TYPE_FLIP,
             CardType.TYPE_TOON,
             CardType.TYPE_SPSUMMON,
-        };
-        public static readonly CardType[] TYPE4 ={
+        ];
+        public static readonly CardType[] TYPE4 =[
             CardType.TYPE_TUNER,
             CardType.TYPE_EFFECT,
 //			CardType.TYPE_NORMAL,
-		};
+		];
 
-        public static readonly CardType[] TYPE4_10 ={
+        public static readonly CardType[] TYPE4_10 =[
             CardType.TYPE_TUNER,
             CardType.TYPE_EFFECT,
             CardType.TYPE_NORMAL,
-        };
+        ];
         public static CardType[] GetMonsterTypes(long type, bool no10 = false)
         {
             var list = new List<CardType>(5);

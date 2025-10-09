@@ -77,22 +77,22 @@
 
         public string[] GetCardfiles(long id)
         {
-            string[] files = new string[]{
+            string[] files = [
                 GetImage(id),//大图
 				//GetImageThum(id),//小图
 				GetImageField(id),//场地图
 				GetScript(id)
-           };
+           ];
             return files;
         }
         public string[] GetCardfiles(string id)
         {
-            string[] files = new string[]{
+            string[] files = [
                 GetImage(id),//大图
 				//GetImageThum(id),//小图
 				GetImageField(id),//场地图
 				GetScript(id)
-           };
+           ];
             return files;
         }
     }
