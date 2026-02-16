@@ -381,40 +381,30 @@ namespace DataEditorX.Core
             public bool Execute(params object[] args)
             {
                 if (!dataform.CheckOpen())
-                {
                     return false;
-                }
 
                 Card[] cards = (Card[])args[0];
 
                 if (cards == null || cards.Length == 0)
-                {
                     return false;
-                }
+                foreach (Card c in cards) c.omega[0] = dataform.GetOpenFile().EndsWith(".db") ? 1 : 0;
 
                 bool replace = false;
                 Card[] oldcards = DataBase.Read(dataform.GetOpenFile(), true, "");
                 if (oldcards != null && oldcards.Length != 0)
                 {
                     int i = 0;
-                    foreach (Card oc in oldcards)
-                    {
-                        foreach (Card c in cards)
-                        {
-                            if (c.id == oc.id)
-                            {
-                                i += 1;
-                                if (i == 1)
+                    foreach (Card oc in oldcards) {
+                        foreach (Card c in cards) {
+                            if (c.id == oc.id) {
+                                if (++i == 1)
                                 {
                                     replace = MyMsg.Question(LMSG.IfReplaceExistingCard);
                                     break;
                                 }
                             }
                         }
-                        if (i > 0)
-                        {
-                            break;
-                        }
+                        if (i > 0) break;
                     }
                 }
                 _ = DataBase.CopyDB(dataform.GetOpenFile(), !replace, cards);
