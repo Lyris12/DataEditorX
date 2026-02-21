@@ -809,8 +809,8 @@ namespace DataEditorX.Core
                     foreach (byte sc in set)
                         _ = st.Append(sc.ToString("x02"));
                     _ = st.Append('\'');
-                }
-                _ = st.Append("',genre=");
+                } else st.Append("null");
+                    _ = st.Append(",genre=");
             } _ = st.Append(c.category);
             _ = st.Append(" where id="); _ = st.Append(c.id);
             _ = st.Append("; update texts set name='"); _ = st.Append(c.name.Replace("'", "''"));

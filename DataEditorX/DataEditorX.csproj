@@ -7,9 +7,9 @@
     <RepositoryUrl>https://github.com/Lyris12/DataEditorX</RepositoryUrl>
     <Title>
     </Title>
-    <Version>4.0.4.2</Version>
-    <AssemblyVersion>4.0.4.2</AssemblyVersion>
-    <FileVersion>4.0.4.2</FileVersion>
+    <Version>4.0.4.3</Version>
+    <AssemblyVersion>4.0.4.3</AssemblyVersion>
+    <FileVersion>4.0.4.3</FileVersion>
     <PackageId />
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <BaseOutputPath>..\bin\</BaseOutputPath>
